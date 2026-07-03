@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Архів Фотозвітів справ фонду — БО «МБФ Разом ми — сила»</title>
+  <link rel="stylesheet" href="index.css">
+  <style>
+    .archive-header {
+      padding: 40px 0 20px;
+      text-align: center;
+    }
+    .archive-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .archive-filter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .archive-filter-btn:hover, .archive-filter-btn.active {
+      background: var(--btn-gradient);
+      color: #fff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 4px 15px rgba(30,96,242,0.3);
+    }
+    .archive-search {
+      max-width: 500px;
+      margin: 0 auto 30px;
+      position: relative;
+    }
+    .archive-search input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+    .archive-search input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(255,183,3,0.2);
+    }
+    /* Lightbox Modal */
+    #lightboxModal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    #lightboxImg {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="index.html" class="logo" style="display: flex; align-items: center; gap: 14px; text-decoration: none; transition: transform 0.2s;">
+        <img src="logo.png" alt="БФ Разом ми сила" style="height: 68px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 15px rgba(255, 183, 3, 0.55));">
+        <div style="display: flex; flex-direction: column;">
+          <span style="font-size: 1.45rem; font-weight: 900; letter-spacing: 0.8px; background: linear-gradient(135deg, #ffffff 0%, #ffb703 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(255,183,3,0.25);">РАЗОМ МИ — СИЛА</span>
+          <span style="font-size: 0.72rem; font-weight: 700; color: #ffb703; letter-spacing: 2px; text-transform: uppercase;">Благодійний Фонд</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul>
+          <li><a href="index.html" style="background: rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 12px;">⬅️ На головну</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main style="min-height: 80vh; padding-bottom: 60px;">
+    <div class="container">
+      <div class="archive-header">
+        <div class="badge" style="margin: 0 auto 12px; background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold);">📂 ПОВНИЙ АРХІВ ДОПОМОГИ</div>
+        <h1 class="section-title">Всі Фотозвіти справ фонду</h1>
+        <p class="section-subtitle" id="archiveStatsText">Завантаження хроніки...</p>
+        <div style="margin-top: 20px;">
+          <a href="index.html" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+            ⬅️ Повернутися на головну сторінку фонду
+          </a>
+        </div>
+      </div>
+
+      <div class="archive-search">
+        <input type="text" id="archiveSearchInput" placeholder="🔍 Пошук фотозвіту за назвою або описом..." oninput="renderArchive()">
+      </div>
+
+      <div class="archive-filters">
+        <button class="archive-filter-btn active" onclick="setArchiveFilter('all', this)">Всі фотографії</button>
+        <button class="archive-filter-btn" onclick="setArchiveFilter('military', this)">🛡️ ЗСУ / Військова</button>
+        <button class="archive-filter-btn" onclick="setArchiveFilter('medical', this)">🏥 Медицина</button>
+        <button class="archive-filter-btn" onclick="setArchiveFilter('humanitarian', this)">📦 Гуманітарна</button>
+        <button class="archive-filter-btn" onclick="setArchiveFilter('help', this)">⚡ Допомога</button>
+      </div>
+
+      <div class="gallery-grid" id="archiveGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;"></div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightboxModal" onclick="closeLightbox()">
+    <div style="position: relative; max-width: 90vw; text-align: center;" onclick="event.stopPropagation()">
+      <button onclick="closeLightbox()" style="position: absolute; top: -45px; right: 0; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; font-weight: bold;">✕</button>
+      <img id="lightboxImg" src="" alt="Фотозвіт">
+      <div style="background: rgba(15,28,63,0.9); padding: 16px; border-radius: 14px; margin-top: 14px; border: 1px solid var(--border-color);">
+        <h3 id="lightboxTitle" style="color: #fff; font-size: 1.25rem; margin-bottom: 6px;"></h3>
+        <p id="lightboxDesc" style="color: var(--text-muted); font-size: 0.95rem;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo" style="margin-bottom: 18px; display: flex; align-items: center; gap: 14px; text-decoration: none;">
+            <img src="logo.png" alt="БФ Разом ми сила" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 15px rgba(255, 183, 3, 0.5));">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(135deg, #ffffff 0%, #ffb703 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">РАЗОМ МИ — СИЛА</span>
+              <span style="font-size: 0.7rem; font-weight: 700; color: #ffb703; letter-spacing: 1.5px; text-transform: uppercase;">Міжнародний Фонд</span>
+            </div>
+          </a>
+          <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 340px;">Офіційно зареєстрована благодійна організація, що забезпечує гуманітарну та медичну допомогу, підтримку шпиталів та постраждалих від війни.</p>
+          <div style="margin-top: 14px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.6; background: rgba(0,0,0,0.35); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,183,3,0.2); max-width: 340px;">
+            <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 4px;">📑 ДАНІ З ДЕРЖАВНОГО РЕЄСТРУ (ОПЕНДАТАБОТ):</div>
+            <strong style="color: #fff; font-size: 0.85rem;">БО "МБФ "РАЗОМ МИ-СИЛА"</strong><br>
+            Код ЄДРПОУ: <span style="color: var(--accent-gold); font-weight: 800; font-size: 0.95rem;">44717765</span><br>
+            Керівник: <span style="color: #fff;">Краснопольський Владлен Ааронович</span><br>
+            Статус: <span style="color: #10b981;">Неприбуткова благодійна організація</span><br>
+            Банк: АТ «Укрексімбанк» (МФО 322313)<br>
+            IBAN: <span style="font-family: monospace; font-size: 0.72rem; color: #ffb703; word-break: break-all;">UA62322313000002600900050984</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom" style="margin-top: 40px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px;">
+        <p>© 2026 БО «МБФ Разом ми — сила». Всі права захищено.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    let currentFilter = 'all';
+
+    function setArchiveFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.archive-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderArchive();
+    }
+
+    function renderArchive() {
+      const grid = document.getElementById('archiveGrid');
+      const stats = document.getElementById('archiveStatsText');
+      const query = (document.getElementById('archiveSearchInput').value || '').toLowerCase().trim();
+
+      const list = FoundationStore.getGallery();
+      let filtered = list.filter(item => {
+        if (currentFilter !== 'all') {
+          const cat = (item.category || '').toLowerCase();
+          if (currentFilter === 'military' && !cat.includes('зсу') && !cat.includes('військ')) return false;
+          if (currentFilter === 'medical' && !cat.includes('мед')) return false;
+          if (currentFilter === 'humanitarian' && !cat.includes('гуман')) return false;
+          if (currentFilter === 'help' && !cat.includes('допом')) return false;
+        }
+        if (query) {
+          const title = (item.title || '').toLowerCase();
+          const desc = (item.desc || '').toLowerCase();
+          if (!title.includes(query) && !desc.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (stats) stats.textContent = `Відображено ${filtered.length} з ${list.length} фотографій хроніки`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p style="color: #888; text-align: center; grid-column: 1/-1; padding: 40px 0;">За цим запитом або категорією фотографій не знайдено.</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="gallery-card" onclick="openLightbox('${item.id}')" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s; cursor: pointer;">
+          <div style="background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; min-height: 220px; max-height: 380px; overflow: hidden; position: relative;">
+            <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title}" style="width: 100%; height: auto; max-height: 380px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
+            ${item.category ? `<span style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">${item.category}</span>` : ''}
+          </div>
+          <div style="padding: 18px;">
+            <h3 style="font-size: 1.15rem; font-family: var(--font-heading); margin-bottom: 8px; color: #fff;">${item.title}</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">${item.desc || ''}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openLightbox(id) {
+      const item = FoundationStore.getGallery().find(g => g.id === id);
+      if (!item) return;
+      document.getElementById('lightboxImg').src = item.image || '';
+      document.getElementById('lightboxTitle').textContent = item.title || '';
+      document.getElementById('lightboxDesc').textContent = item.desc || '';
+      document.getElementById('lightboxModal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').style.display = 'none';
+    }
+
+    window.addEventListener('foundation_data_changed', renderArchive);
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FoundationStore && window.FoundationStore.initOnlineSync) {
+        window.FoundationStore.initOnlineSync();
+      }
+      renderArchive();
+    });
+  </script>
+</body>
+</html>

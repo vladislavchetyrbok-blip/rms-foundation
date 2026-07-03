@@ -386,8 +386,8 @@ function renderAdminGallery() {
       <td>
         <img src="${item.image || 'work_medical_aid.jpg'}" style="width: 70px; height: 50px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; border-radius: 8px; border: 1px solid var(--admin-border);">
       </td>
-      <td><strong>${item.title}</strong></td>
-      <td><span style="background: rgba(30,96,242,0.15); color: #60a5fa; padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;">${item.category || ''}</span></td>
+      <td><strong>${item.title ? item.title : '<span style="color:#777; font-weight:normal;">(Без підпису)</span>'}</strong></td>
+      <td>${item.category ? `<span style="background: rgba(30,96,242,0.15); color: #60a5fa; padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;">${item.category}</span>` : ''}</td>
       <td><div style="max-width: 300px; font-size: 0.85rem; color: #ccc;">${item.desc || ''}</div></td>
       <td>
         <div style="display: flex; gap: 6px;">
@@ -511,17 +511,13 @@ async function handleBulkGalleryUpload(event) {
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
-    let cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
-    if (cleanName.length > 35 || /^(IMG|DSC|PXL|Screenshot|photo|image|\d)/i.test(cleanName)) {
-      cleanName = 'Робота та допомога фонду';
-    }
 
     await new Promise((resolve) => {
       compressImageFile(file, 550, 550, 0.62, function(base64) {
         data.gallery.unshift({
           id: 'gal_' + Date.now() + '_' + i + '_' + Math.floor(Math.random()*10000),
-          title: cleanName,
-          category: '⚡ Допомога',
+          title: '',
+          category: '',
           desc: '',
           image: base64,
           imagePos: 'center center',

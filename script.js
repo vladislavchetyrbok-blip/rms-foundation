@@ -195,22 +195,71 @@ function renderHonorBoard() {
 }
 
 // === Render Gallery / Work Reports ===
+let currentGalleryPage = window.currentGalleryPage || 1;
+const GALLERY_PER_PAGE = 6;
+
 function renderGallery() {
   const container = document.getElementById('galleryContainer');
+  const pagContainer = document.getElementById('galleryPagination');
   if (!container) return;
+
   const list = FoundationStore.getGallery();
-  container.innerHTML = list.map(item => `
+  if (!list || list.length === 0) {
+    container.innerHTML = '<p style="color: #ccc; text-align: center; grid-column: 1/-1;">Хроніка фотозвітів оновлюється...</p>';
+    if (pagContainer) pagContainer.innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(list.length / GALLERY_PER_PAGE);
+  if (currentGalleryPage > totalPages) currentGalleryPage = totalPages || 1;
+
+  const startIdx = (currentGalleryPage - 1) * GALLERY_PER_PAGE;
+  const currentItems = list.slice(startIdx, startIdx + GALLERY_PER_PAGE);
+
+  container.innerHTML = currentItems.map(item => `
     <div class="gallery-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;">
       <div style="background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; min-height: 220px; max-height: 450px; overflow: hidden; position: relative;">
-        <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title}" style="width: 100%; height: auto; max-height: 450px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
+        <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title || 'Фотозвіт'}" style="width: 100%; height: auto; max-height: 450px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
         ${item.category ? `<span style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">${item.category}</span>` : ''}
       </div>
+      ${(item.title || item.desc) ? `
       <div style="padding: 18px;">
-        <h3 style="font-size: 1.15rem; font-family: var(--font-heading); margin-bottom: 8px; color: #fff;">${item.title}</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">${item.desc || ''}</p>
+        ${item.title ? `<h3 style="font-size: 1.15rem; font-family: var(--font-heading); margin-bottom: ${item.desc ? '8px' : '0'}; color: #fff;">${item.title}</h3>` : ''}
+        ${item.desc ? `<p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">${item.desc}</p>` : ''}
       </div>
+      ` : ''}
     </div>
   `).join('');
+
+  if (pagContainer) {
+    if (list.length <= GALLERY_PER_PAGE) {
+      pagContainer.innerHTML = `
+        <a href="gallery.html" class="btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 14px 28px; border-radius: 16px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 20px rgba(245,158,11,0.35);">
+          📂 Відкрити повний архів фотозвітів (всі фото на окремій сторінці) ➔
+        </a>
+      `;
+    } else {
+      pagContainer.innerHTML = `
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; width: 100%;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button onclick="changeGalleryPage(-1)" class="btn" style="padding: 10px 18px; border-radius: 12px; background: ${currentGalleryPage <= 1 ? 'rgba(255,255,255,0.05)' : 'rgba(30,96,242,0.25)'}; color: ${currentGalleryPage <= 1 ? '#666' : '#fff'}; border: 1px solid var(--border-color); cursor: ${currentGalleryPage <= 1 ? 'default' : 'pointer'}; font-weight: 600;" ${currentGalleryPage <= 1 ? 'disabled' : ''}>⬅️ Попередні 6 фото</button>
+            <span style="color: #fff; font-weight: 600; font-size: 1rem; padding: 0 8px;">Сторінка ${currentGalleryPage} з ${totalPages}</span>
+            <button onclick="changeGalleryPage(1)" class="btn" style="padding: 10px 18px; border-radius: 12px; background: ${currentGalleryPage >= totalPages ? 'rgba(255,255,255,0.05)' : 'rgba(30,96,242,0.25)'}; color: ${currentGalleryPage >= totalPages ? '#666' : '#fff'}; border: 1px solid var(--border-color); cursor: ${currentGalleryPage >= totalPages ? 'default' : 'pointer'}; font-weight: 600;" ${currentGalleryPage >= totalPages ? 'disabled' : ''}>Наступні 6 фото ➡️</button>
+          </div>
+          <a href="gallery.html" class="btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 12px 24px; border-radius: 14px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(245,158,11,0.3);">
+            📂 Відкрити весь архів на окремій сторінці (${list.length} фото) ➔
+          </a>
+        </div>
+      `;
+    }
+  }
+}
+
+function changeGalleryPage(dir) {
+  window.currentGalleryPage = (window.currentGalleryPage || 1) + dir;
+  renderGallery();
+  const sec = document.getElementById('gallery');
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // === Render News & Frontline Reports ===
