@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Благодійний фонд «Разом ми — сила» | Together We Are Power</title>
+  <meta name="description" content="Офіційний сайт благодійного фонду «Разом ми — сила». Термінова допомога Захисникам України, медичним закладам та родинам.">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">🛡️</div>
+        <span>РАЗОМ МИ — СИЛА</span>
+      </a>
+
+      <nav>
+        <ul>
+          <li><a href="#about" data-i18n="nav_about">Про нас</a></li>
+          <li><a href="#calc" data-i18n="nav_calc">Калькулятор донату</a></li>
+          <li><a href="#campaigns" data-i18n="nav_campaigns">Активні збори</a></li>
+          <li><a href="#news" data-i18n="nav_news">Звіти з фронту</a></li>
+          <li><a href="#honor" data-i18n="nav_honor">Дошка пошани</a></li>
+          <li><a href="#focus" data-i18n="nav_focus">Напрямки</a></li>
+          <li><a href="#contact" data-i18n="nav_contact">Контакти</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- 6-Language Switcher -->
+        <div class="lang-selector" id="langSelector">
+          <button class="lang-btn" id="langBtn">
+            <span id="currentFlag">🇺🇦</span>
+            <span id="currentLangName">UK</span>
+            <span>▼</span>
+          </button>
+          <div class="lang-dropdown">
+            <div class="lang-option" data-lang="uk">🇺🇦 Українська</div>
+            <div class="lang-option" data-lang="en">🇬🇧 English</div>
+            <div class="lang-option" data-lang="pl">🇵🇱 Polski</div>
+            <div class="lang-option" data-lang="ro">🇷🇴 Română</div>
+            <div class="lang-option" data-lang="it">🇮🇹 Italiano</div>
+            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary desktop-only-btn" onclick="openModal()" data-i18n="btn_support">Підтримати фонд ❤️</button>
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Меню">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="about">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="badge" data-i18n="hero_badge">⚡ Офіційний благодійний фонд допомоги</div>
+        <h1 class="hero-title" data-i18n="hero_title">Разом ми об’єднуємо серця заради перемоги та життя</h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">Надаємо термінову гуманітарну, медичну та технічну допомогу Захисникам України, пораненим героям та постраждалим родинам у зоні бойових дій.</p>
+        
+        <div class="hero-btns">
+          <button class="btn btn-primary" onclick="openModal()" data-i18n="hero_cta_don">Зробити внесок</button>
+          <a href="#contact" class="btn btn-outline" data-i18n="hero_cta_join">Стати волонтером</a>
+        </div>
+      </div>
+
+      <!-- Quick Donation Widget -->
+      <div class="donation-widget">
+        <div class="widget-title">
+          <span>💛</span>
+          <span data-i18n="widget_title">Швидкий внесок на термінові збори</span>
+        </div>
+
+        <div class="freq-tabs">
+          <div class="freq-tab active" onclick="setFreq(this)" data-i18n="widget_freq_once">Одноразово</div>
+          <div class="freq-tab" onclick="setFreq(this)" data-i18n="widget_freq_monthly">Щомісячна підтримка</div>
+        </div>
+
+        <div class="amount-grid" id="amountGrid">
+          <div class="amount-btn active" onclick="selectAmount(100)">100 ₴</div>
+          <div class="amount-btn" onclick="selectAmount(500)">500 ₴</div>
+          <div class="amount-btn" onclick="selectAmount(1000)">1000 ₴</div>
+        </div>
+
+        <div class="custom-amount-wrap">
+          <input type="number" id="customAmount" class="custom-amount-input" placeholder="Інша сума..." data-i18n="widget_custom_placeholder" oninput="clearPresetBtns()">
+        </div>
+
+        <button class="btn btn-primary widget-submit" onclick="processQuickDonate()">
+          <span data-i18n="widget_btn_donate">Підтримати зараз</span>
+          <span id="submitAmountTxt">100 ₴</span>
+        </button>
+
+        <div class="widget-footer" data-i18n="widget_secure">🔒 Офіційні реквізити, 100% прозорість</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Metrics Bar -->
+  <section class="impact-bar">
+    <div class="container impact-grid">
+      <div class="impact-item">
+        <div class="impact-number" id="statCollected">14.8+ млн ₴</div>
+        <div class="impact-label" data-i18n="stats_collected">Зібрано на допомогу</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-number" id="statDrones">342</div>
+        <div class="impact-label" data-i18n="stats_drones">Передано техніки та авто</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-number" id="statFamilies">12 500+</div>
+        <div class="impact-label" data-i18n="stats_families">Підтримано родин ВПО</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-number" id="statVolunteers">480</div>
+        <div class="impact-label" data-i18n="stats_volunteers">Активних волонтерів</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Impact Calculator Section -->
+  <section class="section" id="calc" style="background: rgba(13, 24, 50, 0.4);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="calc_title">🧮 Калькулятор впливу вашого внеску</h2>
+        <p class="section-subtitle" data-i18n="calc_subtitle">Потягніть повзунок, щоб побачити, у що саме конвертується ваш донат на передовій та в лікарнях.</p>
+      </div>
+
+      <div class="calc-panel">
+        <div style="font-size: 1.1rem; color: var(--text-muted); text-align: center;" data-i18n="calc_label">Ваша сума внеску:</div>
+        <div class="calc-amount-display" id="calcValDisplay">500 ₴</div>
+
+        <div class="slider-wrap">
+          <input type="range" class="calc-slider" id="impactSlider" min="100" max="25000" step="100" value="500" oninput="updateCalculator(this.value)">
+        </div>
+
+        <div class="calc-results-grid">
+          <div class="calc-item">
+            <div class="calc-icon">🩹</div>
+            <div class="calc-count" id="resWarm">2 шт.</div>
+            <div class="calc-lbl" data-i18n="calc_res_warm">Хімічні грілки / опікові набори</div>
+          </div>
+          <div class="calc-item">
+            <div class="calc-icon">🩸</div>
+            <div class="calc-count" id="resTourniquet">1 шт.</div>
+            <div class="calc-lbl" data-i18n="calc_res_tourniquet">Турнікети CAT 7-ї генерації</div>
+          </div>
+          <div class="calc-item">
+            <div class="calc-icon">🎒</div>
+            <div class="calc-count" id="resIfak">0.2 шт.</div>
+            <div class="calc-lbl" data-i18n="calc_res_ifak">Професійні аптечки NATO IFAK</div>
+          </div>
+          <div class="calc-item">
+            <div class="calc-icon">⚡</div>
+            <div class="calc-count" id="resEcoflow">1.5%</div>
+            <div class="calc-lbl" data-i18n="calc_res_ecoflow">Внесок у зарядну станцію / дрон</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button class="btn btn-primary" onclick="donateFromCalc()" style="padding: 16px 36px;">
+            <span>⚡ Підтримати на суму <strong id="calcBtnVal">500 ₴</strong></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Urgent Campaigns -->
+  <section class="section" id="campaigns">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="camp_title">Термінові активні збори</h2>
+        <p class="section-subtitle" data-i18n="camp_subtitle">Кожна гривня, євро чи долар рятують життя просто зараз. Приєднуйтесь до закриття найкритичніших потреб.</p>
+      </div>
+
+      <div class="campaigns-grid" id="campaignsContainer">
+        <!-- Dynamically Rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Frontline News & Reports Section -->
+  <section class="section" id="news">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="news_title">📢 Новини та звіти з передової</h2>
+        <p class="section-subtitle" data-i18n="news_subtitle">Реальні історії врятованих життів та звіти про передане обладнання нашим підрозділам.</p>
+      </div>
+
+      <div class="news-grid" id="newsContainer">
+        <!-- Dynamically Rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Honor Board (Дошка пошани) -->
+  <section class="section" id="honor" style="background: rgba(13, 24, 50, 0.3);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="honor_title">🌟 Дошка пошани фонду</h2>
+        <p class="section-subtitle" data-i18n="honor_subtitle">Ми безмежно вдячні кожному меценату, корпоративному донору та невтомному волонтеру, які наближають спільну перемогу та допомагають людям.</p>
+      </div>
+
+      <div class="honor-filters">
+        <button class="honor-filter-btn active" onclick="filterHonor('all', this)" data-i18n="honor_filter_all">Всі герої</button>
+        <button class="honor-filter-btn" onclick="filterHonor('corporate', this)" data-i18n="honor_filter_corporate">Меценати та бізнес</button>
+        <button class="honor-filter-btn" onclick="filterHonor('donor', this)" data-i18n="honor_filter_donor">Благодійники</button>
+        <button class="honor-filter-btn" onclick="filterHonor('volunteer', this)" data-i18n="honor_filter_volunteer">Волонтери-координатори</button>
+      </div>
+
+      <div class="honor-grid" id="honorContainer">
+        <!-- Dynamically Rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Focus Areas -->
+  <section class="section" id="focus">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="focus_title">Ключові напрямки допомоги</h2>
+        <p class="section-subtitle" data-i18n="focus_subtitle">Ми працюємо системно та точково там, де допомога потрібна найсильніше.</p>
+      </div>
+
+      <div class="focus-grid">
+        <div class="focus-card">
+          <div class="focus-icon-wrap">🛡️</div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px;" data-i18n="focus_mil_title">🛡️ Підтримка Захисників</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="focus_mil_desc">Закупівля безпілотників, тепловізорів, систем зв'язку, пікапів та засобів індивідуального захисту.</p>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <div class="focus-icon-wrap">🏥</div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px;" data-i18n="focus_med_title">🏥 Тактична медицина та госпіталі</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="focus_med_desc">Укомплектування аптечок за стандартами NATO, постачання обладнання та генераторів у прифронтові лікарні.</p>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <div class="focus-icon-wrap">📦</div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px;" data-i18n="focus_hum_title">📦 Гуманітарна допомога родинам</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="focus_hum_desc">Продуктові набори, засоби гігієни, одяг, обігрівачі та психологічна підтримка для вимушених переселенців.</p>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <div class="focus-icon-wrap">🦾</div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px;" data-i18n="focus_rehab_title">🦾 Реабілітація та протезування</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="focus_rehab_desc">Організація лікування, виготовлення біонічних протезів та психоемоційне відновлення ветеранів.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transparency & Reports -->
+  <section class="section" id="reports" style="background: rgba(13, 24, 50, 0.4);">
+    <div class="container">
+      <div class="transparency-box">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 16px;" data-i18n="trans_title">100% прозорість та звітність</h2>
+          <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 24px;" data-i18n="trans_subtitle">Ми публікуємо щомісячні фінансові звіти, акти прийому-передачі, фото та відеофіксацію кожної закупівлі.</p>
+          <button class="btn btn-outline" onclick="showToast('Завантаження повного звіту у форматі PDF...')">
+            <span data-i18n="trans_btn_dl">Завантажити звіт 📄</span>
+          </button>
+        </div>
+
+        <div>
+          <div class="report-item">
+            <div>
+              <h4 style="font-size: 1.05rem; margin-bottom: 4px;" data-i18n="trans_rep_1_title">Фінансовий звіт за II квартал 2026</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="trans_rep_1_size">PDF, 4.2 MB • Опубліковано 1 липня</span>
+            </div>
+            <span style="font-size: 1.5rem; cursor: pointer;" onclick="showToast('Звіт завантажено!')">📥</span>
+          </div>
+
+          <div class="report-item">
+            <div>
+              <h4 style="font-size: 1.05rem; margin-bottom: 4px;" data-i18n="trans_rep_2_title">Звіт про передачу аеророзвідці (30 дронів)</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="trans_rep_2_size">PDF + Фотозвіт, 12.8 MB</span>
+            </div>
+            <span style="font-size: 1.5rem; cursor: pointer;" onclick="showToast('Звіт завантажено!')">📥</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="form-box">
+        <div class="section-header" style="margin-bottom: 36px;">
+          <h2 class="section-title" data-i18n="form_title">Приєднатися до команди або стати партнером</h2>
+          <p class="section-subtitle" data-i18n="form_subtitle">Заповніть коротку форму, і наш координатор зв'яжеться з вами найближчим часом.</p>
+        </div>
+
+        <form id="volunteerForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" data-i18n="form_name">Ваше ім’я або назва компанії</label>
+              <input type="text" class="form-input" required id="appName" placeholder="Олександр / ТОВ «Назва»">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" data-i18n="form_phone">Контактний телефон</label>
+              <input type="tel" class="form-input" required id="appPhone" placeholder="+38 (099) 000-00-00">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" data-i18n="form_email">Електронна пошта</label>
+              <input type="email" class="form-input" required id="appEmail" placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" data-i18n="form_role">Як ви хочете долучитися?</label>
+              <select class="form-select" id="appType">
+                <option value="volunteer" data-i18n="form_role_vol">Стати волонтером (транспорт, руки, логістика)</option>
+                <option value="partner" data-i18n="form_role_part">Корпоративне партнерство / Гуманітарний вантаж</option>
+                <option value="info" data-i18n="form_role_info">Інформаційна підтримка / Медіа</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" data-i18n="form_msg">Коротке повідомлення або коментар</label>
+              <textarea class="form-textarea" rows="3" id="appMsg" placeholder="Опишіть ваші можливості або пропозицію допомоги..."></textarea>
+            </div>
+
+            <div class="form-group full" style="text-align: center; margin-top: 10px;">
+              <button type="submit" class="btn btn-primary" style="width: 100%; max-width: 340px;" data-i18n="form_submit">Надіслати заявку 🚀</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="logo" style="margin-bottom: 16px;">
+            <div class="logo-icon">🛡️</div>
+            <span>РАЗОМ МИ — СИЛА</span>
+          </a>
+          <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 320px;" data-i18n="footer_desc">Благодійний фонд «Разом ми — сила». Офіційно зареєстрована неприбуткова організація. Разом до Перемоги!</p>
+        </div>
+
+        <div>
+          <h4 style="font-family: var(--font-heading); margin-bottom: 16px; font-size: 1.1rem;">Навігація</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="#about" style="color: var(--text-muted);">Про нас</a></li>
+            <li><a href="#campaigns" style="color: var(--text-muted);">Активні збори</a></li>
+            <li><a href="#honor" style="color: var(--text-muted);">Дошка пошани</a></li>
+            <li><a href="#reports" style="color: var(--text-muted);">Звітність</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-family: var(--font-heading); margin-bottom: 16px; font-size: 1.1rem;">Контакти</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 6px;">📞 +38 (044) 200-10-20</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 6px;">✉️ help@razom-sila.org.ua</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">📍 м. Київ, вул. Хрещатик, 22</p>
+        </div>
+
+        <div>
+          <h4 style="font-family: var(--font-heading); margin-bottom: 16px; font-size: 1.1rem;">Підтримати</h4>
+          <button class="btn btn-primary" style="padding: 10px 20px; font-size: 0.85rem; width: 100%;" onclick="openModal()">Донат онлайн ⚡</button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footer_rights">© 2026 БФ «Разом ми — сила». Всі права захищено.</span>
+        <a href="admin.html" style="color: var(--accent-gold); font-weight: 600;" data-i18n="footer_admin_link">🔑 Вхід для адміністратора</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Donation Modal -->
+  <div class="modal-overlay" id="donationModal" onclick="closeModalOutside(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      
+      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 8px;" data-i18n="modal_title">Зробити благодійний внесок</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;" data-i18n="modal_subtitle">Оберіть зручний для вас спосіб фінансової підтримки фонду «Разом ми — сила»</p>
+
+      <!-- Tabs -->
+      <div style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px;">
+        <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('card')" data-i18n="modal_tab_card">💳 Картка / Pay</button>
+        <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('iban')" data-i18n="modal_tab_iban">🏦 IBAN</button>
+        <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('crypto')" data-i18n="modal_tab_crypto">🪙 Crypto</button>
+      </div>
+
+      <!-- Tab Content: Card -->
+      <div id="modalTabCard">
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;" data-i18n="modal_card_info">Натисніть кнопку нижче для переходу до захищеного шлюзу або банки:</p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button class="btn" style="background: #e11d48; color: #fff; width: 100%;" onclick="simulateDonate('Monobank')">
+            <span data-i18n="modal_btn_monobank">🐈 Поповнити Банку Monobank</span>
+          </button>
+          <button class="btn" style="background: #16a34a; color: #fff; width: 100%;" onclick="simulateDonate('Privat24')">
+            <span data-i18n="modal_btn_privat">🟢 Оплатити через Приват24 / LiqPay</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content: IBAN -->
+      <div id="modalTabIban" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;" data-i18n="modal_iban_info">Офіційні рахунки БФ «Разом ми — сила» (ЄДРПОУ 44859201):</p>
+        
+        <div style="background: rgba(0,0,0,0.4); padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--accent-cyan);">UAH (Гривня) IBAN</div>
+            <div style="font-family: monospace; font-size: 0.9rem;">UA843052990000026001234567890</div>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('UA843052990000026001234567890')" data-i18n="modal_copy_btn">Скопіювати</button>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.4); padding: 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--accent-gold);">EUR (Euro) IBAN</div>
+            <div style="font-family: monospace; font-size: 0.9rem;">UA333052990000026009876543210</div>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('UA333052990000026009876543210')" data-i18n="modal_copy_btn">Скопіювати</button>
+        </div>
+      </div>
+
+      <!-- Tab Content: Crypto -->
+      <div id="modalTabCrypto" style="display: none;">
+        <div style="background: rgba(0,0,0,0.4); padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.75rem; color: #10b981;">USDT (TRC20) Address</div>
+            <div style="font-family: monospace; font-size: 0.85rem;">TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t</div>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t')" data-i18n="modal_copy_btn">Скопіювати</button>
+        </div>
+      </div>
+    </div>
+  <!-- Mobile Slide-out Drawer Menu -->
+  <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="closeMobileMenu()">
+    <aside class="mobile-drawer" id="mobileDrawer" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div class="logo">
+          <div class="logo-icon">🛡️</div>
+          <span style="font-size: 1.1rem; font-weight: 700;">РАЗОМ МИ — СИЛА</span>
+        </div>
+        <button class="drawer-close" onclick="closeMobileMenu()">✕</button>
+      </div>
+
+      <ul class="drawer-links">
+        <li><a href="#about" onclick="closeMobileMenu()" data-i18n="nav_about">Про нас</a></li>
+        <li><a href="#calc" onclick="closeMobileMenu()" data-i18n="nav_calc">Калькулятор донату</a></li>
+        <li><a href="#campaigns" onclick="closeMobileMenu()" data-i18n="nav_campaigns">Активні збори</a></li>
+        <li><a href="#news" onclick="closeMobileMenu()" data-i18n="nav_news">Звіти з фронту</a></li>
+        <li><a href="#honor" onclick="closeMobileMenu()" data-i18n="nav_honor">Дошка пошани</a></li>
+        <li><a href="#focus" onclick="closeMobileMenu()" data-i18n="nav_focus">Напрямки</a></li>
+        <li><a href="#contact" onclick="closeMobileMenu()" data-i18n="nav_contact">Контакти</a></li>
+      </ul>
+
+      <div class="drawer-langs">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Оберіть мову / Select language:</div>
+        <div class="drawer-lang-grid">
+          <button class="d-lang-btn" onclick="setMobileLang('uk')">🇺🇦 UK</button>
+          <button class="d-lang-btn" onclick="setMobileLang('en')">🇬🇧 EN</button>
+          <button class="d-lang-btn" onclick="setMobileLang('pl')">🇵🇱 PL</button>
+          <button class="d-lang-btn" onclick="setMobileLang('ro')">🇷🇴 RO</button>
+          <button class="d-lang-btn" onclick="setMobileLang('it')">🇮🇹 IT</button>
+          <button class="d-lang-btn" onclick="setMobileLang('de')">🇩🇪 DE</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button class="btn btn-primary" style="width: 100%; padding: 14px;" onclick="closeMobileMenu(); openModal();" data-i18n="btn_support">Підтримати фонд ❤️</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile Sticky Bottom Action Bar -->
+  <div class="mobile-sticky-bar" id="mobileStickyBar">
+    <button class="btn btn-primary sticky-btn" onclick="openModal()">
+      <span>⚡ <strong data-i18n="btn_support">Підтримати фонд ❤️</strong></span>
+    </button>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastBox">Повідомлення</div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="i18n.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
