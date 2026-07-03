@@ -384,7 +384,7 @@ function renderAdminGallery() {
   tbody.innerHTML = list.map(item => `
     <tr>
       <td>
-        <img src="${item.image || 'work_medical_aid.jpg'}" style="width: 70px; height: 50px; object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'center center'}; border-radius: 8px; border: 1px solid var(--admin-border);">
+        <img src="${item.image || 'work_medical_aid.jpg'}" style="width: 70px; height: 50px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; border-radius: 8px; border: 1px solid var(--admin-border);">
       </td>
       <td><strong>${item.title}</strong></td>
       <td><span style="background: rgba(30,96,242,0.15); color: #60a5fa; padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;">${item.category || ''}</span></td>
@@ -403,6 +403,7 @@ function showAddGalleryModal() {
   document.getElementById('galleryForm').reset();
   document.getElementById('editGalId').value = '';
   document.getElementById('galleryModalTitle').textContent = 'Додати фотозвіт справи';
+  document.getElementById('newGalFit').value = 'contain';
   document.getElementById('galPreviewImg').style.display = 'none';
   document.getElementById('galPreviewText').style.display = 'block';
   document.getElementById('galleryModal').classList.add('active');
@@ -418,7 +419,7 @@ function editGalleryItem(id) {
   document.getElementById('newGalDesc').value = item.desc || '';
   document.getElementById('newGalImage').value = item.image || '';
   document.getElementById('newGalPos').value = item.imagePos || 'center center';
-  document.getElementById('newGalFit').value = item.imageFit || 'cover';
+  document.getElementById('newGalFit').value = item.imageFit || 'contain';
   document.getElementById('galleryModalTitle').textContent = 'Редагувати фотозвіт';
 
   updateGalPreview();

@@ -201,8 +201,8 @@ function renderGallery() {
   const list = FoundationStore.getGallery();
   container.innerHTML = list.map(item => `
     <div class="gallery-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;">
-      <div style="height: 240px; overflow: hidden; position: relative;">
-        <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
+      <div style="background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; min-height: 220px; max-height: 450px; overflow: hidden; position: relative;">
+        <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title}" style="width: 100%; height: auto; max-height: 450px; object-fit: ${item.imageFit || 'contain'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
         ${item.category ? `<span style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">${item.category}</span>` : ''}
       </div>
       <div style="padding: 18px;">
