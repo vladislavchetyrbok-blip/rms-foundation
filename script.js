@@ -349,6 +349,12 @@ function showModalTab(tabId) {
 }
 
 function simulateDonate(method) {
+  if (method === 'Monobank') {
+    window.open('https://send.monobank.ua/jar/6iL3oH5Vde', '_blank');
+    closeModal();
+    showToast('⏳ Перехід на офіційну Банку Monobank...');
+    return;
+  }
   showToast(`⏳ Перехід до захищеного шлюзу ${method}...`);
   setTimeout(() => {
     // Символічно поповнюємо перший активний збір на 500 грн для наочної демонстрації роботи даних
