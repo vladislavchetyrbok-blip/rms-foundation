@@ -4,7 +4,7 @@
  * Синхронізує публічний сайт та Адмін-панель через localStorage.
  */
 
-const STORAGE_KEY = 'rms_foundation_data_v3';
+const STORAGE_KEY = 'rms_foundation_data_v4';
 const ONLINE_BIN_ID = '6a4708aef5f4af5e2957274f';
 const ONLINE_API_KEY = '$2a$10$a.w5fqFGgNDtxm.14mCh3us9zVhiSRK7fng26ppAnKWesY1g.noMe';
 
@@ -17,102 +17,30 @@ const INITIAL_DATA = {
   },
   campaigns: [
     {
-      id: 'camp_1',
+      id: 'fuel_camp_1',
       title: {
-        uk: 'Тактична медицина та опікові набори для передової',
-        en: 'Tactical medicine and burn kits for frontline paramedics',
-        pl: 'Medycyna taktyczna i zestawy oparzeniowe dla frontu',
-        ro: 'Medicină tactică și truse pentru arsuri pe linia frontului',
-        it: 'Medicina tattica e kit per ustioni per i paramedici in prima linea',
-        de: 'Taktische Medizin und Brandwundensets für Sanitäter an der Front'
+        uk: 'На паливо для евакуаційних та гуманітарних рейсів',
+        en: 'Fuel for evacuation and humanitarian logistics missions',
+        pl: 'Na paliwo do misji ewakuacyjnych i humanitarnych',
+        ro: 'Combustibil pentru misiuni de evacuare și logistică umanitară',
+        it: 'Carburante per missioni di evacuazione e logistica umanitaria',
+        de: 'Treibstoff für Evakuierungs- und humanitäre Logistikmissionen'
       },
       desc: {
-        uk: 'Закупівля турнікетів CAT, гемостатиків Celox, оклюзійних наклейок та професійних аптечок для порятунку життів наших воїнів.',
-        en: 'Purchasing CAT tourniquets, Celox hemostatics, chest seals, and professional medical kits to save combatants lives.',
-        pl: 'Zakup staz taktycznych CAT, hemostatyków Celox oraz opatrunków wentylowych w celu ratowania życia żołnierzy.',
-        ro: 'Achiziționarea de garouri CAT, hemostatice Celox și truse medicale profesionale pentru salvarea vieților luptătorilor.',
-        it: 'Acquisto di lacci emostatici CAT, emostatici Celox e kit professionali per salvare le vite dei combattenti.',
-        de: 'Beschaffung von CAT-Tourniquets, Celox-Hämostatika und professionellen Erste-Hilfe-Koffer zur Lebensrettung.'
+        uk: 'Терміновий збір на пальне для доставляння ліків, продуктів, реабілітаційного обладнання до шпиталів та евакуації людей з прифронтових зон.',
+        en: 'Urgent fundraiser for fuel to deliver medicine, food, and rehabilitation equipment to hospitals and evacuate civilians.',
+        pl: 'Pilna zbiórka na paliwo do dostarczania leków, żywności i sprzętu do szpitali oraz ewakuacji ludności.',
+        ro: 'Strângere urgentă de fonduri pentru combustibil destinat livrării de medicamente și evacuării civililor.',
+        it: 'Raccolta fondi urgente per il carburante per consegnare medicine e attrezzature agli ospedali.',
+        de: 'Dringende Spendenaktion für Treibstoff zur Lieferung von Medizin und Ausrüstung an Krankenhäuser.'
       },
-      target: 500000,
-      collected: 435000,
+      target: 100000,
+      collected: 14500,
       category: 'military',
-      icon: '🩹',
-      image: 'med.png',
+      icon: '⛽',
+      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
+      cardNum: '4874 1000 3862 9211',
       urgent: true
-    },
-    {
-      id: 'camp_2',
-      title: {
-        uk: 'Розвідувальні дрони Mavic 3T з тепловізорами',
-        en: 'Reconnaissance Mavic 3T drones with thermal imaging',
-        pl: 'Drony rozpoznawcze Mavic 3T z termowizją',
-        ro: 'Drone de recunoaștere Mavic 3T cu termoviziune',
-        it: 'Droni da ricognizione Mavic 3T con termografia',
-        de: 'Mavic 3T Aufklärungsdrohnen mit Wärmebildkamera'
-      },
-      desc: {
-        uk: '«Очі» для наших аеророзвідників на східному напрямку. Дозволяють виявляти небезпеку вдень і вночі та зберігати життя особового складу.',
-        en: 'Eyes in the sky for aerial reconnaissance on the eastern front. Detect danger day and night to protect combat personnel.',
-        pl: 'Oczy w niebie dla zwiadu powietrznego na odcinku wschodnim. Pozwalają wykrywać zagrożenia w dzień i w nocy.',
-        ro: 'Ochii din cer pentru recunoașterea aeriană. Permit detectarea pericolelor zi și noapte pentru a salva vieți.',
-        it: 'Occhi nel cielo per la ricognizione aerea. Rilevano il pericolo giorno e notte per proteggere il personale.',
-        de: 'Augen am Himmel für die Luftaufklärung. Gefahrenerkennung bei Tag und Nacht zum Schutz unserer Soldaten.'
-      },
-      target: 1500000,
-      collected: 1220000,
-      category: 'military',
-      icon: '🛸',
-      image: 'drone.png',
-      urgent: true
-    },
-    {
-      id: 'camp_3',
-      title: {
-        uk: 'Потужні EcoFlow та генератори для прифронтових лікарень',
-        en: 'Power stations EcoFlow & generators for frontline hospitals',
-        pl: 'Stacje zasilania EcoFlow i generatory dla szpitali przyfrontowych',
-        ro: 'Stații de alimentare EcoFlow și generatoare pentru spitale',
-        it: 'Stazioni di energia EcoFlow e generatori per gli ospedali',
-        de: 'EcoFlow Kraftwerke und Generatoren für Frontkrankenhäuser'
-      },
-      desc: {
-        uk: 'Бесперебійне живлення для операційних столів та апаратів ШВЛ у стабілізаційних пунктах під час відключень світла.',
-        en: 'Uninterrupted power supply for operating rooms and ventilators in stabilization posts during blackouts.',
-        pl: 'Niezawodne zasilanie dla sal operacyjnych i respiratorów w punktach stabilizacyjnych podczas przerw w dostawie prądu.',
-        ro: 'Alimentare neîntreruptă pentru sălile de operație și ventilatoare în punctele de stabilizare.',
-        it: 'Alimentazione di continuità per sale operatorie e ventilatori nei posti di stabilizzazione.',
-        de: 'Unterbrechungsfreie Stromversorgung für Operationssäle und Beatmungsgeräte in Stabilisierungspunkten.'
-      },
-      target: 600000,
-      collected: 410000,
-      category: 'medical',
-      icon: '⚡',
-      urgent: false
-    },
-    {
-      id: 'camp_4',
-      title: {
-        uk: 'Реабілітація та сучасне біонічне протезування',
-        en: 'Rehabilitation and advanced bionic prosthetics for veterans',
-        pl: 'Rehabilitacja i nowoczesna protezy bioniczne dla weteranów',
-        ro: 'Reabilitare și proteze bionice moderne pentru veterani',
-        it: 'Riabilitazione e protesi bioniche avanzate per i veterani',
-        de: 'Rehabilitation und moderne bionische Prothesen für Veteranen'
-      },
-      desc: {
-        uk: 'Комплексна підтримка, психологічне відновлення та виготовлення індивідуальних високотехнологічних протезів для героїв.',
-        en: 'Comprehensive physical therapy, psychological support, and custom high-tech bionic limbs for returning heroes.',
-        pl: 'Kompleksowa rehabilitacja fizyczna, wsparcie psychologiczne oraz nowoczesne protezy dla rannych bohaterów.',
-        ro: 'Kinetoterapie completă, sprijin psihologic și membre bionice de înaltă tehnologie pentru eroi.',
-        it: 'Supporto completo, riabilitazione psicologica e protesi ad alta tecnologia per gli eroi feriti.',
-        de: 'Umfassende Unterstützung, psychologische Erholung und maßgeschneiderte Hightech-Prothesen für Helden.'
-      },
-      target: 2000000,
-      collected: 850000,
-      category: 'humanitarian',
-      icon: '🦾',
-      urgent: false
     }
   ],
   news: [
@@ -289,6 +217,43 @@ const INITIAL_DATA = {
       desc: 'Безкоштовно ремонтує, бронює та готує пікапи та швидкі допомоги для відправки на нуль.'
     }
   ],
+  gallery: [
+    {
+      id: 'gal_1',
+      title: 'Підтримка медичних закладів',
+      desc: 'Передача гуманітарних вантажів, медикаментів та засобів догляду (спільно з Nova Ukraine / Sorgesana) для пацієнтів психо-неврологічних диспансерів та лікарень.',
+      category: '🏥 Медицина',
+      image: 'work_medical_aid.jpg'
+    },
+    {
+      id: 'gal_2',
+      title: 'Тонни дитячого харчування',
+      desc: 'Сотні палет високоякісного дитячого харчування HiPP та базових продуктів для малюків із сімей внутрішньо переміщених осіб.',
+      category: '📦 Логістика',
+      image: 'work_baby_food.jpg'
+    },
+    {
+      id: 'gal_3',
+      title: 'Засоби пересування та догляду',
+      desc: 'Спеціалізовані крісла колісні, ходунки та медичне обладнання для поранених військовослужбовців та пацієнтів реабілітаційних відділень.',
+      category: '🦽 Реабілітація',
+      image: 'work_rehab_chairs.jpg'
+    },
+    {
+      id: 'gal_4',
+      title: 'Оснащення лікарняних палат',
+      desc: 'Підтримка належних санітарних та побутових умов у шпиталях для швидкого фізичного та морального відновлення наших Героїв.',
+      category: '🛏️ Стаціонари',
+      image: 'work_hospital_ward.jpg'
+    },
+    {
+      id: 'gal_5',
+      title: 'Турбота про дітей та переселенців',
+      desc: 'Іграшки, розвиваючі ігри, подарунки та сувеніри для дітей, чиї родини були змушені покинути свої домівки через військові дії.',
+      category: '🧸 Діти та родини',
+      image: 'work_kids_toys.jpg'
+    }
+  ],
   applications: []
 };
 
@@ -393,6 +358,32 @@ window.FoundationStore = {
     const data = this.getData();
     data.honorBoard = data.honorBoard.filter(h => h.id !== id);
     this.saveData(data);
+  },
+
+  getGallery() { return this.getData().gallery || []; },
+  addGalleryItem(item) {
+    const data = this.getData();
+    if (!data.gallery) data.gallery = [];
+    item.id = 'gal_' + Date.now();
+    data.gallery.unshift(item);
+    this.saveData(data);
+    return item;
+  },
+  updateGalleryItem(updatedItem) {
+    const data = this.getData();
+    if (!data.gallery) data.gallery = [];
+    const idx = data.gallery.findIndex(g => g.id === updatedItem.id);
+    if (idx !== -1) {
+      data.gallery[idx] = { ...data.gallery[idx], ...updatedItem };
+      this.saveData(data);
+    }
+  },
+  deleteGalleryItem(id) {
+    const data = this.getData();
+    if (data.gallery) {
+      data.gallery = data.gallery.filter(g => g.id !== id);
+      this.saveData(data);
+    }
   },
 
   getStats() { return this.getData().stats; },

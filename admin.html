@@ -11,7 +11,10 @@
   <!-- Login Screen -->
   <div class="login-screen" id="loginScreen">
     <div class="login-box">
-      <div class="login-logo">🛡️ РАЗОМ МИ — СИЛА</div>
+      <div class="login-logo" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <img src="logo.png" alt="БФ Разом ми сила" style="height: 64px; width: auto; object-fit: contain;">
+        <span>РАЗОМ МИ — СИЛА</span>
+      </div>
       <p class="login-subtitle">Панель управління благодійним фондом</p>
       
       <div style="margin-bottom: 20px; text-align: left;">
@@ -30,8 +33,9 @@
     <aside class="sidebar">
       <div>
         <div class="sidebar-header">
-          <div class="sidebar-brand">
-            <span>🛡️ Адмін-панель</span>
+          <div class="sidebar-brand" style="display: flex; align-items: center; gap: 10px;">
+            <img src="logo.png" alt="Лого" style="height: 36px; width: auto; object-fit: contain;">
+            <span>Адмін-панель</span>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">БФ «Разом ми — сила»</div>
         </div>
@@ -39,6 +43,7 @@
         <ul class="sidebar-nav">
           <li class="nav-item active" onclick="switchSection('stats', this)">📊 Статистика фонду</li>
           <li class="nav-item" onclick="switchSection('campaigns', this)">⚡ Активні збори</li>
+          <li class="nav-item" onclick="switchSection('gallery', this)">📸 Фотозвіт справ</li>
           <li class="nav-item" onclick="switchSection('honor', this)">🌟 Дошка пошани</li>
           <li class="nav-item" onclick="switchSection('apps', this)">📬 Заявки волонтерів</li>
         </ul>
@@ -128,6 +133,33 @@
                 </tr>
               </thead>
               <tbody id="adminCampaignsTbody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: Gallery Manager -->
+      <section id="sec-gallery" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">📸 Управління Фотозвітом справ (Жива хроніка)</h1>
+          <button class="btn-admin btn-add" onclick="showAddGalleryModal()">+ Додати нове фото справи</button>
+        </div>
+
+        <div class="panel">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Фото</th>
+                  <th>Заголовок</th>
+                  <th>Категорія / Тег</th>
+                  <th>Опис</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="adminGalleryTbody">
                 <!-- Dynamically rendered -->
               </tbody>
             </table>
@@ -269,8 +301,8 @@
             <div>
               <label style="font-size: 0.8rem; color: #bbb; display: block; margin-bottom: 4px;">Фокус кадрування (як відображати):</label>
               <select id="newHonPos" style="width: 100%; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;" onchange="updateHonPreview()">
+                <option value="center top" selected>Верхня частина (Фокус на обличчя)</option>
                 <option value="center center">По центру (Збалансовано)</option>
-                <option value="center top">Верхня частина (Фокус на обличчя)</option>
                 <option value="center bottom">Нижня частина</option>
                 <option value="left center">Ліва частина</option>
                 <option value="right center">Права частина</option>
@@ -298,6 +330,62 @@
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
           <button type="button" class="btn-admin btn-del" onclick="closeHonModal()">Скасувати</button>
           <button type="submit" class="btn-admin btn-add" id="btnSaveHon">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Gallery Item -->
+  <div class="admin-modal" id="galleryModal">
+    <div class="admin-modal-box">
+      <h2 style="margin-bottom: 16px; font-size: 1.3rem;" id="galleryModalTitle">Додати фотозвіт</h2>
+      <form id="galleryForm" onsubmit="saveGalleryItem(event)">
+        <input type="hidden" id="editGalId">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input type="text" id="newGalTitle" placeholder="Заголовок справи" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          <input type="text" id="newGalCat" placeholder="Категорія (напр. 🏥 Медицина)" value="⚡ Допомога" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        </div>
+
+        <textarea id="newGalDesc" rows="3" placeholder="Опис проведеної роботи чи закупівлі..." style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;"></textarea>
+
+        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 14px; border: 1px solid var(--admin-border); display: flex; flex-direction: column; gap: 12px;">
+          <label style="font-weight: 600; font-size: 0.95rem; color: var(--admin-accent);">📸 Фотографія звіту</label>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <label class="btn-admin btn-add" style="cursor: pointer; padding: 10px 16px; font-size: 0.85rem;">
+              📁 Вибрати фото з ПК
+              <input type="file" id="newGalFileInput" accept="image/*" style="display: none;" onchange="handleGalFileUpload(event)">
+            </label>
+            <input type="text" id="newGalImage" placeholder="або вставте URL / ім'я файлу" style="flex: 1; min-width: 200px; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;" oninput="updateGalPreview()">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="font-size: 0.8rem; color: #bbb; display: block; margin-bottom: 4px;">Фокус кадрування:</label>
+              <select id="newGalPos" style="width: 100%; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;" onchange="updateGalPreview()">
+                <option value="center center">По центру</option>
+                <option value="center top">Верхня частина</option>
+                <option value="center bottom">Нижня частина</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: #bbb; display: block; margin-bottom: 4px;">Режим масштабування:</label>
+              <select id="newGalFit" style="width: 100%; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;" onchange="updateGalPreview()">
+                <option value="cover">Заповнити картку</option>
+                <option value="contain">Показати повністю</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="galPreviewBox" style="width: 100%; height: 180px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px dashed var(--admin-border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+            <span id="galPreviewText" style="color: #666; font-size: 0.85rem;">Фото не обрано</span>
+            <img id="galPreviewImg" src="" style="display: none; width: 100%; height: 100%; object-fit: cover; object-position: center center;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" class="btn-admin btn-del" onclick="closeGalModal()">Скасувати</button>
+          <button type="submit" class="btn-admin btn-add">Зберегти</button>
         </div>
       </form>
     </div>

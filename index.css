@@ -625,18 +625,21 @@ nav a:hover::after {
 
 .honor-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+  justify-content: center;
+  gap: 20px;
 }
 
 .honor-card {
-  background: rgba(15, 28, 63, 0.7);
+  background: rgba(15, 28, 63, 0.75);
   border: 1px solid var(--border-glass);
-  border-radius: 22px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 12px;
   transition: var(--transition-smooth);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .honor-card:hover {
@@ -647,10 +650,11 @@ nav a:hover::after {
 
 .honor-img {
   width: 100%;
-  height: 250px;
+  height: 240px;
   object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 16px;
+  object-position: top center;
+  border-radius: 10px;
+  margin-bottom: 10px;
   border: 1px solid var(--border-glass);
 }
 
@@ -658,18 +662,18 @@ nav a:hover::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .honor-avatar {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 }
 
 .badge-gold {
@@ -691,40 +695,41 @@ nav a:hover::after {
 }
 
 .honor-badge {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
 }
 
 .honor-name {
   font-family: var(--font-heading);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .honor-role {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--accent-cyan);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 500;
 }
 
 .honor-desc {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
-  margin-bottom: 16px;
-  line-height: 1.5;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  flex-grow: 1;
 }
 
 .honor-contrib {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 14px;
+  padding-top: 10px;
   border-top: 1px dashed var(--border-glass);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 700;
 }
 
@@ -928,8 +933,11 @@ footer {
 
 /* --- Responsive --- */
 @media (max-width: 1024px) {
-  .hero-grid, .transparency-box, .campaigns-grid, .honor-grid, .focus-grid {
+  .hero-grid, .transparency-box, .campaigns-grid, .focus-grid {
     grid-template-columns: 1fr;
+  }
+  .honor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
   .impact-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1278,7 +1286,6 @@ html, body {
   
   /* Fix All Multi-column Grids on Mobile */
   .campaigns-grid,
-  .honor-grid,
   .focus-grid,
   .news-grid,
   .form-grid,
@@ -1286,6 +1293,14 @@ html, body {
   .transparency-box {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
+  }
+
+  .honor-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .honor-img {
+    height: 190px !important;
   }
 
   /* Fix Form Section on Phone */

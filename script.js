@@ -84,6 +84,7 @@ function setMobileLang(lang) {
 function renderAll() {
   renderStats();
   renderCampaigns();
+  renderGallery();
   renderNews();
   renderHonorBoard();
 }
@@ -132,6 +133,13 @@ function renderCampaigns() {
           </div>
           <h3 class="campaign-title">${titleText}</h3>
           <p class="campaign-desc">${descText}</p>
+          ${camp.jarUrl ? `
+            <div style="margin: 14px 0; padding: 14px; background: rgba(0,0,0,0.35); border-radius: 14px; border: 1px dashed var(--accent-gold);">
+              <div style="font-size: 0.85rem; color: #aaa; margin-bottom: 4px;">💳 Номер картки Банки (Monobank):</div>
+              <div style="font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 1.5px; user-select: all;">${camp.cardNum || ''}</div>
+              <a href="${camp.jarUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--accent-gold); font-weight: 600; font-size: 0.9rem; text-decoration: none;">🔗 Перейти на офіційну Банку →</a>
+            </div>
+          ` : ''}
         </div>
 
         <div>
@@ -146,7 +154,7 @@ function renderCampaigns() {
           </div>
 
           <button class="btn btn-primary" style="width: 100%;" onclick="openModalForCamp('${camp.id}')">
-            <span>⚡ ${btnLbl}</span>
+            <span>⚡ ${btnLbl} (Monobank)</span>
           </button>
         </div>
       </div>
@@ -171,7 +179,7 @@ function renderHonorBoard() {
 
   container.innerHTML = filtered.map(item => `
     <div class="honor-card">
-      ${item.image ? `<img src="${item.image}" class="honor-img" style="object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'center center'};" alt="${item.name}">` : ''}
+      ${item.image ? `<img src="${item.image}" class="honor-img" style="object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'top center'};" alt="${item.name}">` : ''}
       <div class="honor-top">
         <div class="honor-avatar">${item.icon || '🌟'}</div>
         <span class="honor-badge ${item.badgeClass || 'badge-gold'}">${item.badge || 'Благодійник'}</span>
@@ -182,6 +190,25 @@ function renderHonorBoard() {
       <div class="honor-contrib">
         <span>${contribLbl}</span>
         <span class="honor-contrib-val">${item.contribution}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// === Render Gallery / Work Reports ===
+function renderGallery() {
+  const container = document.getElementById('galleryContainer');
+  if (!container) return;
+  const list = FoundationStore.getGallery();
+  container.innerHTML = list.map(item => `
+    <div class="gallery-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;">
+      <div style="height: 240px; overflow: hidden; position: relative;">
+        <img src="${item.image || 'work_medical_aid.jpg'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'center center'}; transition: transform 0.5s;">
+        ${item.category ? `<span style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">${item.category}</span>` : ''}
+      </div>
+      <div style="padding: 18px;">
+        <h3 style="font-size: 1.15rem; font-family: var(--font-heading); margin-bottom: 8px; color: #fff;">${item.title}</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">${item.desc || ''}</p>
       </div>
     </div>
   `).join('');
@@ -290,6 +317,13 @@ function processQuickDonate() {
 }
 
 function openModalForCamp(id) {
+  const camps = FoundationStore.getCampaigns();
+  const camp = camps.find(c => c.id === id);
+  if (camp && camp.jarUrl) {
+    window.open(camp.jarUrl, '_blank');
+    showToast('⏳ Перехід на офіційну Банку Monobank...');
+    return;
+  }
   openModal();
   showToast('Оберіть зручний спосіб оплати для цього збору');
 }

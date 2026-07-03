@@ -44,6 +44,7 @@ function switchSection(sec, btnEl) {
 
   document.getElementById('sec-stats').style.display = sec === 'stats' ? 'block' : 'none';
   document.getElementById('sec-campaigns').style.display = sec === 'campaigns' ? 'block' : 'none';
+  document.getElementById('sec-gallery').style.display = sec === 'gallery' ? 'block' : 'none';
   document.getElementById('sec-honor').style.display = sec === 'honor' ? 'block' : 'none';
   document.getElementById('sec-apps').style.display = sec === 'apps' ? 'block' : 'none';
 
@@ -53,6 +54,7 @@ function switchSection(sec, btnEl) {
 function renderAllAdmin() {
   renderAdminStats();
   renderAdminCampaigns();
+  renderAdminGallery();
   renderAdminHonor();
   renderAdminApps();
 }
@@ -337,5 +339,128 @@ function renderAdminApps() {
 
 function deleteApp(id) {
   FoundationStore.deleteApplication(id);
+  renderAllAdmin();
+}
+
+// === Section: Gallery / Work Reports Management ===
+function renderAdminGallery() {
+  const tbody = document.getElementById('adminGalleryTbody');
+  if (!tbody) return;
+  const list = FoundationStore.getGallery();
+
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Фотозвітів поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => `
+    <tr>
+      <td>
+        <img src="${item.image || 'work_medical_aid.jpg'}" style="width: 70px; height: 50px; object-fit: ${item.imageFit || 'cover'}; object-position: ${item.imagePos || 'center center'}; border-radius: 8px; border: 1px solid var(--admin-border);">
+      </td>
+      <td><strong>${item.title}</strong></td>
+      <td><span style="background: rgba(30,96,242,0.15); color: #60a5fa; padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;">${item.category || ''}</span></td>
+      <td><div style="max-width: 300px; font-size: 0.85rem; color: #ccc;">${item.desc || ''}</div></td>
+      <td>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-admin btn-edit" onclick="editGalleryItem('${item.id}')">✏️</button>
+          <button class="btn-admin btn-del" onclick="deleteGallery('${item.id}')">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function showAddGalleryModal() {
+  document.getElementById('galleryForm').reset();
+  document.getElementById('editGalId').value = '';
+  document.getElementById('galleryModalTitle').textContent = 'Додати фотозвіт справи';
+  document.getElementById('galPreviewImg').style.display = 'none';
+  document.getElementById('galPreviewText').style.display = 'block';
+  document.getElementById('galleryModal').classList.add('active');
+}
+
+function editGalleryItem(id) {
+  const item = FoundationStore.getGallery().find(g => g.id === id);
+  if (!item) return;
+
+  document.getElementById('editGalId').value = item.id;
+  document.getElementById('newGalTitle').value = item.title || '';
+  document.getElementById('newGalCat').value = item.category || '';
+  document.getElementById('newGalDesc').value = item.desc || '';
+  document.getElementById('newGalImage').value = item.image || '';
+  document.getElementById('newGalPos').value = item.imagePos || 'center center';
+  document.getElementById('newGalFit').value = item.imageFit || 'cover';
+  document.getElementById('galleryModalTitle').textContent = 'Редагувати фотозвіт';
+
+  updateGalPreview();
+  document.getElementById('galleryModal').classList.add('active');
+}
+
+function closeGalModal() {
+  document.getElementById('galleryModal').classList.remove('active');
+}
+
+function deleteGallery(id) {
+  if (confirm('Видалити цей звіт з хроніки?')) {
+    FoundationStore.deleteGalleryItem(id);
+    renderAllAdmin();
+  }
+}
+
+function handleGalFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    document.getElementById('newGalImage').value = base64;
+    updateGalPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateGalPreview() {
+  const url = document.getElementById('newGalImage').value.trim();
+  const pos = document.getElementById('newGalPos').value;
+  const fit = document.getElementById('newGalFit').value;
+  const imgEl = document.getElementById('galPreviewImg');
+  const txtEl = document.getElementById('galPreviewText');
+
+  if (url) {
+    imgEl.src = url;
+    imgEl.style.objectPosition = pos;
+    imgEl.style.objectFit = fit;
+    imgEl.style.display = 'block';
+    txtEl.style.display = 'none';
+  } else {
+    imgEl.style.display = 'none';
+    txtEl.style.display = 'block';
+  }
+}
+
+function saveGalleryItem(event) {
+  event.preventDefault();
+  const id = document.getElementById('editGalId').value;
+  const title = document.getElementById('newGalTitle').value.trim();
+  const category = document.getElementById('newGalCat').value.trim();
+  const desc = document.getElementById('newGalDesc').value.trim();
+  const image = document.getElementById('newGalImage').value.trim() || 'work_medical_aid.jpg';
+  const imagePos = document.getElementById('newGalPos').value;
+  const imageFit = document.getElementById('newGalFit').value;
+
+  const itemData = { title, category, desc, image, imagePos, imageFit };
+
+  if (id) {
+    itemData.id = id;
+    FoundationStore.updateGalleryItem(itemData);
+    alert('✅ Фотозвіт успішно оновлено!');
+  } else {
+    FoundationStore.addGalleryItem(itemData);
+    alert('📸 Нове фото успішно додано до хроніки справ фонду!');
+  }
+
+  closeGalModal();
   renderAllAdmin();
 }
