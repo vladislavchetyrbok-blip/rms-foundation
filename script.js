@@ -85,7 +85,6 @@ function renderAll() {
   renderStats();
   renderCampaigns();
   renderGallery();
-  renderNews();
   renderHonorBoard();
 }
 
