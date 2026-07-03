@@ -248,15 +248,43 @@ function closeHonModal() {
   document.getElementById('modalAddHonor').style.display = 'none';
 }
 
+function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      let width = img.width;
+      let height = img.height;
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function handleHonFileUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    document.getElementById('newHonImage').value = evt.target.result;
+  compressImageFile(file, 600, 600, 0.75, function(base64) {
+    document.getElementById('newHonImage').value = base64;
     updateHonPreview();
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 function updateHonPreview() {
@@ -412,13 +440,10 @@ function handleGalFileUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const base64 = e.target.result;
+  compressImageFile(file, 800, 800, 0.75, function(base64) {
     document.getElementById('newGalImage').value = base64;
     updateGalPreview();
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 function updateGalPreview() {

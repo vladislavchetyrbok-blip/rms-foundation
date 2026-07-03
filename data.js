@@ -4,7 +4,7 @@
  * Синхронізує публічний сайт та Адмін-панель через localStorage.
  */
 
-const STORAGE_KEY = 'rms_foundation_data_v4';
+const STORAGE_KEY = 'rms_foundation_data_v5';
 const ONLINE_BIN_ID = '6a4708aef5f4af5e2957274f';
 const ONLINE_API_KEY = '$2a$10$a.w5fqFGgNDtxm.14mCh3us9zVhiSRK7fng26ppAnKWesY1g.noMe';
 
@@ -35,7 +35,7 @@ const INITIAL_DATA = {
         de: 'Dringende Spendenaktion für Treibstoff zur Lieferung von Medizin und Ausrüstung an Krankenhäuser.'
       },
       target: 100000,
-      collected: 14500,
+      collected: 200,
       category: 'military',
       icon: '⛽',
       jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
@@ -275,7 +275,9 @@ window.FoundationStore = {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       window.dispatchEvent(new CustomEvent('foundation_data_changed'));
-    } catch (e) {}
+    } catch (e) {
+      console.error('Помилка збереження в localStorage (перевищено квоту):', e);
+    }
 
     if (!skipCloud && typeof ONLINE_BIN_ID !== 'undefined' && ONLINE_BIN_ID) {
       fetch('https://api.jsonbin.io/v3/b/' + ONLINE_BIN_ID, {
