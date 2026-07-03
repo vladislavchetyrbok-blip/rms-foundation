@@ -22,13 +22,13 @@
 
       <nav>
         <ul>
-          <li><a href="#about" data-i18n="nav_about">Про нас</a></li>
-          <li><a href="#calc" data-i18n="nav_calc">Калькулятор донату</a></li>
-          <li><a href="#campaigns" data-i18n="nav_campaigns">Активні збори</a></li>
+          <li><a href="#about" data-i18n="nav_about">ℹ️ Про нас</a></li>
+          <li><a href="#calc" data-i18n="nav_calc">🧮 Калькулятор донату</a></li>
+          <li><a href="#campaigns" data-i18n="nav_campaigns">🎯 Активні збори</a></li>
           <li><a href="#gallery" style="color: var(--accent-gold); font-weight: 700;">📸 Фотозвіт справ</a></li>
-          <li><a href="#honor" data-i18n="nav_honor">Дошка пошани</a></li>
-          <li><a href="#focus" data-i18n="nav_focus">Напрямки</a></li>
-          <li><a href="#contact" data-i18n="nav_contact">Контакти</a></li>
+          <li><a href="#honor" data-i18n="nav_honor">🌟 Дошка пошани</a></li>
+          <li><a href="#focus" data-i18n="nav_focus">🛡️ Напрямки</a></li>
+          <li><a href="#contact" data-i18n="nav_contact">📞 Контакти</a></li>
         </ul>
       </nav>
 
@@ -50,7 +50,10 @@
           </div>
         </div>
 
-        <button class="btn btn-primary desktop-only-btn" onclick="openModal()" data-i18n="btn_support">Підтримати фонд ❤️</button>
+        <button class="btn btn-primary desktop-only-btn" onclick="openModal()" style="padding: 12px 24px; font-size: 0.95rem; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; border-radius: 30px; box-shadow: 0 4px 20px rgba(255,183,3,0.5);">
+          <span style="font-size: 1.25rem; filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));">💝</span>
+          <span data-i18n="btn_support">Підтримати фонд</span>
+        </button>
         <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Меню">☰</button>
       </div>
     </div>
@@ -64,9 +67,19 @@
         <h1 class="hero-title" data-i18n="hero_title">Разом ми об’єднуємо серця заради перемоги та життя</h1>
         <p class="hero-subtitle" data-i18n="hero_subtitle">Надаємо термінову гуманітарну, медичну та технічну допомогу Захисникам України, пораненим героям та постраждалим родинам у зоні бойових дій.</p>
         
-        <div class="hero-btns">
-          <button class="btn btn-primary" onclick="openModal()" data-i18n="hero_cta_don">Зробити внесок</button>
-          <a href="#contact" class="btn btn-outline" data-i18n="hero_cta_join">Стати волонтером</a>
+        <div class="hero-btns" style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 30px;">
+          <button class="btn btn-primary" onclick="openModal()" style="padding: 16px 32px; font-size: 1.08rem; font-weight: 800; border-radius: 35px; box-shadow: 0 8px 30px rgba(255,183,3,0.5);">
+            <span style="font-size: 1.45rem; filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));">💛</span>
+            <span data-i18n="hero_cta_don">Зробити внесок</span>
+          </button>
+          <a href="gallery.html" class="btn btn-outline" style="padding: 16px 28px; font-size: 1.05rem; font-weight: 700; border-radius: 35px; background: rgba(255,183,3,0.12); border: 1px solid rgba(255,183,3,0.4); color: #fff;">
+            <span style="font-size: 1.35rem;">📸</span>
+            <span>Архів справ</span>
+          </a>
+          <a href="#contact" class="btn btn-outline" style="padding: 16px 28px; font-size: 1.05rem; font-weight: 700; border-radius: 35px; background: rgba(30,96,242,0.18); border: 1px solid rgba(96,165,250,0.4); color: #fff;">
+            <span style="font-size: 1.35rem;">🤝</span>
+            <span data-i18n="hero_cta_join">Стати волонтером</span>
+          </a>
         </div>
       </div>
 
