@@ -64,10 +64,15 @@
           <li class="nav-item" onclick="switchSection('podcasts', this)">🎧 Подкасти та Радіо</li>
           <li class="nav-item" onclick="switchSection('support', this)">💬 Live-Чат Підтримки</li>
           <li class="nav-item" onclick="switchSection('dronehub', this)">🛠️ Інженерний Хаб (Збірка)</li>
+          <li class="nav-item" onclick="switchSection('donorhub', this)">🩸 Банк Крові (Донори)</li>
+          <li class="nav-item" onclick="switchSection('animals', this)">🐾 Хвостаті Патрони (Тварини)</li>
+          <li class="nav-item" onclick="switchSection('legalaid', this)">⚖️ Юридична Допомога (Рапорти)</li>
+          <li class="nav-item" onclick="switchSection('users', this)">👥 База Профілів та Меценатів</li>
         </ul>
       </div>
 
       <div class="sidebar-footer">
+        <button class="btn-admin" style="width: 100%; margin-bottom: 10px; background: #10b981; color: #fff; border: none; font-weight: 800; padding: 10px; border-radius: 8px; cursor: pointer;" onclick="exportAllDataCSV()">📥 Експорт в Excel (CSV)</button>
         <a href="index.html" style="display: block; color: var(--admin-accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-bottom: 12px;">🌐 Переглянути сайт</a>
         <button class="btn-admin btn-del" style="width: 100%;" onclick="logout()">Вийти з системи</button>
       </div>
@@ -901,6 +906,99 @@
               <tbody id="droneHubTableBody"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- SECTION 24: Blood Donors (Donor Hub) -->
+      <section id="sec-donorhub" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🩸 Управління Банком Крові та Донорами</h1>
+          <div style="color: #ef4444; font-weight: 700;">● База «Кров'яна Варта» • Мобільні автобуси</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🩸 Реєстр донорів крові</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Дата</th>
+                  <th>ПІБ Донора</th>
+                  <th>Місто</th>
+                  <th>Група крові</th>
+                  <th>Телефон</th>
+                  <th>Донацій</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="donorHubTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 25: Rescued Animals & K-9 -->
+      <section id="sec-animals" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🐾 Управління Зоо-Хабом «Хвостаті Патрони»</h1>
+          <div style="color: #10b981; font-weight: 700;">● Евакуація тварин • Амуніція К-9</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🐕 Каталог підопічних та зборів</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Ім'я та тип</th>
+                  <th>Зона / Напрямок</th>
+                  <th>Зібрано / Ціль</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="animalsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 26: Legal Aid Requests -->
+      <section id="sec-legalaid" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">⚖️ Заявки на Юридичну та Правову Допомогу</h1>
+          <div style="color: var(--accent-gold); font-weight: 700;">● Консультації адвокатів • Оскарження ВЛК</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">⚖️ Реєстр правових звернень від бійців та родин</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Дата</th>
+                  <th>Заявник / ВЧ</th>
+                  <th>Категорія справи</th>
+                  <th>Телефон</th>
+                  <th>Обставини / Деталі</th>
+                  <th>Статус справи</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="legalAidTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 27: Users & Sponsors Profiles -->
+      <section id="sec-users" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">👥 База Профілів та Головних Меценатів</h1>
+          <div style="color: #60a5fa; font-weight: 700;">● Амбасадори фонду • Історія внесків</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🌟 VIP Меценати</h2>
+          <div id="usersAdminContainer" style="color: #fff;"></div>
         </div>
       </section>
 

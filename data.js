@@ -546,7 +546,42 @@ const INITIAL_DATA = {
     { id: 'KIT-1', name: '7-дюймовий ударний FPV-камікадзе (Day/Night)', price: 12500, desc: 'Повний комплект деталей для збірки: карбонова рама Mark4, мотори 2806.5, стек F405 55A, камера Caddx Ratel 2, VTX Rush Solo 1.6W, антена Rush Cherry, пропелери.', ordersCount: 420 },
     { id: 'KIT-2', name: '10-дюймовий важкий бомбер-бомбовоз (Під скиди 2.5 кг)', price: 18900, desc: 'Посилена рама 10", мотори 3115 900KV, стек F722 65A, камера Night Eagle 3, далекобійний VTX 2.5W, система кріплення та скиду боєприпасів.', ordersCount: 185 },
     { id: 'KIT-3', name: 'Окопна станція РЕБ "Купол-3" (3 діапазони)', price: 24500, desc: 'Набір для збірки мобільного РЕБ: генератори перешкод (700-860, 860-1020, 2400 МГц), радіатори охолодження, кулери, антени конюшина, захисний кейс, АКБ 24V.', ordersCount: 140 }
-  ]
+  ],
+  bloodDonors: [
+    { id: 'BLD-101', name: 'Ігор Військовий', city: 'Київ', bloodGroup: 'O(I) Rh+', phone: '+380671112233', status: 'active', date: '06.07.2026', donationsCount: 4 },
+    { id: 'BLD-102', name: 'Олена Донор', city: 'Харків', bloodGroup: 'A(II) Rh-', phone: '+380509998877', status: 'urgent_call', date: '05.07.2026', donationsCount: 7 },
+    { id: 'BLD-103', name: 'Максим Меценат', city: 'Дніпро', bloodGroup: 'AB(IV) Rh+', phone: '+380634445566', status: 'active', date: '04.07.2026', donationsCount: 2 }
+  ],
+  animals: [
+    { id: 'PET-1', name: 'Патрон (Вівчарка К-9)', type: 'Службовий пес-розшуківець', zone: 'Покровський напрямок', age: '3 роки', desc: 'Евакуйований під обстрілом. Вміє виявляти міни-пелюстки. Потребує тактичних окулярів та розвантажувального жилета.', needAmount: 18500, collected: 14200, status: 'urgent', img: 'media__1783040943180.jpg' },
+    { id: 'PET-2', name: 'Бахмут (Кіт-талісман)', type: 'Окопний котик-мишолов', zone: 'Часів Яр', age: '1.5 роки', desc: 'Врятований бійцями 93-ї ОМБр з палаючого будинку. Шукає люблячу родину в Києві або Львові!', needAmount: 6500, collected: 6500, status: 'adopted', img: 'media__1783040943180.jpg' },
+    { id: 'PET-3', name: 'Рекс (Саперна собака)', type: 'К-9 ДСНС', zone: 'Харківщина', age: '4 роки', desc: 'Отримав легку контузію під час розмінування. Проходить реабілітацію у ветклініці фонду. Потребує лікувального корму.', needAmount: 24000, collected: 9800, status: 'rehab', img: 'media__1783040943180.jpg' }
+  ],
+  legalRequests: [
+    { id: 'LEG-1', soldier: 'Олександр Т.', unit: 'А1302 (93 ОМБр)', category: 'Оформлення УБД', phone: '+380971234567', date: '06.07.2026', status: 'in_progress', statusLabel: '🟡 В роботі адвоката', notes: 'Запит на генерацію рапорту та збір довідок з госпіталю' },
+    { id: 'LEG-2', soldier: 'Микола В.', unit: 'А4010', category: 'Виплати за поранення (ВЛК)', phone: '+380507654321', date: '05.07.2026', status: 'resolved', statusLabel: '🟢 Виплату призначено', notes: 'Успішно оскаржено висновок комісії, виплачено 100 тис грн' }
+  ],
+  userProfile: {
+    name: 'Владислав (Головний Меценат)',
+    rank: '🌟 Амбасадор Фонду ЗСУ',
+    totalDonated: 145000,
+    dronesSponsored: 8,
+    bloodDonatedLiters: 1.8,
+    badges: [
+      { id: 'b1', title: '🛸 Крилатий Патрон', desc: 'Профінансовано 5+ ударних FPV-дронів для фронту', icon: '🛸', unlocked: true },
+      { id: 'b2', title: '💛 Сталеве Серце', desc: 'Регулярна щомісячна підписка протягом 6 місяців', icon: '💛', unlocked: true },
+      { id: 'b3', title: '🩸 Кров\'яна Варта', desc: 'Здано кров для поранених бійців та шпиталів', icon: '🩸', unlocked: true },
+      { id: 'b4', title: '🐾 Хвостатий Опікун', desc: 'Взято під опіку врятовану тварину з прифронтової зони', icon: '🐾', unlocked: true },
+      { id: 'b5', title: '🛠️ Майстер-Інженер', desc: 'Зібрано та успішно здано на полігон FPV або РЕБ', icon: '🛠️', unlocked: true },
+      { id: 'b6', title: '🎟️ Король Аукціонів', desc: 'Виграно ексклюзивний бойовий трофей на аукціоні фонду', icon: '🎟️', unlocked: false }
+    ],
+    history: [
+      { id: 'H-1', date: '06.07.2026', action: 'Донат на збір «Залізний Кулак»', amount: 25000, status: 'Успішно' },
+      { id: 'H-2', date: '02.07.2026', action: 'Оплата кит-комплекту FPV 7" для волонтерів', amount: 12500, status: 'Успішно' },
+      { id: 'H-3', date: '25.06.2026', action: 'Придбання Золотої Благодійної Цеглинки', amount: 50000, status: 'Успішно' },
+      { id: 'H-4', date: '15.06.2026', action: 'Донат на реабілітацію кіборгів', amount: 57500, status: 'Успішно' }
+    ]
+  }
 };
 window.FoundationStore = {
   getData() {
@@ -1240,6 +1275,110 @@ window.FoundationStore = {
       data.droneSubmissions = data.droneSubmissions.filter(d => d.id !== id);
       this.saveData(data);
     }
+  },
+
+  // === Blood Donors Methods ===
+  getBloodDonors() {
+    return this.getData().bloodDonors || [];
+  },
+  addBloodDonor(name, city, bloodGroup, phone) {
+    const data = this.getData();
+    if (!data.bloodDonors) data.bloodDonors = [];
+    const id = 'BLD-' + Math.floor(100 + Math.random() * 900);
+    data.bloodDonors.unshift({
+      id, name, city, bloodGroup, phone, status: 'active', date: new Date().toLocaleDateString('uk-UA'), donationsCount: 1
+    });
+    this.saveData(data);
+    return id;
+  },
+  deleteBloodDonor(id) {
+    const data = this.getData();
+    if (data.bloodDonors) {
+      data.bloodDonors = data.bloodDonors.filter(d => d.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === Rescued Animals Methods ===
+  getAnimals() {
+    return this.getData().animals || [];
+  },
+  adoptAnimal(id) {
+    const data = this.getData();
+    if (!data.animals) return;
+    const pet = data.animals.find(a => a.id === id);
+    if (pet) {
+      pet.status = 'adopted';
+      this.saveData(data);
+    }
+  },
+  addPetDonation(id, amount) {
+    const data = this.getData();
+    if (!data.animals) return;
+    const pet = data.animals.find(a => a.id === id);
+    if (pet) {
+      pet.collected += Number(amount);
+      if (pet.collected >= pet.needAmount) pet.status = 'adopted';
+      this.saveData(data);
+    }
+  },
+  deleteAnimal(id) {
+    const data = this.getData();
+    if (data.animals) {
+      data.animals = data.animals.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === Legal Aid Methods ===
+  getLegalRequests() {
+    return this.getData().legalRequests || [];
+  },
+  addLegalRequest(soldier, unit, category, phone, notes) {
+    const data = this.getData();
+    if (!data.legalRequests) data.legalRequests = [];
+    const id = 'LEG-' + Math.floor(100 + Math.random() * 900);
+    data.legalRequests.unshift({
+      id, soldier, unit, category, phone, date: new Date().toLocaleDateString('uk-UA'),
+      status: 'in_progress', statusLabel: '🟡 В роботі юриста', notes
+    });
+    this.saveData(data);
+    return id;
+  },
+  updateLegalStatus(id, status) {
+    const data = this.getData();
+    if (!data.legalRequests) return;
+    const item = data.legalRequests.find(l => l.id === id);
+    if (item) {
+      item.status = status;
+      if (status === 'resolved') item.statusLabel = '🟢 Вирішено на користь бійця';
+      else if (status === 'in_progress') item.statusLabel = '🟡 В роботі юриста';
+      else if (status === 'rejected') item.statusLabel = '🔴 Відхилено / Потребує документів';
+      this.saveData(data);
+    }
+  },
+  deleteLegalRequest(id) {
+    const data = this.getData();
+    if (data.legalRequests) {
+      data.legalRequests = data.legalRequests.filter(l => l.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === User Profile Methods ===
+  getUserProfile() {
+    return this.getData().userProfile || INITIAL_DATA.userProfile;
+  },
+  addProfileDonation(action, amount) {
+    const data = this.getData();
+    if (!data.userProfile) data.userProfile = JSON.parse(JSON.stringify(INITIAL_DATA.userProfile));
+    data.userProfile.totalDonated += Number(amount);
+    data.userProfile.history.unshift({
+      id: 'H-' + Math.floor(100 + Math.random() * 900),
+      date: new Date().toLocaleDateString('uk-UA'),
+      action, amount: Number(amount), status: 'Успішно'
+    });
+    this.saveData(data);
   }
 };
 

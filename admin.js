@@ -64,6 +64,10 @@ function switchSection(sec, btnEl) {
   if (document.getElementById('sec-podcasts')) document.getElementById('sec-podcasts').style.display = sec === 'podcasts' ? 'block' : 'none';
   if (document.getElementById('sec-support')) document.getElementById('sec-support').style.display = sec === 'support' ? 'block' : 'none';
   if (document.getElementById('sec-dronehub')) document.getElementById('sec-dronehub').style.display = sec === 'dronehub' ? 'block' : 'none';
+  if (document.getElementById('sec-donorhub')) document.getElementById('sec-donorhub').style.display = sec === 'donorhub' ? 'block' : 'none';
+  if (document.getElementById('sec-animals')) document.getElementById('sec-animals').style.display = sec === 'animals' ? 'block' : 'none';
+  if (document.getElementById('sec-legalaid')) document.getElementById('sec-legalaid').style.display = sec === 'legalaid' ? 'block' : 'none';
+  if (document.getElementById('sec-users')) document.getElementById('sec-users').style.display = sec === 'users' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -91,6 +95,10 @@ function renderAllAdmin() {
   if (typeof renderAdminPodcasts === 'function') renderAdminPodcasts();
   if (typeof renderAdminSupport === 'function') renderAdminSupport();
   if (typeof renderAdminDroneHub === 'function') renderAdminDroneHub();
+  if (typeof renderAdminDonorHub === 'function') renderAdminDonorHub();
+  if (typeof renderAdminAnimals === 'function') renderAdminAnimals();
+  if (typeof renderAdminLegalAid === 'function') renderAdminLegalAid();
+  if (typeof renderAdminUsers === 'function') renderAdminUsers();
 }
 
 // === Section 1: Stats ===
@@ -1606,5 +1614,161 @@ function deleteAdminDroneSubmission(id) {
       renderAdminDroneHub();
     }
   }
+}
+
+// === Section 24: Donor Hub ===
+function renderAdminDonorHub() {
+  const tbody = document.getElementById('donorHubTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getBloodDonors) return;
+  const list = FoundationStore.getBloodDonors();
+  tbody.innerHTML = list.map(d => `
+    <tr>
+      <td><strong style="color: #ef4444;">${d.id}</strong><br><small style="color: #888;">${d.date}</small></td>
+      <td><strong style="color: #fff;">${d.name}</strong></td>
+      <td>📍 ${d.city}</td>
+      <td><span style="background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 10px; border-radius: 10px; font-weight: 700;">${d.bloodGroup}</span></td>
+      <td><a href="tel:${d.phone}" style="color: #60a5fa; text-decoration: none;">${d.phone}</a></td>
+      <td><strong style="color: var(--accent-gold);">${d.donationsCount} разів</strong></td>
+      <td><span style="color: #10b981;">● Активний у базі</span></td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminBloodDonor('${d.id}')">✕</button>
+      </td>
+    </tr>
+  `).join('');
+}
+function deleteAdminBloodDonor(id) {
+  if (confirm(`Видалити донора ${id} з бази?`)) {
+    if (window.FoundationStore && FoundationStore.deleteBloodDonor) {
+      FoundationStore.deleteBloodDonor(id);
+      renderAdminDonorHub();
+    }
+  }
+}
+
+// === Section 25: Rescued Animals ===
+function renderAdminAnimals() {
+  const tbody = document.getElementById('animalsTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getAnimals) return;
+  const list = FoundationStore.getAnimals();
+  tbody.innerHTML = list.map(a => `
+    <tr>
+      <td><strong style="color: #10b981;">${a.id}</strong></td>
+      <td><strong style="color: #fff;">${a.name}</strong><br><small style="color: #aaa;">${a.type}</small></td>
+      <td>📍 ${a.zone}</td>
+      <td><strong style="color: var(--accent-gold);">${a.collected.toLocaleString()} ₴</strong> / ${a.needAmount.toLocaleString()} ₴</td>
+      <td><span style="color: ${a.status === 'adopted' ? '#10b981' : '#f59e0b'}; font-weight: 700;">${a.status === 'adopted' ? '💛 В родині' : '🔥 Терміновий збір'}</span></td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminAnimal('${a.id}')">✕</button>
+      </td>
+    </tr>
+  `).join('');
+}
+function deleteAdminAnimal(id) {
+  if (confirm(`Видалити тварину ${id}?`)) {
+    if (window.FoundationStore && FoundationStore.deleteAnimal) {
+      FoundationStore.deleteAnimal(id);
+      renderAdminAnimals();
+    }
+  }
+}
+
+// === Section 26: Legal Aid ===
+function renderAdminLegalAid() {
+  const tbody = document.getElementById('legalAidTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getLegalRequests) return;
+  const list = FoundationStore.getLegalRequests();
+  tbody.innerHTML = list.map(l => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${l.id}</strong><br><small style="color: #888;">${l.date}</small></td>
+      <td><strong style="color: #fff;">${l.soldier}</strong><br><small style="color: #60a5fa;">${l.unit}</small></td>
+      <td><strong>${l.category}</strong></td>
+      <td><a href="tel:${l.phone}" style="color: #60a5fa; text-decoration: none;">${l.phone}</a></td>
+      <td style="max-width: 200px; font-size: 0.85rem; color: #ccc;">${l.notes || '—'}</td>
+      <td>
+        <select onchange="updateAdminLegalStatus('${l.id}', this.value)" style="padding: 6px; border-radius: 8px; background: #070e1e; color: #fff; border: 1px solid var(--admin-border);">
+          <option value="in_progress" ${l.status === 'in_progress' ? 'selected' : ''}>🟡 В роботі юриста</option>
+          <option value="resolved" ${l.status === 'resolved' ? 'selected' : ''}>🟢 Вирішено на користь бійця</option>
+          <option value="rejected" ${l.status === 'rejected' ? 'selected' : ''}>🔴 Відхилено / Без документів</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminLegalRequest('${l.id}')">✕</button>
+      </td>
+    </tr>
+  `).join('');
+}
+function updateAdminLegalStatus(id, status) {
+  if (window.FoundationStore && FoundationStore.updateLegalStatus) {
+    FoundationStore.updateLegalStatus(id, status);
+    renderAdminLegalAid();
+    alert(`🎉 Статус юридичної справи ${id} оновлено!`);
+  }
+}
+function deleteAdminLegalRequest(id) {
+  if (confirm(`Видалити юридичний запит ${id}?`)) {
+    if (window.FoundationStore && FoundationStore.deleteLegalRequest) {
+      FoundationStore.deleteLegalRequest(id);
+      renderAdminLegalAid();
+    }
+  }
+}
+
+// === Section 27: Users Profiles ===
+function renderAdminUsers() {
+  const cont = document.getElementById('usersAdminContainer');
+  if (!cont || !window.FoundationStore || !FoundationStore.getUserProfile) return;
+  const p = FoundationStore.getUserProfile();
+  cont.innerHTML = `
+    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); padding: 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+      <div>
+        <h3 style="color: #fff; font-size: 1.5rem; margin: 0 0 6px;">${p.name}</h3>
+        <p style="color: var(--accent-gold); font-weight: 800; margin: 0;">${p.rank}</p>
+        <div style="margin-top: 12px; color: #aaa; font-size: 0.9rem;">
+          <div>💰 Всього донатів: <strong style="color: #fff;">${p.totalDonated.toLocaleString()} ₴</strong></div>
+          <div>🛸 Профінансовано дронів: <strong style="color: #10b981;">${p.dronesSponsored} шт.</strong></div>
+          <div>🩸 Здано крові: <strong style="color: #ef4444;">${p.bloodDonatedLiters} л.</strong></div>
+        </div>
+      </div>
+      <div>
+        <h4 style="color: #fff; margin-bottom: 8px;">Останні транзакції:</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; color: #ccc; display: flex; flex-direction: column; gap: 6px;">
+          ${p.history.slice(0, 3).map(h => `<li>📅 ${h.date}: ${h.action} (+${h.amount.toLocaleString()} ₴)</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+// === CSV Export Function ===
+function exportAllDataCSV() {
+  if (!window.FoundationStore) return;
+  const data = FoundationStore.getData();
+  let csv = "Категорія;ID/Назва;Сума/Деталі;Статус;Дата\n";
+
+  if (data.campaigns) {
+    data.campaigns.forEach(c => csv += `Збір;${c.title};Зібрано ${c.collected} з ${c.target};${c.urgent ? 'Терміновий' : 'Активний'};-\n`);
+  }
+  if (data.droneSubmissions) {
+    data.droneSubmissions.forEach(d => csv += `Інженерний Хаб;${d.id} (${d.author});${d.kitType} (${d.serialNum});${d.statusLabel};${d.date}\n`);
+  }
+  if (data.bloodDonors) {
+    data.bloodDonors.forEach(b => csv += `Банк Крові;${b.id} (${b.name});Група ${b.bloodGroup} / ${b.city};Активний;${b.date}\n`);
+  }
+  if (data.animals) {
+    data.animals.forEach(a => csv += `Хвостаті Патрони;${a.id} (${a.name});Зібрано ${a.collected} з ${a.needAmount};${a.status};-\n`);
+  }
+  if (data.legalRequests) {
+    data.legalRequests.forEach(l => csv += `Юридична Опора;${l.id} (${l.soldier});${l.category} / ${l.unit};${l.statusLabel};${l.date}\n`);
+  }
+
+  const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `RMS_Foundation_Report_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  alert("📥 Звіт успішно експортовано в Excel (CSV)!");
 }
 
