@@ -35,12 +35,90 @@ const INITIAL_DATA = {
         de: 'Dringende Spendenaktion für Treibstoff zur Lieferung von Medizin und Ausrüstung an Krankenhäuser.'
       },
       target: 100000,
-      collected: 200,
-      category: 'military',
+      collected: 68400,
+      category: 'auto',
       icon: '⛽',
       jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
       cardNum: '4874 1000 3862 9211',
       urgent: true
+    },
+    {
+      id: 'drones_camp_2',
+      title: {
+        uk: '5 нічних дронів Mavic 3T та системи окопного РЕБ',
+        en: '5 night-vision Mavic 3T drones and trench EW systems',
+        pl: '5 dronów noktowizyjnych Mavic 3T i systemy WRE',
+        ro: '5 drone cu vedere pe timp de noapte Mavic 3T și sisteme EW',
+        it: '5 droni per visione notturna Mavic 3T e sistemi di guerra elettronica',
+        de: '5 Nachtsichtdrohnen Mavic 3T und Graben-EloKa-Systeme'
+      },
+      desc: {
+        uk: 'Комплексний збір для передових підрозділів на Донеччині: дрони з тепловізорами для нічної розвідки та мобільні куполи РЕБ для захисту від ворожих FPV.',
+        en: 'Comprehensive fundraiser for frontline units in Donetsk region: thermal drones for night recon and portable EW domes against enemy FPVs.',
+        pl: 'Zbiórka dla jednostek na frontie w Donbasie: drony termowizyjne do zwiadu nocnego i mobilne kopuły WRE.',
+        ro: 'Strângere de fonduri pentru unitățile din linia întâi: drone termice și sisteme portabile de protecție împotriva dronelor FPV.',
+        it: 'Raccolta fondi per le unità in prima linea: droni termici per la ricognizione notturna e cupole di protezione EW.',
+        de: 'Spendenaktion für Fronteinheiten: Wärmebilddrohnen für die Nachtaufklärung und mobile EloKa-Schutzkugeln.'
+      },
+      target: 450000,
+      collected: 312000,
+      category: 'drones',
+      icon: '🛸',
+      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
+      cardNum: '4874 1000 3862 9211',
+      urgent: true
+    },
+    {
+      id: 'med_camp_3',
+      title: {
+        uk: 'Тактична медицина: 200 аптечок IFAK та опікові пов\'язки',
+        en: 'Tactical medicine: 200 IFAK kits and burn dressings',
+        pl: 'Medycyna taktyczna: 200 apteczek IFAK i opatrunki na oparzenia',
+        ro: 'Medicină tactică: 200 truse IFAK și pansamente pentru arsuri',
+        it: 'Medicina tattica: 200 kit IFAK e medicazioni per ustioni',
+        de: 'Taktische Medizin: 200 IFAK-Kits und Verbände für Verbrennungen'
+      },
+      desc: {
+        uk: 'Забезпечуємо військових медиків та стабілізаційні пункти якісними турнікетами, гемостатиками та гідroгелевими опіковими пов\'язками.',
+        en: 'Providing military medics and stabilization points with high-quality tourniquets, hemostatics, and hydrogel burn dressings.',
+        pl: 'Zaopatrujemy medyków wojskowych w stazy taktyczne, środki hemostatyczne i opatrunki hydrożelowe.',
+        ro: 'Asigurăm medicilor militari garouri de calitate, hemostatice și pansamente hidrogel pentru arsuri.',
+        it: 'Forniamo ai medici militari lacci emostatici di qualità e medicazioni idrogel per ustioni.',
+        de: 'Wir versorgen Militärärzte mit hochwertigen Tourniquets, Hämostatika und Hydrogel-Brandverbänden.'
+      },
+      target: 250000,
+      collected: 184500,
+      category: 'med',
+      icon: '🏥',
+      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
+      cardNum: '4874 1000 3862 9211',
+      urgent: false
+    },
+    {
+      id: 'auto_camp_4',
+      title: {
+        uk: 'Ремонт та гуманітарна підготовка евакуаційного пікапа',
+        en: 'Repair and preparation of evacuation pickup truck',
+        pl: 'Remont i przygotowanie pikapa ewakuacyjnego',
+        ro: 'Reparația și pregătirea camionetei de evacuare',
+        it: 'Riparazione e preparazione del pick-up di evacuazione',
+        de: 'Reparatur und Vorbereitung des Evakuierungs-Pickups'
+      },
+      desc: {
+        uk: 'Капітальний ремонт ходової частини, заміна гуми на болотяну (Mud-Terrain) та маскувальне фарбування для безпечного вивозу поранених.',
+        en: 'Suspension overhaul, Mud-Terrain tires replacement, and camouflage painting for safe medical evacuation.',
+        pl: 'Remont zawieszenia, wymiana opon na terenowe i malowanie maskujące dla bezpiecznej ewakuacji.',
+        ro: 'Reparația suspensiei, înlocuirea anvelopelor și vopsire de camuflaj pentru evacuarea în siguranță.',
+        it: 'Revisione delle sospensioni, sostituzione pneumatici e verniciatura mimetica per un\'evacuazione sicura.',
+        de: 'Fahrwerksüberholung, Geländereifen und Tarnlackierung für sichere Evakuierungsfahrten.'
+      },
+      target: 180000,
+      collected: 142000,
+      category: 'auto',
+      icon: '🚙',
+      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
+      cardNum: '4874 1000 3862 9211',
+      urgent: false
     }
   ],
   news: [
@@ -254,7 +332,167 @@ const INITIAL_DATA = {
       image: 'work_kids_toys.jpg'
     }
   ],
-  applications: []
+  megaGoal: {
+    title: {
+      uk: '🎯 МЕГА-ЦІЛЬ МІСЯЦЯ: ОПЕРАЦІЯ «НЕБЕСНИЙ ЩИТ»',
+      en: '🎯 MONTHLY MEGA-GOAL: OPERATION "SKY SHIELD"',
+      pl: '🎯 MEGA-CEL MIESIĄCA: OPERACJA "NIEBIESKA TARCZA"',
+      ro: '🎯 MEGA-OBIECTIVUL LUNII: OPERAȚIUNEA "SCUTUL CERULUI"',
+      it: '🎯 MEGA-OBIETTIVO DEL MESE: OPERAZIONE "SCUDO CELESTE"',
+      de: '🎯 MONATS-MEGA-ZIEL: OPERATION "HIMMELSSCHILD"'
+    },
+    subtitle: {
+      uk: 'Комплексне забезпечення 5 прифронтових бригад нічною розвідкою, системами РЕБ та евакуаційним транспортом.',
+      en: 'Comprehensive equipping of 5 frontline brigades with night recon, EW systems, and evacuation transport.',
+      pl: 'Kompleksowe wyposażenie 5 brygade w zwiad nocny, systemy WRE i transport ewakuacyjny.',
+      ro: 'Echipare completă a 5 brigăzi din linia întâi cu recunoaștere pe timp de noapte, sisteme EW și transport.',
+      it: 'Equipaggiamento completo di 5 brigate in prima linea con ricognizione notturna, sistemi EW e trasporto.',
+      de: 'Umfassende Ausstattung von 5 Fronteinheiten mit Nachtaufklärung, EloKa-Systemen und Evakuierungsfahrzeugen.'
+    },
+    target: 5000000,
+    collected: 3450000,
+    milestones: [
+      { pct: 25, title: { uk: '10 нічних Mavic 3T', en: '10 Night Mavic 3T', pl: '10 nocnych Mavic 3T', ro: '10 Mavic 3T nocturne', it: '10 Mavic 3T notturni', de: '10 Nacht-Mavic 3T' }, desc: { uk: 'Розвідка 24/7 для артилерії', en: '24/7 recon for artillery', pl: 'Zwiad 24/7 dla artylerii', ro: 'Recunoaștere 24/7', it: 'Ricognizione 24/7', de: '24/7 Aufklärung' }, unlocked: true, icon: '🛸' },
+      { pct: 50, title: { uk: '5 куполів окопного РЕБ', en: '5 Trench EW Domes', pl: '5 kopuł WRE', ro: '5 sisteme EW', it: '5 cupole EW', de: '5 Graben-EloKa' }, desc: { uk: 'Захист піхоти від ворожих FPV', en: 'Infantry protection vs FPV', pl: 'Ochrona piechoty', ro: 'Protecția infanteriei', it: 'Protezione fanteria', de: 'Infanterieschutz' }, unlocked: true, icon: '🛡️' },
+      { pct: 75, title: { uk: '3 евакуаційні пікапи 4x4', en: '3 Medevac Pickups 4x4', pl: '3 pikapy ewakuacyjne 4x4', ro: '3 camionete de evacuare 4x4', it: '3 pick-up evacuazione 4x4', de: '3 Medevac Pickups 4x4' }, desc: { uk: 'Вивіз поранених з нуля', en: 'Wounded evac from zero line', pl: 'Ewakuacja rannych', ro: 'Evacuarea răniților', it: 'Evacuazione feriti', de: 'Verwundeten-Evakuierung' }, unlocked: false, icon: '🚗' },
+      { pct: 100, title: { uk: 'Мобільна зенітна турель', en: 'Mobile AA Turret System', pl: 'Mobilna wieżyczka plot', ro: 'Turelă antiaeriană mobilă', it: 'Torretta contraerea mobile', de: 'Mobiles Flak-Turmsystem' }, desc: { uk: 'Знищення ворожих безпілотників', en: 'Destroying enemy drones', pl: 'Niszczenie dronów', ro: 'Distrugerea dronelor', it: 'Distruzione droni', de: 'Drohnenabwehr' }, unlocked: false, icon: '⚡' }
+    ]
+  },
+  impactMap: [
+    { id: 'donetsk', name: { uk: 'Донеччина', en: 'Donetsk Region', pl: 'Obwód doniecki', ro: 'Regiunea Donețk', it: 'Regione di Donetsk', de: 'Region Donezk' }, icon: '📍', status: 'hot', drones: '420 шт', med: '4 500 аптечок', auto: '18 авто', desc: { uk: 'Найгарячіший напрямок: Покровськ, Часів Яр, Курахове. Системне постачання розвідки та тактичної медицини.', en: 'Hottest direction: Pokrovsk, Chasiv Yar, Kurakhove. Systematic supply of recon and tactical medicine.', pl: 'Najgorętszy kierunek: Pokrowsk, Czasiw Jar. Systematyczne dostawy.', ro: 'Cea mai fierbinte direcție: Pokrovsk, Ceasiv Iar. Aprovizionare continuă.', it: 'Direzione più calda: Pokrovsk, Chasiv Yar. Forniture continue.', de: 'Heißester Abschnitt: Pokrowsk, Tschasiw Jar. Systematische Versorgung.' } },
+    { id: 'kharkiv', name: { uk: 'Харківщина', en: 'Kharkiv Region', pl: 'Obwód charkowski', ro: 'Regiunea Harkov', it: 'Regione di Kharkiv', de: 'Region Charkiw' }, icon: '📍', status: 'hot', drones: '310 шт', med: '3 200 аптечок', auto: '14 авто', desc: { uk: 'Оборона Куп\'янська, Вовчанська та Липців. Підтримка підрозділів ППО та стабілізаційних пунктів.', en: 'Defense of Kupyansk, Vovchansk, and Lyptsi. Support for air defense and stabilization points.', pl: 'Obrona Kupiańska i Wołczańska. Wsparcie punktów medycznych.', ro: 'Apărarea Kupyansk și Vovchansk. Sprijin pentru punctele medicale.', it: 'Difesa di Kupyansk e Vovchansk. Supporto ai punti medici.', de: 'Verteidigung von Kupjansk und Wowtschansk. Unterstützung von Med-Punkten.' } },
+    { id: 'kherson', name: { uk: 'Херсонщина', en: 'Kherson Region', pl: 'Obwód chersoński', ro: 'Regiunea Herson', it: 'Regione di Kherson', de: 'Region Cherson' }, icon: '📍', status: 'active', drones: '180 шт', med: '2 100 аптечок', auto: '9 човнів/авто', desc: { uk: 'Прибережна зона та острови Дніпра. Постачання човнів, РЕБ та генераторів для місцевих лікарень.', en: 'Dnipro river coastal zone and islands. Supplying boats, EW, and hospital generators.', pl: 'Strefa przybrzeżna Dniepru. Dostawy łodzi i generatorów.', ro: 'Zona de coastă a Niprului. Livrare de bărci și generatoare.', it: 'Zona costiera del Dnipro. Fornitura di barche e generatori.', de: 'Uferzone des Dnipro. Lieferung von Booten und Generatoren.' } },
+    { id: 'zaporizhzhia', name: { uk: 'Запоріжжя', en: 'Zaporizhzhia Region', pl: 'Obwód zaporoski', ro: 'Regiunea Zaporojie', it: 'Regione di Zaporizhzhia', de: 'Region Saporischschja' }, icon: '📍', status: 'active', drones: '240 шт', med: '2 800 аптечок', auto: '12 авто', desc: { uk: 'Робота на Оріхівському та Гуляйпільському напрямках. Допомога шпиталям та ДСНС.', en: 'Orikhiv and Huliaipole sectors. Aid to hospitals and emergency responders.', pl: 'Odcinek Orichowski i Hulajpole. Pomoc dla szpitali.', ro: 'Sectoarele Orihiv și Huliaipole. Ajutor pentru spitale.', it: 'Settori di Orikhiv e Huliaipole. Aiuti agli ospedali.', de: 'Abschnitt Orichiw und Huljajpole. Hilfe für Krankenhäuser.' } },
+    { id: 'sumy', name: { uk: 'Сумщина', en: 'Sumy Region', pl: 'Obwód sumski', ro: 'Regiunea Sumî', it: 'Regione di Sumy', de: 'Region Sumy' }, icon: '📍', status: 'active', drones: '150 шт', med: '1 600 аптечок', auto: '8 авто', desc: { uk: 'Захист північного прикордоння. Забезпечення прикордонників та підрозділів ТрО нічним баченням.', en: 'Northern border defense. Providing border guards and TDF with night vision.', pl: 'Obrona północnej granicy. Zaopatrzenie w noktowizję.', ro: 'Apărarea frontierei de nord. Furnizare de echipamente de vedere nocturnă.', it: 'Difesa del confine nord. Fornitura di visione notturna.', de: 'Verteidigung der Nordgrenze. Versorgung mit Nachtsichttechnik.' } },
+    { id: 'kyiv', name: { uk: 'Київщина та Центр', en: 'Kyiv & Central Region', pl: 'Kijowszczyzna i Centrum', ro: 'Kiev și Centru', it: 'Kyiv e Centro', de: 'Kiew & Zentralregion' }, icon: '📍', status: 'logistics', drones: 'Логістика', med: '6 шпиталів', auto: 'Склад фонду', desc: { uk: 'Головний логістичний хаб фонду, реабілітаційні центри для поранених та забезпечення мобільних вогневих груп ППО.', en: 'Main foundation logistics hub, rehab centers for wounded, and air defense mobile groups.', pl: 'Główny hub logistyczny, centra rehabilitacji i grupy plot.', ro: 'Centrul logistic principal, spitale de reabilitare și apărare antiaeriană.', it: 'Hub logistico principale, centri di riabilitazione e difesa aerea.', de: 'Haupt-Logistikhub, Reha-Zentren und mobile Flak-Gruppen.' } }
+  ],
+  frontlineRadar: [
+    { id: 'req_1', brigade: { uk: '3-тя Окрема Штурмова Бригада (3 ОШБр)', en: '3rd Separate Assault Brigade (3 OSHBr)', pl: '3. Samodzielna Brygada Szturmowa', ro: 'Brigada 3 de Asalt', it: '3ª Brigata di Assalto', de: '3. Separate Sturmbrigade' }, need: { uk: '3 нічні дрони Mavic 3T Thermal', en: '3 Night Mavic 3T Thermal Drones', pl: '3 drony termowizyjne Mavic 3T', ro: '3 drone termice Mavic 3T', it: '3 droni termici Mavic 3T', de: '3 Wärmebilddrohnen Mavic 3T' }, target: 360000, collected: 295000, status: 'urgent', badge: { uk: '🔥 Збираємо зараз', en: '🔥 Active Fundraiser', pl: '🔥 Aktywna zbiórka', ro: '🔥 Strângere activă', it: '🔥 Raccolta attiva', de: '🔥 Aktive Spendenaktion' } },
+    { id: 'req_2', brigade: { uk: '93-тя ОМБр «Холодний Яр»', en: '93rd Mechanized Brigade "Kholodnyi Yar"', pl: '93. Brygada Zmechanizowana', ro: 'Brigada 93 Mecanizată', it: '93ª Brigata Meccanizzata', de: '93. Mechanisierte Brigade' }, need: { uk: '2 мобільні комплекси РЕБ «Синиця»', en: '2 Mobile EW Systems "Synytsia"', pl: '2 mobilne systemy WRE', ro: '2 sisteme EW mobile', it: '2 sistemi EW mobili', de: '2 mobile EloKa-Systeme' }, target: 180000, collected: 180000, status: 'completed', badge: { uk: '✅ Збір закрито! В дорозі', en: '✅ Completed! On the way', pl: '✅ Zakończono! W drodze', ro: '✅ Finalizat! În drum', it: '✅ Completato! In viaggio', de: '✅ Abgeschlossen! Unterwegs' } },
+    { id: 'req_3', brigade: { uk: '128-ма ОГШБр (Закарпатський легіон)', en: '128th Mountain Assault Brigade', pl: '128. Brygada Górsko-Szturmowa', ro: 'Brigada 128 de Asalt Montan', it: '128ª Brigata di Assalto Montano', de: '128. Gebirgs-Sturmbrigade' }, need: { uk: 'Капітальний ремонт евакуаційного пікапа', en: 'Overhaul of Medevac Pickup Truck', pl: 'Remont pikapa ewakuacyjnego', ro: 'Reparație camionetă de evacuare', it: 'Riparazione pick-up evacuazione', de: 'Überholung von Medevac-Pickup' }, target: 95000, collected: 42000, status: 'urgent', badge: { uk: '⚡ Терміновий запит', en: '⚡ Urgent Request', pl: '⚡ Pilny wniosek', ro: '⚡ Cerere urgentă', it: '⚡ Richiesta urgente', de: '⚡ Dringende Anfrage' } },
+    { id: 'req_4', brigade: { uk: 'Мобільний шпиталь прифронтової зони', en: 'Frontline Mobile Hospital Unit', pl: 'Mobilny szpital przyfrontowy', ro: 'Spital mobil din linia întâi', it: 'Ospedale mobile in prima linea', de: 'Mobiles Frontkrankenhaus' }, need: { uk: '50 наборів для переливання крові та підігрівачі', en: '50 Blood Transfusion Kits & Fluid Warmers', pl: '50 zestawów do transfuzji krwi', ro: '50 kituri de transfuzie a sângelui', it: '50 kit per trasfusione di sangue', de: '50 Bluttransfusions-Sets & Wärmer' }, target: 140000, collected: 112000, status: 'urgent', badge: { uk: '🏥 Медичний пріоритет', en: '🏥 Medical Priority', pl: '🏥 Priorytet medyczny', ro: '🏥 Prioritate medicală', it: '🏥 Priorità medica', de: '🏥 Medizinscher Priorität' } }
+  ],
+  patronTiers: [
+    { id: 'silver', title: { uk: '🥉 Срібний Щит', en: '🥉 Silver Shield', pl: '🥉 Srebrna Tarcza', ro: '🥉 Scutul de Argint', it: '🥉 Scudo d\'Argento', de: '🥉 Silberschild' }, amount: '200 ₴', period: { uk: '/ місяць', en: '/ month', pl: '/ miesiąc', ro: '/ lună', it: '/ mese', de: '/ Monat' }, desc: { uk: 'Забезпечує 2 аптечки IFAK або 10 хімічних грілок щомісяця.', en: 'Provides 2 IFAK kits or 10 warmers monthly.', pl: 'Zapewnia 2 apteczki IFAK co miesiąc.', ro: 'Asigură 2 truse IFAK lunar.', it: 'Fornisce 2 kit IFAK mensili.', de: 'Finanziert monatlich 2 IFAK-Kits.' }, perks: [{ uk: '🎉 Цифровий бедж мецената', en: '🎉 Digital Patron Badge', pl: '🎉 Cyfrowa odznaka', ro: '🎉 Insignă digitală', it: '🎉 Badge digitale', de: '🎉 Digitales Abzeichen' }, { uk: '📧 Щомісячний ексклюзивний звіт', en: '📧 Monthly Exclusive Report', pl: '📧 Miesięczny raport', ro: '📧 Raport lunar exclusiv', it: '📧 Report mensile esclusivo', de: '📧 Exklusiver Monatsbericht' }], popular: false },
+    { id: 'gold', title: { uk: '🥇 Золотий Щит', en: '🥇 Gold Shield', pl: '🥇 Złota Tarcza', ro: '🥇 Scutul de Aur', it: '🥇 Scudo d\'Oro', de: '🥇 Goldschild' }, amount: '500 ₴', period: { uk: '/ місяць', en: '/ month', pl: '/ miesiąc', ro: '/ lună', it: '/ mese', de: '/ Monat' }, desc: { uk: 'Регулярний внесок на FPV-дрони та системи зв\'язку для розвідки.', en: 'Regular support for FPV drones and recon comms.', pl: 'Regularne wsparcie na drony FPV.', ro: 'Sprijin regulat pentru drone FPV.', it: 'Supporto regolare per droni FPV.', de: 'Regelmäßige Unterstützung für FPV-Drohnen.' }, perks: [{ uk: '🌟 Персональне ім\'я на VIP Дошці пошани', en: '🌟 Name on VIP Honor Board', pl: '🌟 Imię na tablicy VIP', ro: '🌟 Nume pe panoul VIP', it: '🌟 Nome nella bacheca VIP', de: '🌟 Name auf VIP-Ehrentafel' }, { uk: '💬 Доступ до закритого чату благодійників', en: '💬 Access to private patrons chat', pl: '💬 Dostęp do czatu patronów', ro: '💬 Acces la chat privat', it: '💬 Accesso alla chat privata', de: '💬 Zugang zum Patron-Chat' }, { uk: '🎁 Фірмовий пісчаний піксельний патч фонду', en: '🎁 Official Foundation Tactical Patch', pl: '🎁 Naszywka taktyczna', ro: '🎁 Patch tactic oficial', it: '🎁 Patch tattica ufficiale', de: '🎁 Offizielles Taktik-Patch' }], popular: true },
+    { id: 'platinum', title: { uk: '💎 Корпоративний Меценат', en: '💎 Corporate / VIP Patron', pl: '💎 Patron Korporacyjny', ro: '💎 Patron Corporativ', it: '💎 Mecenate Aziendale', de: '💎 Unternehmens-Patron' }, amount: '5 000 ₴', period: { uk: '/ місяць', en: '/ month', pl: '/ miesiąc', ro: '/ lună', it: '/ mese', de: '/ Monat' }, desc: { uk: 'Системне партнерство для бізнесу та лідерів думок. Закриття стратегічних зборів.', en: 'Systemic partnership for businesses and leaders. Closing strategic campaigns.', pl: 'Partnerstwo dla biznesu. Zamykanie zbiórek.', ro: 'Parteneriat sistemic pentru companii.', it: 'Partnership sistemica per aziende.', de: 'Systemische Partnerschaft für Unternehmen.' }, perks: [{ uk: '🏢 Логотип компанії на головній сторінці', en: '🏢 Company logo on homepage', pl: '🏢 Logo na stronie głównej', ro: '🏢 Logo pe pagina principală', it: '🏢 Logo in home page', de: '🏢 Firmenlogo auf Startseite' }, { uk: '📜 Офіційна подяка-відзнака від командування', en: '📜 Official Award from Military Command', pl: '📜 Oficjalne podziękowanie od dowództwa', ro: '📜 Distincție oficială', it: '📜 Encomio ufficiale', de: '📜 Offizielle Auszeichnung' }, { uk: '📸 Повний медіа-супровід та PR-звітвість', en: '📸 Full media & PR reporting coverage', pl: '📸 Pełny raport PR i media', ro: '📸 Acoperire media completă', it: '📸 Copertura media completa', de: '📸 Komplette PR- & Medienbegleitung' }], popular: false }
+  ],
+  applications: [],
+  militaryRequests: [
+    {
+      id: 'REQ-8492',
+      unit: '3-тя Окрема Штурмова Бригада (3 ОШБр)',
+      contact: 'мжр. Богдан В., техзабезпечення',
+      category: '🛸 Дрони / РЕБ',
+      items: '5 шт. DJI Mavic 3T Thermal + 10 додаткових акумуляторів',
+      priority: '🔥 Високий (Штурмові дії)',
+      status: 'purchased',
+      statusLabel: '🟢 Закуплено — у дорозі на фронт',
+      date: '04.07.2026'
+    },
+    {
+      id: 'REQ-8491',
+      unit: '93-тя ОМБр «Холодний Яр»',
+      contact: 'кап. Олена К., начмед',
+      category: '🏥 Тактична медицина',
+      items: '300 шт. Аптечки IFAK з кровоспинними турнікетами CAT Gen7',
+      priority: '⚡ Терміново (Евакуація)',
+      status: 'delivered',
+      statusLabel: '✅ Доставлено — Акт підписано',
+      date: '28.06.2026'
+    },
+    {
+      id: 'REQ-8490',
+      unit: '128-ма ОГШБр (Запоріжжя)',
+      contact: 'ст. лейт. Ігор М.',
+      category: '🚗 Автотранспорт / Шини',
+      items: 'Комплект болотної гуми МТ (4 шт.) для евакуаційного пікапа L200',
+      priority: '🟡 Середній (Логістика)',
+      status: 'fundraising',
+      statusLabel: '🟡 Відкрито збір — Зібрано 65%',
+      date: '01.07.2026'
+    },
+    {
+      id: 'REQ-8489',
+      unit: 'ППО Київщини (Мобільна вогнева група)',
+      contact: 'серж. Олександр П.',
+      category: '⚡ Живлення та Зв\'язок',
+      items: '2 шт. Зарядні станції EcoFlow Delta 2 + Starlink Gen3',
+      priority: '🔥 Високий (Захист неба)',
+      status: 'review',
+      statusLabel: '🔍 Верифікація безпеки та документів',
+      date: '05.07.2026'
+    }
+  ],
+  honorWallBricks: [
+    { id: 'br_1', name: 'Олександр та родина', amount: '50 000 ₴', message: 'За наше чисте небо та спокійний сон дітей! Слава Україні! 🇺🇦', country: 'uk', date: '05.07.2026' },
+    { id: 'br_2', name: 'James & Sarah Wilson', amount: '$500', message: 'Standing firmly with Ukraine until total victory! Love from Texas 🇺🇸', country: 'us', date: '04.07.2026' },
+    { id: 'br_3', name: 'IT-Компанія «TechDev»', amount: '150 000 ₴', message: 'На нічні пташки для 3-ї ОШБр від нашої команди розробників! 🚀', country: 'uk', date: '03.07.2026' },
+    { id: 'br_4', name: 'Krzysztof Kowalski', amount: '1 000 PLN', message: 'Za wolność naszą i waszą! Bracia Ukraińcy, jesteśmy z Wami! 🇵🇱', country: 'pl', date: '02.07.2026' },
+    { id: 'br_5', name: 'Олена (волонтер з Києва)', amount: '5 000 ₴', message: 'Нехай наші захисники повертаються додому живими та здоровими! ❤️', country: 'uk', date: '01.07.2026' },
+    { id: 'br_6', name: 'Hans Müller & Familie', amount: '300 EUR', message: 'Für Frieden und Freiheit in Europa. Grüße aus München! 🇩🇪', country: 'de', date: '30.06.2026' },
+    { id: 'br_7', name: 'David Smith', amount: '£250', message: 'Support from London! Keep fighting the good fight! 🇬🇧', country: 'gb', date: '29.06.2026' },
+    { id: 'br_8', name: 'Анонімний Благодійник', amount: '25 000 ₴', message: 'На РЕБ для хлопців на Донбасі. Разом ми сила!', country: 'uk', date: '28.06.2026' }
+  ],
+  shopItems: [
+    { id: 'sh_1', title: 'Розписана гільза 155-мм від артилерії', category: '🏆 Артефакти з фронту', price: '10 000 ₴', desc: 'Аутентична гільза від гаубиці М777, привезена з Бахмутського напрямку. Художній петриківський розпис від волонтерів.', image: 'media__1783038868575.jpg', inStock: true },
+    { id: 'sh_2', title: 'Тубус від гранатомета NLAW / Javelin', category: '🏆 Артефакти з фронту', price: '25 000 ₴', desc: 'Відстріляний тубус з підписами командирів штурмових батальйонів. Легендарний трофей для офісу чи колекції.', image: 'media__1783038868580.jpg', inStock: true },
+    { id: 'sh_3', title: 'Тактичне худі «Разом ми — сила» (Олива)', category: '👕 Одяг та Мерч', price: '2 500 ₴', desc: 'Преміальна щільна бавовна 350г/м², велкро-панелі для шевронів на рукавах. 100% прибутку йде на дрони.', image: 'media__1783038868590.jpg', inStock: true },
+    { id: 'sh_4', title: 'Бойовий прапор з підписами бійців ППО', category: '🏆 Артефакти з фронту', price: '15 000 ₴', desc: 'Оригінальний державний прапор України (150х90 см) з автографами та побажаннями від мобільних вогневих груп Київщини.', image: 'media__1783038868596.jpg', inStock: true },
+    { id: 'sh_5', title: 'Фірмовий тактичний 3D патч (Шеврон)', category: '🛡️ Шеврони та Сувеніри', price: '500 ₴', desc: 'Високоякісний ПВХ шеврон на липучці (велкро) з символікою фонду. Вологостійкий та довговічний.', image: 'media__1783038868601.jpg', inStock: true },
+    { id: 'sh_6', title: 'Термокухоль «Небесний Щит» (500 мл)', category: '🛡️ Шеврони та Сувеніри', price: '1 200 ₴', desc: 'Матовий чорний термокухоль з лазерним гравіюванням нашої головної операції. Тримає тепло до 12 годин.', image: 'media__1783040943180.jpg', inStock: true }
+  ],
+  shopOrders: [
+    { id: 'ORD-5012', item: 'Тактичне худі «Разом ми — сила» (Олива)', customer: 'Ігор Бондаренко', phone: '+380971234567', address: 'м. Київ, Нова Пошта №45', date: '05.07.2026', status: 'new', statusLabel: '🟡 Очікує відправки' },
+    { id: 'ORD-5011', item: 'Фірмовий тактичний 3D патч (Шеврон)', customer: 'Олена Василенко', phone: '+380509876543', address: 'м. Львів, Нова Пошта №12', date: '04.07.2026', status: 'sent', statusLabel: '🟢 Відправлено Новою Поштою' },
+    { id: 'ORD-5010', item: 'Розписана гільза 155-мм від артилерії', customer: 'Michael Smith (USA)', phone: '+14155552671', address: 'DHL Express, New York, USA', date: '01.07.2026', status: 'delivered', statusLabel: '✅ Доставлено меценату' }
+  ],
+  trainingCourses: [
+    { id: 'tr_1', title: '🛸 Керування БПЛА та FPV-дронами', category: 'БПЛА та Розвідка', date: '12 липня 2026', city: 'м. Київ (Полігон)', instructor: 'інстр. «Маестро» (ветеран 3 ОШБр)', seatsTotal: 20, seatsTaken: 16, desc: 'Інтенсивний 3-денний курс: аеродинаміка, симулятори Liftoff/Velocidrone, робота під дією ворожого РЕБ, польоти на полігоні.', icon: '🛸' },
+    { id: 'tr_2', title: '🏥 Тактична медицина за протоколом TCCC / MARCH', category: 'Тактична медицина', date: '15 липня 2026', city: 'м. Львів (Хаб фонду)', instructor: 'начмед. Олена (Госпітальєри)', seatsTotal: 25, seatsTaken: 25, desc: 'Практичний тренінг: накладання турнікетів CAT, тампонада вузлових кровотеч, пневмоторакси, евакуація під вогнем.', icon: '🏥' },
+    { id: 'tr_3', title: '💣 Мінно-вибухова безпека (EORE / EOD)', category: 'Мінна безпека', date: '19 липня 2026', city: 'м. Дніпро', instructor: 'сапер «Грім» (ДСНС / ЗСУ)', seatsTotal: 30, seatsTaken: 12, desc: 'Розпізнавання вибухонебезпечних предметів, розтяжок, мін ПФМ-1 «Пелюстка», правила поведінки на деокупованих територіях.', icon: '💣' },
+    { id: 'tr_4', title: "📻 Польовий зв'язок, РЕБ та Кібербезпека", category: "Зв'язок та РЕБ", date: '23 липня 2026', city: 'м. Київ (Офіс)', instructor: "інстр. «Радіст» (Зв'язок ППО)", seatsTotal: 15, seatsTaken: 8, desc: 'Прошивка та шифрування радіостанцій Motorola/Hytera, налаштування та маскування Starlink, цифрова гігієна на фронті.', icon: '📻' }
+  ],
+  trainingRegistrations: [
+    { id: 'REG-901', courseTitle: '🛸 Керування БПЛА та FPV-дронами', name: 'Андрій Мельник', phone: '+380631112233', role: 'Військовий (ТрО)', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Підтверджено' },
+    { id: 'REG-902', courseTitle: '🏥 Тактична медицина за протоколом TCCC', name: 'Катерина Коваль', phone: '+380954445566', role: 'Волонтер', date: '04.07.2026', status: 'approved', statusLabel: '🟢 Підтверджено' },
+    { id: 'REG-903', courseTitle: '💣 Мінно-вибухова безпека (EORE / EOD)', name: 'Віталій Сидоренко', phone: '+380678889900', role: 'Цивільний', date: '03.07.2026', status: 'pending', statusLabel: '🟡 В обробці' }
+  ],
+  rehabVeterans: [
+    { id: 'rh_1', name: 'Олександр «Молот»', callsign: '3-тя ОШБр', injury: 'Втрата правої кінцівки внаслідок мінно-вибухової травми під Бахмутом', treatment: 'Виготовлення біонічного протезу кінцівки Esper Hand та курс реабілітації', clinic: 'Клініка Superhumans / Нове Життя (Львів)', status: 'funded', statusLabel: '🟢 Протез встановлено, проходить адаптацію', story: 'Після тяжкого поранення у траншеї Олександр не здався. Завдяки донорам фонду він отримав сучасний біонічний протез і зараз викладає пілотування FPV-дронів у нашій Академії.', image: 'media__1783040943183.jpg', needAmount: 850000, collectedAmount: 850000 },
+    { id: 'rh_2', name: 'Дмитро «Сокіл»', callsign: '80-та ОДШБр', injury: 'Ампутація гомілки та контузія під Кліщіївкою', treatment: 'Спортивний біговий протез Ottobock та курс психологічної декомпресії', clinic: 'Центр Нескорені / Unbroken (Київ)', status: 'active', statusLabel: '🟡 Триває збір на спортивний протез', story: 'Дмитро мріє повернутися до активного спорту та взяти участь у «Іграх Нескорених». Зібрано вже 70% суми на спеціальний біговий протез з карбонового волокна.', image: 'media__1783040943186.jpg', needAmount: 620000, collectedAmount: 435000 },
+    { id: 'rh_3', name: 'Максим «Волиняк»', callsign: '24-та ОМБр', injury: 'Осколкове поранення спини та тяжкий ПТСР', treatment: 'Інтенсивний 3-місячний курс нейрорегабілітації та арт-терапії в Карпатах', clinic: 'Ветеранський хаб «Відродження» (Івано-Франківськ)', status: 'active', statusLabel: '🟡 Триває збір на курс реабілітації', story: 'Максим провів 8 місяців на нулі. Зараз він потребує якісного психологічного розвантаження та нейростимуляції для відновлення сну та координації.', image: 'media__1783040943196.jpg', needAmount: 180000, collectedAmount: 142000 }
+  ],
+  rehabApplications: [
+    { id: 'RH-401', name: 'Віктор Петренко (ветеран 95 ОДШБр)', phone: '+380671122334', type: '🦿 Біонічне протезування', details: 'Ампутація лівої руки нижче ліктя, потребую біонічного протезу', date: '05.07.2026', status: 'review', statusLabel: '🟡 Медична перевірка' },
+    { id: 'RH-402', name: 'Ірина (дружина бійця 59 ОМПБр)', phone: '+380509988776', type: '🧠 Психологічна реабілітація (ПТСР)', details: 'Чоловік повернувся з полону, потрібна комплексна психологічна та фізична допомога', date: '04.07.2026', status: 'active', statusLabel: '🟢 В роботі клініки' },
+    { id: 'RH-403', name: 'Сергій «Козак» (демобілізований)', phone: '+380635554433', type: '💼 Перекваліфікація та IT-курси', details: 'Бажаю пройти курс оператора цивільних БПЛА для роботи в агросекторі', date: '02.07.2026', status: 'done', statusLabel: '✅ Курс розпочато' }
+  ],
+  internationalDonors: [
+    { id: 'INT-801', donor: 'John & Mary Henderson', country: 'us', countryName: 'USA 🇺🇸', currency: 'USD', amount: '$5,000', method: '501(c)(3) Wire Transfer', date: '05.07.2026', msg: 'Dedicated to the brave defenders of Bakhmut. Stay strong!' },
+    { id: 'INT-802', donor: 'British Aid for Ukraine Group', country: 'gb', countryName: 'UK 🇬🇧', currency: 'GBP', amount: '£3,500', method: 'UK Gift Aid (+25% Bonus)', date: '04.07.2026', msg: 'From London with solidarity! We stand with you until victory.' },
+    { id: 'INT-803', donor: 'Anonymous Crypto Whale', country: 'global', countryName: 'Global Web3 🌐', currency: 'USDT', amount: '10,000 USDT', method: 'Crypto TRC20 Wallet', date: '03.07.2026', msg: 'For night reconnaissance drones and EW systems.' },
+    { id: 'INT-804', donor: 'Stefan & Claudia Weber', country: 'de', countryName: 'Germany 🇩🇪', currency: 'EUR', amount: '1,500 EUR', method: 'SEPA Direct IBAN', date: '02.07.2026', msg: 'Für Frieden und Freiheit in Europa! Slava Ukraini!' }
+  ],
+  memorialHeroes: [
+    { id: 'mem_1', name: 'Майоренко Олексій «Орел»', rank: 'капітан, командир роти БПЛА', brigade: '72-га ОМБр ім. Чорних Запорожців', awards: 'Герой України (посмертно), Орден «За мужність» І ст.', date: '14 жовтня 2025', place: 'Вугледарський напрямок', story: 'Олексій особисто знищив 14 бронемашин ворога та врятував оточену групу побратимів, прикриваючи їхній відхід вогнем свого розрахунку. Вічна слава та пам\'ять Герою!', image: 'media__1783038868575.jpg', candlesCount: 1420 },
+    { id: 'mem_2', name: 'Коваленко Сергій «Скеля»', rank: 'старший сержант, штурмовик', brigade: '3-тя Окрема Штурмова Бригада', awards: 'Орден «За мужність» ІІ та ІІІ ст.', date: '22 серпня 2025', place: 'околиці Бахмута', story: 'Сергій пройшов найгарячіші точки фронту від Києва до Донбасу. Загинув від ворожого скиду під час евакуації пораненого бійця зі свого взводу. Незламний воїн і вірний друг.', image: 'media__1783038868580.jpg', candlesCount: 980 },
+    { id: 'mem_3', name: 'Веремієнко Андрій «Студент»', rank: 'солдат, бойовий медик', brigade: '82-га ОДШБр', awards: 'Орден «За мужність» ІІІ ст.', date: '10 листопада 2025', place: 'Роботине (Запоріжжя)', story: 'Андрій, студент 4-го курсу медуніверситету, пішов добровольцем у перші дні. Врятував життя понад 40 побратимам під ворожим артобстрілом. Вічна подяка від врятованих бійців.', image: 'media__1783038868590.jpg', candlesCount: 1850 }
+  ],
+  memorialApplications: [
+    { id: 'MEM-501', name: 'Олена Майоренко (дружина)', phone: '+380671112233', heroName: 'Майоренко Олексій «Орел»', brigade: '72 ОМБр', details: 'Бажаю додати історію чоловіка на Стіну Пам\'яті та долучитися до програми підтримки родин', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Додано в Пантеон' },
+    { id: 'MEM-502', name: 'Дмитро (побратим)', phone: '+380509988771', heroName: 'Ткаченко Микола «Батько»', brigade: '93 ОМБр «Холодний Яр»', details: 'Загинув під Кліщіївкою, маємо фото та виписку нагород', date: '04.07.2026', status: 'review', statusLabel: '🟡 Перевірка документів' }
+  ],
+  auctionLots: [
+    { id: 'auc_1', title: '🇺🇦 Бойовий Прапор з особистим підписом Кирила Буданова', type: 'raffle', typeLabel: '🎟️ Благодійна Лотерея', desc: 'Ексклюзивний прапор України з автографом начальника ГУР МО Кирила Буданова. Всі кошти йдуть на нічні дрони з тепловізорами для розвідників!', image: 'media__1782942639584.png', ticketPrice: 200, currentBid: 0, targetAmount: 500000, collectedAmount: 410000, totalTickets: 2050, topBidder: '-', endTime: '15 липня 2026', status: 'active' },
+    { id: 'auc_2', title: '🥊 Боксерська рукавичка з автографом Олександра Усика', type: 'raffle', typeLabel: '🎟️ Благодійна Лотерея', desc: 'Оригінальна боксерська рукавичка Абсолютного чемпіона світу Олександра Усика. 1 білет = 300 грн. Більше донат = більше шансів!', image: 'media__1782942624904.png', ticketPrice: 300, currentBid: 0, targetAmount: 300000, collectedAmount: 240000, totalTickets: 800, topBidder: '-', endTime: '20 липня 2026', status: 'active' },
+    { id: 'auc_3', title: '🚀 Відстріляний тубус від NLAW з розписом бійців 3 ОШБр', type: 'auction', typeLabel: '🔨 Відкритий Аукціон', desc: 'Легендарний трофей з-під Бахмута, перетворений на арт-об\'єкт військовими художниками. Перемагає найвища ставка!', image: 'media__1783040943180.jpg', ticketPrice: 0, currentBid: 45000, targetAmount: 100000, collectedAmount: 45000, totalTickets: 0, topBidder: 'Меценат Alex_K', endTime: '18 липня 2026', status: 'active' }
+  ],
+  auctionTransactions: [
+    { id: 'TRX-701', lotId: 'auc_1', lotTitle: '🇺🇦 Прапор від Кирила Буданова', participant: 'Марина Бондаренко', phone: '+380631122334', amount: '2 000 ₴', ticketsCount: '10 білетів', date: '05.07.2026', type: '🎟️ Лотерея' },
+    { id: 'TRX-702', lotId: 'auc_3', lotTitle: '🚀 Тубус NLAW 3 ОШБр', participant: 'Alex_K (IT-компанія)', phone: '+380678899000', amount: '45 000 ₴', ticketsCount: 'Ставка', date: '04.07.2026', type: '🔨 Аукціон' },
+    { id: 'TRX-703', lotId: 'auc_2', lotTitle: '🥊 Рукавичка Олександра Усика', participant: 'Ігор Власенко', phone: '+380504433221', amount: '1 500 ₴', ticketsCount: '5 білетів', date: '03.07.2026', type: '🎟️ Лотерея' }
+  ]
 };
 
 window.FoundationStore = {
@@ -412,6 +650,11 @@ window.FoundationStore = {
     this.saveData(data);
   },
 
+    getMegaGoal() { return this.getData().megaGoal || INITIAL_DATA.megaGoal; },
+  getImpactMap() { return this.getData().impactMap || INITIAL_DATA.impactMap; },
+  getFrontlineRadar() { return this.getData().frontlineRadar || INITIAL_DATA.frontlineRadar; },
+  getPatronTiers() { return this.getData().patronTiers || INITIAL_DATA.patronTiers; },
+
   getApplications() { return this.getData().applications || []; },
   addApplication(app) {
     const data = this.getData();
@@ -422,6 +665,276 @@ window.FoundationStore = {
     data.applications.unshift(app);
     this.saveData(data);
     return app;
+  },
+
+  getMilitaryRequests() { return this.getData().militaryRequests || INITIAL_DATA.militaryRequests; },
+  addMilitaryRequest(req) {
+    const data = this.getData();
+    if (!data.militaryRequests) data.militaryRequests = [];
+    req.id = 'REQ-' + Math.floor(1000 + Math.random() * 9000);
+    req.date = new Date().toLocaleDateString('uk-UA');
+    req.status = 'review';
+    req.statusLabel = '🔍 Верифікація безпеки та документів';
+    data.militaryRequests.unshift(req);
+    this.saveData(data);
+    return req;
+  },
+  updateMilitaryRequestStatus(id, newStatus, newLabel) {
+    const data = this.getData();
+    if (!data.militaryRequests) return;
+    const idx = data.militaryRequests.findIndex(r => r.id === id);
+    if (idx !== -1) {
+      data.militaryRequests[idx].status = newStatus;
+      data.militaryRequests[idx].statusLabel = newLabel;
+      this.saveData(data);
+    }
+  },
+  deleteMilitaryRequest(id) {
+    const data = this.getData();
+    if (data.militaryRequests) {
+      data.militaryRequests = data.militaryRequests.filter(r => r.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getHonorWallBricks() { return this.getData().honorWallBricks || INITIAL_DATA.honorWallBricks; },
+  addHonorWallBrick(brick) {
+    const data = this.getData();
+    if (!data.honorWallBricks) data.honorWallBricks = [];
+    brick.id = 'br_' + Date.now();
+    brick.date = new Date().toLocaleDateString('uk-UA');
+    data.honorWallBricks.unshift(brick);
+    this.saveData(data);
+    return brick;
+  },
+  deleteHonorWallBrick(id) {
+    const data = this.getData();
+    if (data.honorWallBricks) {
+      data.honorWallBricks = data.honorWallBricks.filter(b => b.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getShopItems() { return this.getData().shopItems || INITIAL_DATA.shopItems; },
+  getShopOrders() { return this.getData().shopOrders || INITIAL_DATA.shopOrders; },
+  addShopOrder(order) {
+    const data = this.getData();
+    if (!data.shopOrders) data.shopOrders = [];
+    order.id = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+    order.date = new Date().toLocaleDateString('uk-UA');
+    order.status = 'new';
+    order.statusLabel = '🟡 Очікує відправки';
+    data.shopOrders.unshift(order);
+    this.saveData(data);
+    return order;
+  },
+  updateShopOrderStatus(id, status, label) {
+    const data = this.getData();
+    if (!data.shopOrders) return;
+    const idx = data.shopOrders.findIndex(o => o.id === id);
+    if (idx !== -1) {
+      data.shopOrders[idx].status = status;
+      data.shopOrders[idx].statusLabel = label;
+      this.saveData(data);
+    }
+  },
+  deleteShopOrder(id) {
+    const data = this.getData();
+    if (data.shopOrders) {
+      data.shopOrders = data.shopOrders.filter(o => o.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getTrainingCourses() { return this.getData().trainingCourses || INITIAL_DATA.trainingCourses; },
+  updateTrainingCourseSeats(id, taken) {
+    const data = this.getData();
+    if (!data.trainingCourses) return;
+    const idx = data.trainingCourses.findIndex(c => c.id === id);
+    if (idx !== -1) {
+      data.trainingCourses[idx].seatsTaken = taken;
+      this.saveData(data);
+    }
+  },
+  getTrainingRegistrations() { return this.getData().trainingRegistrations || INITIAL_DATA.trainingRegistrations; },
+  addTrainingRegistration(reg) {
+    const data = this.getData();
+    if (!data.trainingRegistrations) data.trainingRegistrations = [];
+    reg.id = 'REG-' + Math.floor(100 + Math.random() * 900);
+    reg.date = new Date().toLocaleDateString('uk-UA');
+    reg.status = 'pending';
+    reg.statusLabel = '🟡 В обробці';
+    data.trainingRegistrations.unshift(reg);
+    
+    // Increment seats taken if possible
+    if (data.trainingCourses) {
+      const cIdx = data.trainingCourses.findIndex(c => c.title === reg.courseTitle);
+      if (cIdx !== -1 && data.trainingCourses[cIdx].seatsTaken < data.trainingCourses[cIdx].seatsTotal) {
+        data.trainingCourses[cIdx].seatsTaken++;
+      }
+    }
+    
+    this.saveData(data);
+    return reg;
+  },
+  updateTrainingRegStatus(id, status, label) {
+    const data = this.getData();
+    if (!data.trainingRegistrations) return;
+    const idx = data.trainingRegistrations.findIndex(r => r.id === id);
+    if (idx !== -1) {
+      data.trainingRegistrations[idx].status = status;
+      data.trainingRegistrations[idx].statusLabel = label;
+      this.saveData(data);
+    }
+  },
+  deleteTrainingRegistration(id) {
+    const data = this.getData();
+    if (data.trainingRegistrations) {
+      data.trainingRegistrations = data.trainingRegistrations.filter(r => r.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getRehabVeterans() { return this.getData().rehabVeterans || INITIAL_DATA.rehabVeterans; },
+  getRehabApplications() { return this.getData().rehabApplications || INITIAL_DATA.rehabApplications; },
+  addRehabApplication(app) {
+    const data = this.getData();
+    if (!data.rehabApplications) data.rehabApplications = [];
+    app.id = 'RH-' + Math.floor(100 + Math.random() * 900);
+    app.date = new Date().toLocaleDateString('uk-UA');
+    app.status = 'review';
+    app.statusLabel = '🟡 Медична перевірка';
+    data.rehabApplications.unshift(app);
+    this.saveData(data);
+    return app;
+  },
+  updateRehabAppStatus(id, status, label) {
+    const data = this.getData();
+    if (!data.rehabApplications) return;
+    const idx = data.rehabApplications.findIndex(a => a.id === id);
+    if (idx !== -1) {
+      data.rehabApplications[idx].status = status;
+      data.rehabApplications[idx].statusLabel = label;
+      this.saveData(data);
+    }
+  },
+  deleteRehabApplication(id) {
+    const data = this.getData();
+    if (data.rehabApplications) {
+      data.rehabApplications = data.rehabApplications.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getInternationalDonors() { return this.getData().internationalDonors || INITIAL_DATA.internationalDonors; },
+  addInternationalDonor(donor) {
+    const data = this.getData();
+    if (!data.internationalDonors) data.internationalDonors = [];
+    donor.id = 'INT-' + Math.floor(100 + Math.random() * 900);
+    donor.date = new Date().toLocaleDateString('uk-UA');
+    data.internationalDonors.unshift(donor);
+    this.saveData(data);
+    return donor;
+  },
+  deleteInternationalDonor(id) {
+    const data = this.getData();
+    if (data.internationalDonors) {
+      data.internationalDonors = data.internationalDonors.filter(d => d.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getMemorialHeroes() { return this.getData().memorialHeroes || INITIAL_DATA.memorialHeroes; },
+  lightHeroCandle(id) {
+    const data = this.getData();
+    if (!data.memorialHeroes) return;
+    const idx = data.memorialHeroes.findIndex(h => h.id === id);
+    if (idx !== -1) {
+      data.memorialHeroes[idx].candlesCount = (data.memorialHeroes[idx].candlesCount || 0) + 1;
+      this.saveData(data);
+      return data.memorialHeroes[idx].candlesCount;
+    }
+  },
+  getMemorialApplications() { return this.getData().memorialApplications || INITIAL_DATA.memorialApplications; },
+  addMemorialApp(app) {
+    const data = this.getData();
+    if (!data.memorialApplications) data.memorialApplications = [];
+    app.id = 'MEM-' + Math.floor(100 + Math.random() * 900);
+    app.date = new Date().toLocaleDateString('uk-UA');
+    app.status = 'review';
+    app.statusLabel = '🟡 Перевірка документів';
+    data.memorialApplications.unshift(app);
+    this.saveData(data);
+    return app;
+  },
+  deleteMemorialApp(id) {
+    const data = this.getData();
+    if (data.memorialApplications) {
+      data.memorialApplications = data.memorialApplications.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  getAuctionLots() { return this.getData().auctionLots || INITIAL_DATA.auctionLots; },
+  getAuctionTransactions() { return this.getData().auctionTransactions || INITIAL_DATA.auctionTransactions; },
+  buyRaffleTickets(lotId, participant, phone, ticketsCount, amount) {
+    const data = this.getData();
+    if (!data.auctionLots) return;
+    const idx = data.auctionLots.findIndex(l => l.id === lotId);
+    if (idx !== -1) {
+      data.auctionLots[idx].collectedAmount += amount;
+      data.auctionLots[idx].totalTickets += ticketsCount;
+    }
+    if (!data.auctionTransactions) data.auctionTransactions = [];
+    const trx = {
+      id: 'TRX-' + Math.floor(100 + Math.random() * 900),
+      lotId,
+      lotTitle: idx !== -1 ? data.auctionLots[idx].title : 'Лотерея',
+      participant,
+      phone,
+      amount: amount.toLocaleString() + ' ₴',
+      ticketsCount: ticketsCount + ' білетів',
+      date: new Date().toLocaleDateString('uk-UA'),
+      type: '🎟️ Лотерея'
+    };
+    data.auctionTransactions.unshift(trx);
+    this.saveData(data);
+    return trx;
+  },
+  placeAuctionBid(lotId, bidder, phone, bidAmount) {
+    const data = this.getData();
+    if (!data.auctionLots) return false;
+    const idx = data.auctionLots.findIndex(l => l.id === lotId);
+    if (idx !== -1) {
+      if (bidAmount <= data.auctionLots[idx].currentBid) return false;
+      data.auctionLots[idx].currentBid = bidAmount;
+      data.auctionLots[idx].collectedAmount = bidAmount;
+      data.auctionLots[idx].topBidder = bidder;
+      
+      if (!data.auctionTransactions) data.auctionTransactions = [];
+      const trx = {
+        id: 'TRX-' + Math.floor(100 + Math.random() * 900),
+        lotId,
+        lotTitle: data.auctionLots[idx].title,
+        participant: bidder,
+        phone,
+        amount: bidAmount.toLocaleString() + ' ₴',
+        ticketsCount: 'Нова Ставка',
+        date: new Date().toLocaleDateString('uk-UA'),
+        type: '🔨 Аукціон'
+      };
+      data.auctionTransactions.unshift(trx);
+      this.saveData(data);
+      return true;
+    }
+    return false;
+  },
+  deleteAuctionTransaction(id) {
+    const data = this.getData();
+    if (data.auctionTransactions) {
+      data.auctionTransactions = data.auctionTransactions.filter(t => t.id !== id);
+      this.saveData(data);
+    }
   },
   deleteApplication(id) {
     const data = this.getData();

@@ -6,6 +6,8 @@
 let selectedAmount = 100;
 let isMonthly = false;
 let currentHonorFilter = 'all';
+let currentCampFilter = 'all';
+let statsAnimated = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Init i18n
@@ -51,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Initial Render
   renderAll();
   animateNumbers();
+  initLiveTicker();
 });
 
 function updateLanguageFlagUI(lang) {
@@ -83,9 +86,14 @@ function setMobileLang(lang) {
 
 function renderAll() {
   renderStats();
+  renderMegaGoal();
   renderCampaigns();
+  renderFrontlineRadar();
+  renderImpactMap();
   renderGallery();
   renderHonorBoard();
+  renderPatronClub();
+  drawCertificate();
 }
 
 // === Render Stats ===
@@ -96,23 +104,90 @@ function renderStats() {
   const stFamilies = document.getElementById('statFamilies');
   const stVolunteers = document.getElementById('statVolunteers');
 
-  if (stCollected) {
-    const millions = (stats.totalCollected / 1000000).toFixed(2);
-    stCollected.textContent = `${millions}+ млн ₴`;
+  if (!statsAnimated) {
+    const statsSec = document.getElementById('stats');
+    if (statsSec && window.IntersectionObserver) {
+      const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animateStatsOnce();
+          obs.disconnect();
+        }
+      }, { threshold: 0.2 });
+      obs.observe(statsSec);
+      return;
+    } else {
+      animateStatsOnce();
+      return;
+    }
   }
+
+  if (stCollected) stCollected.textContent = `${(stats.totalCollected / 1000000).toFixed(2)}+ млн ₴`;
   if (stDrones) stDrones.textContent = stats.dronesAndVehicles;
   if (stFamilies) stFamilies.textContent = `${stats.familiesSupported.toLocaleString()}+`;
   if (stVolunteers) stVolunteers.textContent = stats.volunteersCount;
 }
 
+function animateStatsOnce() {
+  if (statsAnimated) return;
+  const stats = FoundationStore.getStats();
+  const stCollected = document.getElementById('statCollected');
+  const stDrones = document.getElementById('statDrones');
+  const stFamilies = document.getElementById('statFamilies');
+  const stVolunteers = document.getElementById('statVolunteers');
+
+  if (stCollected) animateNumber(stCollected, stats.totalCollected / 1000000, '', '+ млн ₴', true);
+  if (stDrones) animateNumber(stDrones, stats.dronesAndVehicles, '', '', false);
+  if (stFamilies) animateNumber(stFamilies, stats.familiesSupported, '', '+', false);
+  if (stVolunteers) animateNumber(stVolunteers, stats.volunteersCount, '', '', false);
+  statsAnimated = true;
+}
+
+function animateNumber(el, target, prefix = '', suffix = '', isFloat = false) {
+  let start = 0;
+  const duration = 2000;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const currentVal = start + (target - start) * easeProgress;
+    
+    if (isFloat) {
+      el.textContent = `${prefix}${currentVal.toFixed(2)}${suffix}`;
+    } else {
+      el.textContent = `${prefix}${Math.floor(currentVal).toLocaleString()}${suffix}`;
+    }
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = `${prefix}${isFloat ? target.toFixed(2) : target.toLocaleString()}${suffix}`;
+    }
+  }
+  requestAnimationFrame(update);
+}
+
 // === Render Campaigns ===
+function filterCampaigns(cat, btnEl) {
+  currentCampFilter = cat;
+  const btns = document.querySelectorAll('.camp-filter-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  renderCampaigns();
+}
+
 function renderCampaigns() {
   const container = document.getElementById('campaignsContainer');
   if (!container) return;
   const campaigns = FoundationStore.getCampaigns();
   const lang = I18nStore.currentLang || 'uk';
 
-  container.innerHTML = campaigns.map(camp => {
+  const filteredCampaigns = currentCampFilter === 'all' 
+    ? campaigns 
+    : campaigns.filter(c => c.category === currentCampFilter);
+
+  container.innerHTML = filteredCampaigns.map(camp => {
     const titleText = typeof camp.title === 'object' ? (camp.title[lang] || camp.title.uk) : camp.title;
     const descText = typeof camp.desc === 'object' ? (camp.desc[lang] || camp.desc.uk) : camp.desc;
     const percent = Math.min(Math.round((camp.collected / camp.target) * 100), 100);
@@ -121,6 +196,7 @@ function renderCampaigns() {
     const collLbl = I18nStore.t('camp_collected') || 'Зібрано:';
     const btnLbl = I18nStore.t('camp_btn') || 'Підтримати збір';
     const urgentLbl = I18nStore.t('camp_urgent_badge') || '🔥 КРИТИЧНО ТЕРМІНОВО';
+    const copyHintLbl = I18nStore.t('copy_hint') || 'Скопіювати';
 
     return `
       <div class="campaign-card">
@@ -135,7 +211,10 @@ function renderCampaigns() {
           ${camp.jarUrl ? `
             <div style="margin: 14px 0; padding: 14px; background: rgba(0,0,0,0.35); border-radius: 14px; border: 1px dashed var(--accent-gold);">
               <div style="font-size: 0.85rem; color: #aaa; margin-bottom: 4px;">💳 Номер картки Банки (Monobank):</div>
-              <div style="font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 1.5px; user-select: all;">${camp.cardNum || ''}</div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px;">
+                <div style="font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 1.5px; user-select: all;">${camp.cardNum || ''}</div>
+                <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.75rem; border-radius: 20px;" onclick="copyTxtWithFeedback('${camp.cardNum}', this)">📋 <span>${copyHintLbl}</span></button>
+              </div>
               <a href="${camp.jarUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--accent-gold); font-weight: 600; font-size: 0.9rem; text-decoration: none;">🔗 Перейти на офіційну Банку →</a>
             </div>
           ` : ''}
@@ -223,13 +302,17 @@ function renderGallery() {
     </div>
   `).join('');
 
+  const allTitle = I18nStore.t('gallery_card_all_title') || 'Показати всі фото';
+  const allDesc = I18nStore.t('gallery_card_all_desc') || 'Відкрити повний архів фотозвітів на окремій сторінці';
+  const allBtn = I18nStore.t('gallery_card_all_btn') || 'Відкрити весь архів ➔';
+
   // Add the "Show All Photos" card right at the end of the slider!
   html += `
     <a href="gallery.html" class="gallery-card show-all-card" style="flex: 0 0 300px; max-width: 300px; scroll-snap-align: start; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(30,96,242,0.25)); border: 2px dashed var(--accent-gold); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-decoration: none; text-align: center; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.35); min-height: 260px;">
       <div style="font-size: 3.5rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(255,183,3,0.5));">📂</div>
-      <h3 style="color: #fff; font-size: 1.25rem; font-weight: 900; margin-bottom: 8px;">Показати всі фото</h3>
-      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px; line-height: 1.4;">Відкрити повний архів фотозвітів на окремій сторінці (всього ${list.length} фото)</p>
-      <span class="btn btn-primary" style="padding: 10px 22px; font-size: 0.88rem;">Відкрити весь архів ➔</span>
+      <h3 style="color: #fff; font-size: 1.25rem; font-weight: 900; margin-bottom: 8px;">${allTitle}</h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px; line-height: 1.4;">${allDesc} (${list.length})</p>
+      <span class="btn btn-primary" style="padding: 10px 22px; font-size: 0.88rem;">${allBtn}</span>
     </a>
   `;
 
@@ -379,6 +462,8 @@ function showModalTab(tabId) {
   document.getElementById('modalTabCard').style.display = tabId === 'card' ? 'block' : 'none';
   document.getElementById('modalTabIban').style.display = tabId === 'iban' ? 'block' : 'none';
   document.getElementById('modalTabCrypto').style.display = tabId === 'crypto' ? 'block' : 'none';
+  const qrEl = document.getElementById('modalTabQr');
+  if (qrEl) qrEl.style.display = tabId === 'qr' ? 'block' : 'none';
 }
 
 function simulateDonate(method) {
@@ -401,11 +486,306 @@ function simulateDonate(method) {
 }
 
 function copyTxt(text) {
+  copyTxtWithFeedback(text, null);
+}
+
+function copyTxtWithFeedback(text, btnEl) {
   navigator.clipboard.writeText(text).then(() => {
-    showToast('📋 Реквізити скопійовано в буфер обміну!');
+    showToast(I18nStore.t('copied') || '✅ Реквізити скопійовано в буфер обміну!');
+    if (btnEl) {
+      const originalHtml = btnEl.innerHTML;
+      btnEl.classList.add('btn-copied');
+      btnEl.innerHTML = `<span>${I18nStore.t('copied') || '✅ Скопійовано!'}</span>`;
+      setTimeout(() => {
+        btnEl.classList.remove('btn-copied');
+        btnEl.innerHTML = originalHtml;
+      }, 2000);
+    }
   }).catch(() => {
     showToast('📋 Реквізити скопійовано!');
   });
+}
+
+
+// ==========================================
+// TOP-5 NEW FEATURES RENDERING FUNCTIONS
+// ==========================================
+
+// --- 1. Render Mega-Goal ---
+function renderMegaGoal() {
+  const container = document.getElementById('megaGoalContainer');
+  if (!container || !FoundationStore.getMegaGoal) return;
+  const mg = FoundationStore.getMegaGoal();
+  const lang = I18nStore.currentLang || 'uk';
+  const titleText = typeof mg.title === 'object' ? (mg.title[lang] || mg.title.uk) : mg.title;
+  const subText = typeof mg.subtitle === 'object' ? (mg.subtitle[lang] || mg.subtitle.uk) : mg.subtitle;
+  const percent = Math.min(Math.round((mg.collected / mg.target) * 100), 100);
+
+  const goalLbl = I18nStore.t('camp_goal') || 'Ціль:';
+  const collLbl = I18nStore.t('camp_collected') || 'Зібрано:';
+
+  const milestonesHtml = (mg.milestones || []).map(m => {
+    const mTitle = typeof m.title === 'object' ? (m.title[lang] || m.title.uk) : m.title;
+    const mDesc = typeof m.desc === 'object' ? (m.desc[lang] || m.desc.uk) : m.desc;
+    return `
+      <div class="milestone-card ${m.unlocked ? 'unlocked' : ''}">
+        <div class="milestone-icon">${m.icon || '🎯'}</div>
+        <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 4px;">${m.pct}% РІВЕНЬ</div>
+        <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 6px;">${mTitle}</div>
+        <div style="font-size: 0.8rem; color: #aaa;">${mDesc}</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="text-align: center; max-width: 800px; margin: 0 auto 24px;">
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);">${titleText}</h2>
+      <p style="font-size: 1.05rem; color: #ccc;">${subText}</p>
+    </div>
+    <div class="progress-wrap" style="max-width: 860px; margin: 0 auto;">
+      <div class="progress-stats" style="font-size: 1.1rem; margin-bottom: 8px;">
+        <span>${collLbl} <strong style="color: var(--accent-gold); font-size: 1.3rem;">${Number(mg.collected).toLocaleString()} ₴</strong></span>
+        <span>${goalLbl} <strong>${Number(mg.target).toLocaleString()} ₴</strong> (${percent}%)</span>
+      </div>
+      <div class="progress-bar-bg" style="height: 18px; border-radius: 10px; background: rgba(0,0,0,0.6); padding: 3px; border: 1px solid rgba(255,255,255,0.15);">
+        <div class="progress-bar-fill" style="width: ${percent}%; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #00d4ff, #ffb703); box-shadow: 0 0 15px rgba(255,183,3,0.6);"></div>
+      </div>
+    </div>
+    <div class="milestones-grid">
+      ${milestonesHtml}
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+      <button class="btn btn-primary" style="padding: 16px 40px; font-size: 1.1rem; box-shadow: 0 0 25px rgba(255, 183, 3, 0.5);" onclick="openModalForCamp('drones_camp_2')">
+        <span>⚡ Підтримати Мега-Ціль (Monobank)</span>
+      </button>
+    </div>
+  `;
+}
+
+// --- 2. Render Frontline Needs Radar ---
+function renderFrontlineRadar() {
+  const container = document.getElementById('radarContainer');
+  if (!container || !FoundationStore.getFrontlineRadar) return;
+  const requests = FoundationStore.getFrontlineRadar();
+  const lang = I18nStore.currentLang || 'uk';
+  const btnLbl = I18nStore.t('radar_btn') || '⚡ Закрити запит';
+
+  container.innerHTML = requests.map(req => {
+    const bName = typeof req.brigade === 'object' ? (req.brigade[lang] || req.brigade.uk) : req.brigade;
+    const nText = typeof req.need === 'object' ? (req.need[lang] || req.need.uk) : req.need;
+    const badgeText = typeof req.badge === 'object' ? (req.badge[lang] || req.badge.uk) : req.badge;
+    const percent = Math.min(Math.round((req.collected / req.target) * 100), 100);
+    const isComp = req.status === 'completed';
+
+    return `
+      <div class="radar-card">
+        <div>
+          <span class="radar-badge ${isComp ? 'radar-completed' : 'radar-urgent'}">${badgeText}</span>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 10px;">${bName}</h3>
+          <p style="font-size: 1.05rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 20px;">📌 ${nText}</p>
+        </div>
+        <div>
+          <div class="progress-wrap" style="margin-bottom: 20px;">
+            <div class="progress-stats" style="font-size: 0.85rem;">
+              <span>Зібрано: <strong style="color: #fff;">${Number(req.collected).toLocaleString()} ₴</strong></span>
+              <span>Ціль: ${Number(req.target).toLocaleString()} ₴ (${percent}%)</span>
+            </div>
+            <div class="progress-bar-bg" style="height: 10px;">
+              <div class="progress-bar-fill" style="width: ${percent}%; ${isComp ? 'background: #10b981;' : ''}"></div>
+            </div>
+          </div>
+          <button class="btn ${isComp ? 'btn-outline' : 'btn-primary'}" style="width: 100%; ${isComp ? 'opacity: 0.6; cursor: not-allowed;' : ''}" onclick="${isComp ? '' : `openModalForCamp('drones_camp_2')`}" ${isComp ? 'disabled' : ''}>
+            <span>${isComp ? '✅ Виконано' : btnLbl}</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- 3. Render Impact Map ---
+function renderImpactMap() {
+  const container = document.getElementById('impactMapContainer');
+  if (!container || !FoundationStore.getImpactMap) return;
+  const mapData = FoundationStore.getImpactMap();
+  const lang = I18nStore.currentLang || 'uk';
+
+  const lblDrones = I18nStore.t('map_drones') || '🛸 Дрони / РЕБ:';
+  const lblMed = I18nStore.t('map_med') || '🏥 Тактична медицина:';
+  const lblAuto = I18nStore.t('map_auto') || '🚗 Транспорт / Логістика:';
+
+  container.innerHTML = mapData.map(item => {
+    const rName = typeof item.name === 'object' ? (item.name[lang] || item.name.uk) : item.name;
+    const rDesc = typeof item.desc === 'object' ? (item.desc[lang] || item.desc.uk) : item.desc;
+    
+    let badgeClass = 'map-status-active';
+    let badgeTxt = 'АКТИВНИЙ НАПРЯМОК';
+    if (item.status === 'hot') { badgeClass = 'map-status-hot'; badgeTxt = '🔥 ГАРЯЧА ТОЧКА'; }
+    else if (item.status === 'logistics') { badgeClass = 'map-status-logistics'; badgeTxt = '📦 ЛОГІСТИЧНИЙ ХАБ'; }
+
+    return `
+      <div class="map-card">
+        <div>
+          <div class="map-card-header">
+            <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin: 0;">${item.icon} ${rName}</h3>
+            <span class="${badgeClass}">${badgeTxt}</span>
+          </div>
+          <p style="font-size: 0.9rem; color: #bbb; margin-bottom: 20px; line-height: 1.5;">${rDesc}</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.35); padding: 14px 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+          <div class="map-stat-row"><span>${lblDrones}</span> <span class="map-stat-val">${item.drones}</span></div>
+          <div class="map-stat-row"><span>${lblMed}</span> <span class="map-stat-val">${item.med}</span></div>
+          <div class="map-stat-row"><span>${lblAuto}</span> <span class="map-stat-val">${item.auto}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- 4. Render Patron Club ---
+function renderPatronClub() {
+  const container = document.getElementById('patronContainer');
+  if (!container || !FoundationStore.getPatronTiers) return;
+  const tiers = FoundationStore.getPatronTiers();
+  const lang = I18nStore.currentLang || 'uk';
+  const btnLbl = I18nStore.t('patron_btn') || '🤝 Оформити підписку';
+
+  container.innerHTML = tiers.map(tier => {
+    const tTitle = typeof tier.title === 'object' ? (tier.title[lang] || tier.title.uk) : tier.title;
+    const tPeriod = typeof tier.period === 'object' ? (tier.period[lang] || tier.period.uk) : tier.period;
+    const tDesc = typeof tier.desc === 'object' ? (tier.desc[lang] || tier.desc.uk) : tier.desc;
+    
+    const perksHtml = (tier.perks || []).map(p => {
+      const pText = typeof p === 'object' ? (p[lang] || p.uk) : p;
+      return `<li>✔ ${pText}</li>`;
+    }).join('');
+
+    return `
+      <div class="patron-card ${tier.popular ? 'popular' : ''}">
+        ${tier.popular ? `<div class="patron-badge-popular">🔥 НАЙПОПУЛЯРНІШИЙ</div>` : ''}
+        <div>
+          <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff;">${tTitle}</h3>
+          <div class="patron-price">${tier.amount} <span style="font-size: 1rem; font-weight: 500; color: #aaa;">${tPeriod}</span></div>
+          <p style="font-size: 0.9rem; color: #bbb; min-height: 48px;">${tDesc}</p>
+          <ul class="patron-perk-list">
+            ${perksHtml}
+          </ul>
+        </div>
+        <button class="btn ${tier.popular ? 'btn-primary' : 'btn-outline'}" style="width: 100%; padding: 16px;" onclick="openModalForCamp('drones_camp_2')">
+          <span>${btnLbl}</span>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- 5. Viral Certificate Generator ---
+function drawCertificate() {
+  const canvas = document.getElementById('certCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const nameEl = document.getElementById('certInputName');
+  const tierEl = document.getElementById('certSelectTier');
+  
+  const donorName = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Олександр Благодійник';
+  const tierVal = tierEl ? tierEl.value : 'sky';
+  
+  let tierTitle = '🛡️ ЗАХИСНИК НЕБА (ДРОНИ ТА РЕБ)';
+  if (tierVal === 'med') tierTitle = '🏥 АНГЕЛ МЕДИЦИНИ (ТАКТИЧНА МЕДИЦИНА)';
+  if (tierVal === 'patron') tierTitle = '🌟 ПОЧЕСНИЙ МЕЦЕНАТ ФОНДУ';
+
+  // Draw Background
+  const grad = ctx.createLinearGradient(0, 0, 800, 560);
+  grad.addColorStop(0, '#0d1832');
+  grad.addColorStop(1, '#080c1e');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 800, 560);
+
+  // Draw Gold Border
+  ctx.strokeStyle = '#ffb703';
+  ctx.lineWidth = 8;
+  ctx.strokeRect(16, 16, 768, 528);
+
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(26, 26, 748, 508);
+
+  // Foundation Header
+  ctx.fillStyle = '#ffb703';
+  ctx.font = 'bold 22px "Inter", "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('БЛАГОДІЙНИЙ ФОНД «РАЗОМ МИ — СИЛА»', 400, 80);
+
+  ctx.fillStyle = '#aaa';
+  ctx.font = '14px "Inter", sans-serif';
+  ctx.fillText('ОФІЦІЙНИЙ СЕРТИФІКАТ ПОДЯКИ • ЄДРПОУ 44859201', 400, 106);
+
+  // Title
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 38px "Inter", sans-serif';
+  ctx.fillText('СЕРТИФІКАТ БЛАГОДІЙНИКА', 400, 170);
+
+  // Text
+  ctx.fillStyle = '#cccccc';
+  ctx.font = '18px "Inter", sans-serif';
+  ctx.fillText('Цим сертифікатом висловлюється щира подяка та пошана:', 400, 220);
+
+  // Donor Name
+  ctx.fillStyle = '#00d4ff';
+  ctx.font = 'bold 36px "Inter", sans-serif';
+  ctx.fillText(donorName, 400, 280);
+
+  // Underline
+  ctx.strokeStyle = '#ffb703';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(150, 295);
+  ctx.lineTo(650, 295);
+  ctx.stroke();
+
+  // Tier
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 20px "Inter", sans-serif';
+  ctx.fillText('За вагомий внесок у спільну Перемогу в статусі:', 400, 340);
+
+  ctx.fillStyle = '#ffb703';
+  ctx.font = 'bold 24px "Inter", sans-serif';
+  ctx.fillText(tierTitle, 400, 380);
+
+  // Footer / Signature
+  ctx.fillStyle = '#999999';
+  ctx.font = '14px "Inter", sans-serif';
+  ctx.textAlign = 'left';
+  const dateStr = new Date().toLocaleDateString('uk-UA');
+  ctx.fillText(`Дата видачі: ${dateStr}`, 60, 470);
+  ctx.fillText(`ID: RMS-${Date.now().toString().slice(-6)}`, 60, 495);
+
+  ctx.textAlign = 'right';
+  ctx.fillText('Директор фонду: В. Четырбок _________', 740, 470);
+  ctx.fillText('Офіційна печатка БФ «Разом ми — сила»', 740, 495);
+
+  // Gold Seal Graphic
+  ctx.beginPath();
+  ctx.arc(400, 480, 40, 0, 2 * Math.PI);
+  ctx.fillStyle = 'rgba(255, 183, 3, 0.15)';
+  ctx.fill();
+  ctx.strokeStyle = '#ffb703';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.fillStyle = '#ffb703';
+  ctx.font = 'bold 28px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('★', 400, 488);
+}
+
+function downloadCertificate() {
+  const canvas = document.getElementById('certCanvas');
+  if (!canvas) return;
+  const link = document.createElement('a');
+  link.download = `Certificate_RMS_${Date.now()}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('💾 Сертифікат успішно завантажено на ваш пристрій!');
 }
 
 // === Toast ===
@@ -435,5 +815,158 @@ function handleFormSubmit(e) {
 }
 
 function animateNumbers() {
-  // Simple subtle animation trigger
+  // Triggered via IntersectionObserver in renderStats()
+}
+
+// === Live Support Ticker (Social Proof) ===
+const TICKER_EVENTS = [
+  { name: 'Олександр М.', amount: '500 ₴', camp: 'на Дрони Mavic 3T', icon: '🛸' },
+  { name: 'Марія К.', amount: '1 000 ₴', camp: 'на Тактичну медицину', icon: '🏥' },
+  { name: 'Володимир П.', amount: '200 ₴', camp: 'на Паливо для евакуацій', icon: '🚗' },
+  { name: 'Ірина В.', amount: '50 €', camp: 'на Аптечки IFAK', icon: '🩸' },
+  { name: 'Денис С.', amount: '1 500 ₴', camp: 'на Ремонт пікапа', icon: '🔧' },
+  { name: 'Анонімний благодійник', amount: '5 000 ₴', camp: 'на Нічні дрони', icon: '🌙' },
+  { name: 'Олена Т.', amount: '300 ₴', camp: 'на Хімічні грілки', icon: '⚡' },
+  { name: 'Компанія "Техно-Вектор"', amount: '10 000 ₴', camp: 'на Окопний РЕБ', icon: '🛡️' }
+];
+
+function initLiveTicker() {
+  const tickerEl = document.getElementById('liveTicker');
+  if (!tickerEl) return;
+  
+  let eventIndex = 0;
+  
+  function showNextEvent() {
+    const ev = TICKER_EVENTS[eventIndex];
+    eventIndex = (eventIndex + 1) % TICKER_EVENTS.length;
+    
+    tickerEl.innerHTML = `
+      <div style="font-size: 1.5rem;">${ev.icon}</div>
+      <div>
+        <div style="color: #aaa; font-size: 0.76rem;">${ev.name} • <span style="color: var(--accent-gold); font-weight: 700;">+${ev.amount}</span></div>
+        <div style="color: #fff; font-size: 0.86rem; font-weight: 600;">${ev.camp}</div>
+      </div>
+    `;
+    
+    tickerEl.classList.add('show');
+    
+    setTimeout(() => {
+      tickerEl.classList.remove('show');
+    }, 5000);
+  }
+
+  setTimeout(() => {
+    showNextEvent();
+    setInterval(showNextEvent, 12000);
+  }, 4000);
+}
+
+
+
+// ==========================================
+// LIVE AI SUPPORT CHATBOT WIDGET
+// ==========================================
+function initSupportChatbot() {
+  if (document.getElementById('rmsChatbotWidget')) return;
+  const lang = (window.I18nStore && I18nStore.currentLang) ? I18nStore.currentLang : 'uk';
+  
+  const strings = {
+    uk: {
+      btn: '💬 Помічник Волонтер',
+      title: 'AI-Асистент фонду',
+      status: '🟢 Онлайн • Відповідає миттєво',
+      welcome: 'Вітаю! Я розумний помічник БФ «Разом ми — сила». Оберіть питання або дізнайтеся більше про нашу роботу та звіти:',
+      q1: '🔍 Як перевірити фінансову звітність?',
+      a1: 'Всі наші виписки, аудиторські висновки та податкові декларації доступні на офіційній сторінці <a href="transparency.html" style="color:#ffb703;font-weight:bold;">«Прозорість та Звітність»</a>. Ми оновлюємо дані щоквартально!',
+      q2: '🇪🇺 SWIFT-реквізити в EUR або USD?',
+      a2: 'Для міжнародних переказів (SWIFT / SEPA) у EUR або USD перейдіть у модальне вікно донату та оберіть вкладку <strong style="color:#00d4ff;">«🏦 IBAN (Реквізити)»</strong>. Там вказані офіційні рахунки в Monobank та ПриватБанк.',
+      q3: '🚗 Як передати авто або дрони для ЗСУ?',
+      a3: 'Якщо ви хочете передати пікап, бус, дрони або гуманітарний вантаж, будь ласка, заповніть анкету на сторінці <a href="join.html" style="color:#ffb703;font-weight:bold;">«Волонтерство та Партнерство»</a> або зателефонуйте на склад: <strong style="color:#fff;">+38 (044) 222-33-44</strong>.',
+      q4: '📜 Як отримати податкову знижку в ЄС?',
+      a4: 'Наш фонд має офіційний неприбутковий статус (ЄДРПОУ 44859201). Для отримання документа для податкової (Finanzamt в Німеччині, Польщі чи Італії), напишіть нам на <strong style="color:#fff;">support@razom-sila.org</strong> після здійснення донату!',
+      q5: '🏆 Як вступити до Клубу меценатів?',
+      a5: 'Оберіть один із пакетів підтримки (Срібний, Золотий або Платиновий Щит) у розділі <a href="index.html#patron-club" style="color:#ffb703;font-weight:bold;">«Клуб постійних меценатів»</a>. Регулярні донори отримують бедж та потрапляють на VIP Дошку пошани!'
+    },
+    en: {
+      btn: '💬 AI Volunteer Helper',
+      title: 'Foundation AI Assistant',
+      status: '🟢 Online • Instant reply',
+      welcome: 'Hello! I am the smart assistant of Together We Are Power. Choose a question or learn more about our missions and reports:',
+      q1: '🔍 How to verify financial reports?',
+      a1: 'All our bank statements, audit reports, and tax filings are available on the official <a href="transparency.html" style="color:#ffb703;font-weight:bold;">Transparency & Accountability</a> page. Updated quarterly!',
+      q2: '🇪🇺 SWIFT details in EUR or USD?',
+      a2: 'For international bank transfers (SWIFT / SEPA) in EUR or USD, open the donation modal and click the <strong style="color:#00d4ff;">«🏦 IBAN (Details)»</strong> tab. Official accounts in Monobank & PrivatBank are listed there.',
+      q3: '🚗 How to donate vehicles or drones?',
+      a3: 'If you want to transfer a pickup truck, van, drones, or humanitarian cargo, please fill out the form on the <a href="join.html" style="color:#ffb703;font-weight:bold;">Volunteer & Partnership</a> page or call our warehouse: <strong style="color:#fff;">+38 (044) 222-33-44</strong>.',
+      q4: '📜 How to get tax deductions in EU?',
+      a4: 'Our foundation holds official non-profit status (EDRPOU 44859201). To get a verification letter for tax authorities (Finanzamt in Germany, Poland, Italy), email us at <strong style="color:#fff;">support@razom-sila.org</strong> with your receipt!',
+      q5: '🏆 How to join the Patron Club?',
+      a5: 'Select a subscription tier (Silver, Gold, or Platinum Shield) in the <a href="index.html#patron-club" style="color:#ffb703;font-weight:bold;">Monthly Patron Club</a> section. Regular donors get a unique badge and VIP Honor Board placement!'
+    }
+  };
+
+  const t = strings[lang] || strings.uk;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'rmsChatbotWidget';
+  wrap.className = 'chatbot-widget-wrap';
+  wrap.innerHTML = `
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div>
+          <div style="font-weight: 800; color: #fff; font-size: 1.05rem;">${t.title}</div>
+          <div style="font-size: 0.75rem; color: #34d399;">${t.status}</div>
+        </div>
+        <button onclick="toggleChatbotWindow()" style="background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-msg bot">${t.welcome}</div>
+        <div class="chat-chips">
+          <button class="chat-chip-btn" onclick="handleChatbotQ(1, '${t.q1}', '${t.a1}')">${t.q1}</button>
+          <button class="chat-chip-btn" onclick="handleChatbotQ(2, '${t.q2}', '${t.a2}')">${t.q2}</button>
+          <button class="chat-chip-btn" onclick="handleChatbotQ(3, '${t.q3}', '${t.a3}')">${t.q3}</button>
+          <button class="chat-chip-btn" onclick="handleChatbotQ(4, '${t.q4}', '${t.a4}')">${t.q4}</button>
+          <button class="chat-chip-btn" onclick="handleChatbotQ(5, '${t.q5}', '${t.a5}')">${t.q5}</button>
+        </div>
+      </div>
+    </div>
+    <button class="chatbot-trigger-btn" onclick="toggleChatbotWindow()">
+      <span class="chatbot-pulse-dot"></span>
+      <span>${t.btn}</span>
+    </button>
+  `;
+
+  document.body.appendChild(wrap);
+}
+
+function toggleChatbotWindow() {
+  const win = document.getElementById('chatbotWindow');
+  if (win) {
+    win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+  }
+}
+
+function handleChatbotQ(id, qText, aText) {
+  const body = document.getElementById('chatbotBody');
+  if (!body) return;
+  
+  const uDiv = document.createElement('div');
+  uDiv.className = 'chat-msg user';
+  uDiv.innerHTML = qText;
+  body.appendChild(uDiv);
+  body.scrollTop = body.scrollHeight;
+
+  setTimeout(() => {
+    const bDiv = document.createElement('div');
+    bDiv.className = 'chat-msg bot';
+    bDiv.innerHTML = aText;
+    body.appendChild(bDiv);
+    body.scrollTop = body.scrollHeight;
+  }, 400);
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initSupportChatbot, 600);
+  });
 }

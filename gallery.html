@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Архів Фотозвітів справ фонду — БО «МБФ Разом ми — сила»</title>
-  <link rel="stylesheet" href="index.css?v=20260703_5">
+  <link rel="stylesheet" href="index.css?v=20260706_1">
   <style>
     .archive-header {
       padding: 40px 0 20px;
@@ -88,7 +88,24 @@
 
       <nav>
         <ul>
-          <li><a href="index.html" style="background: rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 12px;">⬅️ На головну</a></li>
+          <li><a href="index.html#about"><span>ℹ️</span> <span>Головна</span></a></li>
+          <li><a href="index.html#campaigns"><span>🎯</span> <span>Збори</span></a></li>
+          <li><a href="gallery.html" style="color: var(--accent-gold); font-weight: 700;"><span>📸</span> <span>Архів справ</span></a></li>
+          <li><a href="transparency.html"><span>🛡️</span> <span>Прозорість</span></a></li>
+          <li><a href="join.html"><span>🤝</span> <span>Долучитися</span></a></li>
+          <li><a href="stories.html"><span>📖</span> <span>Історії місій</span></a></li>
+          <li><a href="military_request.html"><span>⚔️</span> <span>Військовим</span></a></li>
+          <li><a href="honor_wall.html"><span>🌟</span> <span>Зала Слави</span></a></li>
+          <li><a href="shop.html"><span>🛍️</span> <span>Мерч-Шоп</span></a></li>
+          <li><a href="training.html"><span>🎓</span> <span>Академія</span></a>
+        <a href="rehab.html" style="color: var(--accent-gold); text-decoration: none;">Реабілітація</a>
+        <a href="international.html" style="color: var(--accent-gold); text-decoration: none;">Global Hub</a>
+        <a href="memorial.html" style="color: var(--accent-gold); text-decoration: none;">Пантеон Героїв</a>
+        <a href="auctions.html" style="color: var(--accent-gold); text-decoration: none;">Аукціони</a></li>
+          <li><a href="rehab.html"><span>🦿</span> <span>Реабілітація</span></a></li>
+          <li><a href="international.html"><span>🌍</span> <span>Global Hub</span></a></li>
+          <li><a href="memorial.html"><span>🕯️</span> <span>Пантеон</span></a></li>
+          <li><a href="auctions.html"><span>🎟️</span> <span>Аукціони</span></a></li>
         </ul>
       </nav>
     </div>
@@ -120,8 +137,21 @@
       </div>
 
       <div class="gallery-grid" id="archiveGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;"></div>
-    </div>
   </main>
+
+  <!-- Footer -->
+  <footer style="background: #080c1e; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; color: #aaa; font-size: 0.9rem;">
+    <div class="container">
+      <p style="margin-bottom: 12px;">© 2026 Благодійний фонд «Разом ми — сила». Всі права захищено. • ЄДРПОУ 44859201</p>
+      <div style="display: flex; gap: 20px; justify-content: center;">
+        <a href="index.html" style="color: var(--accent-gold); text-decoration: none;">Головна</a>
+        <a href="gallery.html" style="color: var(--accent-gold); text-decoration: none;">Архів справ</a>
+        <a href="transparency.html" style="color: var(--accent-gold); text-decoration: none;">Прозорість</a>
+        <a href="join.html" style="color: var(--accent-gold); text-decoration: none;">Долучитися</a>
+        <a href="stories.html" style="color: var(--accent-gold); text-decoration: none;">Історії місій</a>
+      </div>
+    </div>
+  </footer>
 
   <!-- Lightbox Modal -->
   <div id="lightboxModal" onclick="closeLightbox()">

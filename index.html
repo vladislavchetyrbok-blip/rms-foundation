@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Благодійний фонд «Разом ми — сила» | Together We Are Power</title>
   <meta name="description" content="Офіційний сайт благодійного фонду «Разом ми — сила». Термінова допомога Захисникам України, медичним закладам та родинам.">
-  <link rel="stylesheet" href="index.css?v=20260703_5">
+  <link rel="stylesheet" href="index.css?v=20260706_2">
 </head>
 <body>
 
@@ -22,13 +22,13 @@
 
       <nav>
         <ul>
-          <li><a href="#about" data-i18n="nav_about">ℹ️ Про нас</a></li>
-          <li><a href="#calc" data-i18n="nav_calc">🧮 Калькулятор донату</a></li>
-          <li><a href="#campaigns" data-i18n="nav_campaigns">🎯 Активні збори</a></li>
-          <li><a href="#gallery" style="color: var(--accent-gold); font-weight: 700;">📸 Фотозвіт справ</a></li>
-          <li><a href="#honor" data-i18n="nav_honor">🌟 Дошка пошани</a></li>
-          <li><a href="#focus" data-i18n="nav_focus">🛡️ Напрямки</a></li>
-          <li><a href="#contact" data-i18n="nav_contact">📞 Контакти</a></li>
+          <li><a href="#about"><span>ℹ️</span> <span data-i18n="nav_about">Про нас</span></a></li>
+          <li><a href="#calc"><span>🧮</span> <span data-i18n="nav_calc">Калькулятор донату</span></a></li>
+          <li><a href="#campaigns"><span>🎯</span> <span data-i18n="nav_campaigns">Активні збори</span></a></li>
+          <li><a href="#gallery" style="color: var(--accent-gold); font-weight: 700;"><span>📸</span> <span data-i18n="nav_gallery">Фотозвіт справ</span></a></li>
+          <li><a href="#honor"><span>🌟</span> <span data-i18n="nav_honor">Дошка пошани</span></a></li>
+          <li><a href="#focus"><span>🛡️</span> <span data-i18n="nav_focus">Напрямки</span></a></li>
+          <li><a href="#contact"><span>📞</span> <span data-i18n="nav_contact">Контакти</span></a></li>
         </ul>
       </nav>
 
@@ -74,7 +74,7 @@
           </button>
           <a href="gallery.html" class="btn btn-outline" style="padding: 16px 28px; font-size: 1.05rem; font-weight: 700; border-radius: 35px; background: rgba(255,183,3,0.12); border: 1px solid rgba(255,183,3,0.4); color: #fff;">
             <span style="font-size: 1.35rem;">📸</span>
-            <span>Архів справ</span>
+            <span data-i18n="hero_cta_gallery">Архів справ</span>
           </a>
           <a href="#contact" class="btn btn-outline" style="padding: 16px 28px; font-size: 1.05rem; font-weight: 700; border-radius: 35px; background: rgba(30,96,242,0.18); border: 1px solid rgba(96,165,250,0.4); color: #fff;">
             <span style="font-size: 1.35rem;">🤝</span>
@@ -185,6 +185,16 @@
     </div>
   </section>
 
+  <!-- Mega-Goal Widget -->
+  <section class="section" id="mega-goal" style="padding-top: 0;">
+    <div class="container">
+      <div class="mega-goal-wrap" id="megaGoalContainer">
+        <!-- Dynamically rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+
   <!-- Urgent Campaigns -->
   <section class="section" id="campaigns">
     <div class="container">
@@ -193,25 +203,61 @@
         <p class="section-subtitle" data-i18n="camp_subtitle">Кожна гривня, євро чи долар рятують життя просто зараз. Приєднуйтесь до закриття найкритичніших потреб.</p>
       </div>
 
+      <div class="camp-filters" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 28px;">
+        <button class="camp-filter-btn active" onclick="filterCampaigns('all', this)" data-i18n="camp_filter_all">🔥 Всі збори</button>
+        <button class="camp-filter-btn" onclick="filterCampaigns('drones', this)" data-i18n="camp_filter_drones">🛸 Дрони та РЕБ</button>
+        <button class="camp-filter-btn" onclick="filterCampaigns('med', this)" data-i18n="camp_filter_med">🏥 Тактична медицина</button>
+        <button class="camp-filter-btn" onclick="filterCampaigns('auto', this)" data-i18n="camp_filter_auto">🚗 Автотранспорт</button>
+      </div>
+
       <div class="campaigns-grid" id="campaignsContainer">
         <!-- Dynamically Rendered by script.js -->
       </div>
     </div>
   </section>
 
+  <!-- Frontline Needs Radar -->
+  <section class="section" id="radar" style="background: rgba(13, 24, 50, 0.35);">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge" style="margin-bottom: 12px; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);" data-i18n="radar_badge">🎯 РАДАР ПОТРЕБ ПЕРЕДОВОЇ</div>
+        <h2 class="section-title" data-i18n="radar_title">Верифіковані запити від бригад</h2>
+        <p class="section-subtitle" data-i18n="radar_subtitle">Прямий зв'язок з військовими підрозділами та шпиталями. Оберіть конкретний запит та допоможіть його закрити.</p>
+      </div>
+      <div class="radar-grid" id="radarContainer">
+        <!-- Dynamically rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Impact Map -->
+  <section class="section" id="impact-map">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge" style="margin-bottom: 12px; background: rgba(0, 212, 255, 0.15); color: var(--accent-blue); border: 1px solid var(--accent-blue);" data-i18n="map_badge">🗺️ ЖИВА МАПА ДОПОМОГИ</div>
+        <h2 class="section-title" data-i18n="map_title">Географія нашої присутності</h2>
+        <p class="section-subtitle" data-i18n="map_subtitle">Оберіть прифронтовий регіон, щоб побачити детальний звіт переданого обладнання та підтримки.</p>
+      </div>
+      <div class="impact-map-grid" id="impactMapContainer">
+        <!-- Dynamically rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+
   <!-- Photo Gallery / Work Reports -->
   <section class="section" id="gallery" style="background: rgba(15,28,63,0.4); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
     <div class="container">
       <div class="section-header" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; text-align: left;">
         <div style="max-width: 620px;">
-          <div class="badge" style="margin-bottom: 12px; background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold);">📸 ЖИВА ХРОНІКА ДОПОМОГИ</div>
-          <h2 class="section-title" style="margin-bottom: 10px;">Реальні справи нашого фонду</h2>
-          <p class="section-subtitle" style="margin: 0;">Щоденна праця наших волонтерів у лікарнях, прифронтових громадах та на складах. Листайте вбік або натисніть «Показати всі».</p>
+          <div class="badge" style="margin-bottom: 12px; background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold);" data-i18n="gallery_badge">📸 ЖИВА ХРОНІКА ДОПОМОГИ</div>
+          <h2 class="section-title" style="margin-bottom: 10px;" data-i18n="gallery_title">Реальні справи нашого фонду</h2>
+          <p class="section-subtitle" style="margin: 0;" data-i18n="gallery_subtitle">Щоденна праця наших волонтерів у лікарнях, прифронтових громадах та на складах. Листайте вбік або натисніть «Показати всі».</p>
         </div>
         <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
           <button onclick="scrollGalleryLeft()" class="btn btn-outline" style="padding: 12px 18px; border-radius: 16px; font-size: 1.15rem;" title="Прокрутити вліво">⬅️</button>
           <button onclick="scrollGalleryRight()" class="btn btn-outline" style="padding: 12px 18px; border-radius: 16px; font-size: 1.15rem;" title="Прокрутити вправо">➡️</button>
-          <a href="gallery.html" class="btn btn-primary" style="padding: 14px 24px; border-radius: 16px; font-size: 0.95rem; font-weight: 800; box-shadow: 0 4px 20px rgba(255,183,3,0.4);">
+          <a href="gallery.html" class="btn btn-primary" style="padding: 14px 24px; border-radius: 16px; font-size: 0.95rem; font-weight: 800; box-shadow: 0 4px 20px rgba(255,183,3,0.4);" data-i18n="gallery_btn_all">
             📂 Показати всі фотографії ➔
           </a>
         </div>
@@ -244,6 +290,59 @@
       </div>
     </div>
   </section>
+
+  <!-- Monthly Patron Club -->
+  <section class="section" id="patron-club">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge" style="margin-bottom: 12px; background: rgba(255, 183, 3, 0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold);" data-i18n="patron_badge">🏆 КЛУБ ПОСТІЙНИХ МЕЦЕНАТІВ</div>
+        <h2 class="section-title" data-i18n="patron_title">Щомісячна підписка на Перемогу</h2>
+        <p class="section-subtitle" data-i18n="patron_subtitle">Регулярні внески дозволяють фонду планувати закупівлі дронів та аптечок заздалегідь. Оберіть свій Щит підтримки!</p>
+      </div>
+      <div class="patron-grid" id="patronContainer">
+        <!-- Dynamically rendered by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Viral Certificate Generator -->
+  <section class="section" id="certificate-gen" style="background: rgba(13, 24, 50, 0.4); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge" style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981;" data-i18n="cert_badge">📜 ВІРАЛЬНИЙ СЕРТИФІКАТ</div>
+        <h2 class="section-title" data-i18n="cert_title">Генератор Сертифіката Благодійника</h2>
+        <p class="section-subtitle" data-i18n="cert_subtitle">Введіть своє ім'я або назву компанії, згенеруйте офіційний іменний документ та поділіться ним у соцмережах!</p>
+      </div>
+      <div class="cert-gen-wrap">
+        <div class="cert-form-box">
+          <div>
+            <label style="display: block; font-size: 0.9rem; color: #aaa; margin-bottom: 6px;" data-i18n="cert_name_lbl">Ваше ім'я або назва компанії:</label>
+            <input type="text" id="certInputName" class="cert-input" style="width: 100%;" placeholder="напр. Олександр або ТОВ «Інновації»" oninput="drawCertificate()">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.9rem; color: #aaa; margin-bottom: 6px;" data-i18n="cert_tier_lbl">Оберіть звання / статус підтримки:</label>
+            <select id="certSelectTier" class="cert-select" style="width: 100%;" onchange="drawCertificate()">
+              <option value="sky" data-i18n="cert_tier_1">🛡️ Захисник Неба (Дрони та РЕБ)</option>
+              <option value="med" data-i18n="cert_tier_2">🏥 Ангел Медицини (Тактична медицина)</option>
+              <option value="patron" data-i18n="cert_tier_3">🌟 Почесний Меценат фонду</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 14px; margin-top: 10px;">
+            <button class="btn btn-primary" style="flex: 1; padding: 14px;" onclick="drawCertificate()">
+              <span data-i18n="cert_btn_gen">⚡ Згенерувати Сертифікат</span>
+            </button>
+            <button class="btn btn-outline" style="padding: 14px 24px;" onclick="downloadCertificate()">
+              <span data-i18n="cert_btn_dl">💾 Завантажити PNG</span>
+            </button>
+          </div>
+        </div>
+        <div class="cert-canvas-wrap">
+          <canvas id="certCanvas" width="800" height="560"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- Focus Areas -->
   <section class="section" id="focus">
@@ -406,8 +505,22 @@
           <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
             <li><a href="#about" style="color: var(--text-muted);">Про нас</a></li>
             <li><a href="#campaigns" style="color: var(--text-muted);">Активні збори</a></li>
-            <li><a href="#honor" style="color: var(--text-muted);">Дошка пошани</a></li>
-            <li><a href="#reports" style="color: var(--text-muted);">Звітність</a></li>
+            <li><a href="gallery.html" style="color: var(--accent-gold); font-weight: 700;">📸 Архів справ</a></li>
+            <li><a href="transparency.html" style="color: var(--accent-gold); font-weight: 700;">🛡️ Прозорість та Звітність</a></li>
+            <li><a href="join.html" style="color: var(--accent-gold); font-weight: 700;">🤝 Волонтерство та Партнерство</a></li>
+            <li><a href="stories.html" style="color: var(--accent-gold); font-weight: 700;">📖 Історії місій</a></li>
+          <li><a href="military_request.html"><span>⚔️</span> <span>Військовим</span></a></li>
+          <li><a href="honor_wall.html"><span>🌟</span> <span>Зала Слави</span></a></li>
+          <li><a href="shop.html"><span>🛍️</span> <span>Мерч-Шоп</span></a></li>
+          <li><a href="training.html"><span>🎓</span> <span>Академія</span></a>
+        <a href="rehab.html" style="color: var(--accent-gold); text-decoration: none;">Реабілітація</a>
+        <a href="international.html" style="color: var(--accent-gold); text-decoration: none;">Global Hub</a>
+        <a href="memorial.html" style="color: var(--accent-gold); text-decoration: none;">Пантеон Героїв</a>
+        <a href="auctions.html" style="color: var(--accent-gold); text-decoration: none;">Аукціони</a></li>
+          <li><a href="rehab.html"><span>🦿</span> <span>Реабілітація</span></a></li>
+          <li><a href="international.html"><span>🌍</span> <span>Global Hub</span></a></li>
+          <li><a href="memorial.html"><span>🕯️</span> <span>Пантеон</span></a></li>
+          <li><a href="auctions.html"><span>🎟️</span> <span>Аукціони</span></a></li>
           </ul>
         </div>
 
@@ -445,10 +558,11 @@
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;" data-i18n="modal_subtitle">Оберіть зручний для вас спосіб фінансової підтримки фонду «Разом ми — сила»</p>
 
       <!-- Tabs -->
-      <div style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px;">
         <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('card')" data-i18n="modal_tab_card">💳 Картка / Pay</button>
         <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('iban')" data-i18n="modal_tab_iban">🏦 IBAN</button>
         <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('crypto')" data-i18n="modal_tab_crypto">🪙 Crypto</button>
+        <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.8rem;" onclick="showModalTab('qr')" data-i18n="modal_tab_qr">📱 QR-Донат</button>
       </div>
 
       <!-- Tab Content: Card -->
@@ -473,7 +587,7 @@
             <div style="font-size: 0.75rem; color: var(--accent-cyan);">UAH (Гривня 980) IBAN</div>
             <div style="font-family: monospace; font-size: 0.85rem; color: #fff;">UA62322313000002600900050984</div>
           </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('UA62322313000002600900050984')">Скопіювати</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxtWithFeedback('UA62322313000002600900050984', this)">Скопіювати</button>
         </div>
 
         <div style="background: rgba(0,0,0,0.4); padding: 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
@@ -481,7 +595,7 @@
             <div style="font-size: 0.75rem; color: var(--accent-gold);">USD / EUR (Валютний рахунок) IBAN</div>
             <div style="font-family: monospace; font-size: 0.85rem; color: #fff;">UA62322313000002600900050984</div>
           </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('UA62322313000002600900050984')">Скопіювати</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxtWithFeedback('UA62322313000002600900050984', this)">Скопіювати</button>
         </div>
       </div>
 
@@ -492,7 +606,23 @@
             <div style="font-size: 0.75rem; color: #10b981;">USDT (TRC20) Address</div>
             <div style="font-family: monospace; font-size: 0.85rem;">TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t</div>
           </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxt('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t')" data-i18n="modal_copy_btn">Скопіювати</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxtWithFeedback('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', this)" data-i18n="modal_copy_btn">Скопіювати</button>
+        </div>
+      </div>
+
+      <!-- Tab Content: QR Donate -->
+      <div id="modalTabQr" style="display: none; text-align: center; padding: 10px 0;">
+        <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 8px;" data-i18n="qr_title">📱 Швидкий донат через QR</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;" data-i18n="qr_desc">Наведіть камеру смартфона, щоб відкрити офіційну Банку за 3 секунди</p>
+        <div style="background: #fff; padding: 16px; border-radius: 20px; display: inline-block; box-shadow: 0 0 30px rgba(255,183,3,0.3); margin-bottom: 16px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://send.monobank.ua/jar/6iL3oH5Vde&color=000000&bgcolor=ffffff&margin=5" alt="Monobank QR" style="width: 180px; height: 180px; display: block; border-radius: 8px;">
+        </div>
+        <div style="background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; max-width: 360px; margin: 0 auto;">
+          <div style="text-align: left;">
+            <div style="font-size: 0.72rem; color: #aaa;">Monobank Jar / Банка:</div>
+            <div style="font-family: monospace; font-size: 0.85rem; color: #fff; font-weight: 700;">4874 1000 3862 9211</div>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyTxtWithFeedback('4874 1000 3862 9211', this)">Скопіювати</button>
         </div>
       </div>
     </div>
@@ -508,13 +638,13 @@
       </div>
 
       <ul class="drawer-links">
-        <li><a href="#about" onclick="closeMobileMenu()" data-i18n="nav_about">Про нас</a></li>
-        <li><a href="#calc" onclick="closeMobileMenu()" data-i18n="nav_calc">Калькулятор донату</a></li>
-        <li><a href="#campaigns" onclick="closeMobileMenu()" data-i18n="nav_campaigns">Активні збори</a></li>
-        <li><a href="#gallery" onclick="closeMobileMenu()" style="color: var(--accent-gold); font-weight: 700;">📸 Фотозвіт справ</a></li>
-        <li><a href="#honor" onclick="closeMobileMenu()" data-i18n="nav_honor">Дошка пошани</a></li>
-        <li><a href="#focus" onclick="closeMobileMenu()" data-i18n="nav_focus">Напрямки</a></li>
-        <li><a href="#contact" onclick="closeMobileMenu()" data-i18n="nav_contact">Контакти</a></li>
+        <li><a href="#about" onclick="closeMobileMenu()"><span>ℹ️</span> <span data-i18n="nav_about">Про нас</span></a></li>
+        <li><a href="#calc" onclick="closeMobileMenu()"><span>🧮</span> <span data-i18n="nav_calc">Калькулятор донату</span></a></li>
+        <li><a href="#campaigns" onclick="closeMobileMenu()"><span>🎯</span> <span data-i18n="nav_campaigns">Активні збори</span></a></li>
+        <li><a href="#gallery" onclick="closeMobileMenu()" style="color: var(--accent-gold); font-weight: 700;"><span>📸</span> <span data-i18n="nav_gallery">Фотозвіт справ</span></a></li>
+        <li><a href="#honor" onclick="closeMobileMenu()"><span>🌟</span> <span data-i18n="nav_honor">Дошка пошани</span></a></li>
+        <li><a href="#focus" onclick="closeMobileMenu()"><span>🛡️</span> <span data-i18n="nav_focus">Напрямки</span></a></li>
+        <li><a href="#contact" onclick="closeMobileMenu()"><span>📞</span> <span data-i18n="nav_contact">Контакти</span></a></li>
       </ul>
 
       <div class="drawer-langs">
@@ -542,12 +672,15 @@
     </button>
   </div>
 
+  <!-- Live Support Ticker (Social Proof) -->
+  <div class="live-ticker" id="liveTicker"></div>
+
   <!-- Toast Notification -->
   <div class="toast" id="toastBox">Повідомлення</div>
 
   <!-- Scripts -->
-  <script src="data.js?v=20260703_5"></script>
-  <script src="i18n.js?v=20260703_5"></script>
-  <script src="script.js?v=20260703_5"></script>
+  <script src="data.js?v=20260706_2"></script>
+  <script src="i18n.js?v=20260706_2"></script>
+  <script src="script.js?v=20260706_2"></script>
 </body>
 </html>

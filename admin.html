@@ -46,6 +46,18 @@
           <li class="nav-item" onclick="switchSection('gallery', this)">📸 Фотозвіт справ</li>
           <li class="nav-item" onclick="switchSection('honor', this)">🌟 Дошка пошани</li>
           <li class="nav-item" onclick="switchSection('apps', this)">📬 Заявки волонтерів</li>
+          <li class="nav-item" onclick="switchSection('megagoal', this)">🎯 Мега-Ціль місяця</li>
+          <li class="nav-item" onclick="switchSection('radar', this)">🎯 Радар потреб</li>
+          <li class="nav-item" onclick="switchSection('map', this)">🗺️ Жива мапа</li>
+          <li class="nav-item" onclick="switchSection('patron', this)">🏆 Клуб меценатів</li>
+          <li class="nav-item" onclick="switchSection('requests', this)">🛡️ Запити ЗСУ (Портал)</li>
+          <li class="nav-item" onclick="switchSection('honorwall', this)">🌟 Стіна Слави (Цеглинки)</li>
+          <li class="nav-item" onclick="switchSection('shop', this)">🛍️ Замовлення Мерчу</li>
+          <li class="nav-item" onclick="switchSection('training', this)">🎓 Записи на Тренінги</li>
+          <li class="nav-item" onclick="switchSection('rehab', this)">🦿 Заявки на Реабілітацію</li>
+          <li class="nav-item" onclick="switchSection('inter', this)">🌍 Міжнародні та Крипто-донати</li>
+          <li class="nav-item" onclick="switchSection('memorial', this)">🕯️ Заявки в Пантеон Героїв</li>
+          <li class="nav-item" onclick="switchSection('auctions', this)">🎟️ Учасники Аукціонів та Лотерей</li>
         </ul>
       </div>
 
@@ -392,6 +404,260 @@
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
           <button type="button" class="btn-admin btn-del" onclick="closeGalModal()">Скасувати</button>
           <button type="submit" class="btn-admin btn-add">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+      <!-- SECTION 6: Mega-Goal -->
+      <section id="sec-megagoal" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🎯 Мега-Ціль місяця: Операція «Небесний Щит»</h1>
+        </div>
+        <div class="panel" style="margin-bottom: 24px;">
+          <h3 style="font-family: 'Outfit'; margin-bottom: 16px;">Налаштування фінансової цілі</h3>
+          <form onsubmit="saveAdminMegaGoal(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Зібрано (грн)</label>
+              <input type="number" id="mgCollected" class="form-input" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; border-radius: 10px;">
+            </div>
+            <div>
+              <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Цільова сума (грн)</label>
+              <input type="number" id="mgTarget" class="form-input" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; border-radius: 10px;">
+            </div>
+            <div style="grid-column: span 2;">
+              <button type="submit" class="btn-admin btn-add" style="padding: 12px 24px;">💾 Зберегти суму та оновити прогрес</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3 style="font-family: 'Outfit'; margin-bottom: 16px;">Етапи розблокування (Milestones)</h3>
+          <div id="adminMilestonesContainer" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+      </section>
+
+      <!-- SECTION 7: Frontline Needs Radar -->
+      <section id="sec-radar" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🎯 Радар потреб передової (Запити бригад)</h1>
+          <button class="btn-admin btn-add" onclick="openRadarModal()">+ Додати запит від бригади</button>
+        </div>
+        <div id="adminRadarContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
+      </section>
+
+      <!-- SECTION 8: Live Impact Map -->
+      <section id="sec-map" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🗺️ Жива мапа допомоги (Регіони)</h1>
+        </div>
+        <div id="adminMapContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
+      </section>
+
+      <!-- SECTION 9: Patron Club -->
+      <section id="sec-patron" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🏆 Клуб постійних меценатів (Пакети підписки)</h1>
+        </div>
+        <div id="adminPatronContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;"></div>
+      </section>
+
+      <!-- SECTION 10: Military Requests CRM -->
+      <section id="sec-requests" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🛡️ Запити від підрозділів ЗСУ (Портал)</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Підрозділ / Контакт</th>
+                <th>Категорія та Потреба</th>
+                <th>Пріоритет</th>
+                <th>Статус та Управління</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="reqCrmTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 11: Honor Wall Bricks CRM -->
+      <section id="sec-honorwall" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🌟 Стіна Слави Меценатів (Цеглинки та Побажання)</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Донор / Компанія</th>
+                <th>Сума</th>
+                <th>Країна</th>
+                <th>Повідомлення</th>
+                <th>Дата</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="honorWallTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 12: Shop Orders CRM -->
+      <section id="sec-shop" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🛍️ Замовлення Благодійного Мерчу та Артефактів</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Товар / Артефакт</th>
+                <th>Замовник</th>
+                <th>Контакти</th>
+                <th>Доставка</th>
+                <th>Статус відправки</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="shopOrdersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 13: Training Registrations CRM -->
+      <section id="sec-training" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🎓 Записи в Академію на Тренінги</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Курс / Тренінг</th>
+                <th>Учасник</th>
+                <th>Контакти</th>
+                <th>Статус / Роль</th>
+                <th>Статус участі</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="trainingRegTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+        <!-- SECTION 14: Rehab Applications CRM -->
+      <section id="sec-rehab" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🦿 Заявки на Протезування та Реабілітацію</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Військовий / Ветеран</th>
+                <th>Контакти</th>
+                <th>Напрямок допомоги</th>
+                <th>Опис травми / ситуації</th>
+                <th>Статус обробки</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="rehabAppTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 15: International & Crypto CRM -->
+      <section id="sec-inter" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🌍 Міжнародні Перекази та Крипто-донати</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Донор / Організація</th>
+                <th>Країна</th>
+                <th>Внесок</th>
+                <th>Канал / Валюта</th>
+                <th>Повідомлення</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="interDonorsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+        <!-- SECTION 16: Memorial Applications CRM -->
+      <section id="sec-memorial" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🕯️ Заявки на увічнення в Пантеоні Героїв</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Заявник (родина/побратим)</th>
+                <th>Контакти</th>
+                <th>Герой / Підрозділ</th>
+                <th>Опис подвигу</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="memAppTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 17: Auctions & Raffles CRM -->
+      <section id="sec-auctions" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🎟️ Реєстр Учасників Лотерей та Аукціонних Ставок</h1>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Трофей / Лот</th>
+                <th>Учасник</th>
+                <th>Контакти</th>
+                <th>Внесок / Ставка</th>
+                <th>Білети / Тип</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="aucTrxTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+  <!-- Modal: Add Radar Item -->
+  <div id="radarModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 4000;">
+    <div style="background: #0f1c3f; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; border: 1px solid var(--admin-border); box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+      <h3 style="color: #fff; margin-bottom: 20px;">Новий запит від бригади</h3>
+      <form onsubmit="saveNewRadarItem(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="text" id="newRadarBrigade" placeholder="Назва бригади (напр. 3-тя ОШБр)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        <input type="text" id="newRadarNeed" placeholder="Потреба (напр. 5 нічних дронів Mavic 3T)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input type="number" id="newRadarTarget" placeholder="Цільова сума (грн)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          <input type="number" id="newRadarCollected" placeholder="Зібрано (грн)" value="0" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" class="btn-admin btn-del" onclick="document.getElementById('radarModal').style.display='none'">Скасувати</button>
+          <button type="submit" class="btn-admin btn-add">Додати запит</button>
         </div>
       </form>
     </div>

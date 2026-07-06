@@ -47,6 +47,18 @@ function switchSection(sec, btnEl) {
   document.getElementById('sec-gallery').style.display = sec === 'gallery' ? 'block' : 'none';
   document.getElementById('sec-honor').style.display = sec === 'honor' ? 'block' : 'none';
   document.getElementById('sec-apps').style.display = sec === 'apps' ? 'block' : 'none';
+  document.getElementById('sec-megagoal').style.display = sec === 'megagoal' ? 'block' : 'none';
+  document.getElementById('sec-radar').style.display = sec === 'radar' ? 'block' : 'none';
+  document.getElementById('sec-map').style.display = sec === 'map' ? 'block' : 'none';
+  document.getElementById('sec-patron').style.display = sec === 'patron' ? 'block' : 'none';
+  document.getElementById('sec-requests').style.display = sec === 'requests' ? 'block' : 'none';
+  document.getElementById('sec-honorwall').style.display = sec === 'honorwall' ? 'block' : 'none';
+  document.getElementById('sec-shop').style.display = sec === 'shop' ? 'block' : 'none';
+  document.getElementById('sec-training').style.display = sec === 'training' ? 'block' : 'none';
+  document.getElementById('sec-rehab').style.display = sec === 'rehab' ? 'block' : 'none';
+  document.getElementById('sec-inter').style.display = sec === 'inter' ? 'block' : 'none';
+  document.getElementById('sec-memorial').style.display = sec === 'memorial' ? 'block' : 'none';
+  document.getElementById('sec-auctions').style.display = sec === 'auctions' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -57,6 +69,18 @@ function renderAllAdmin() {
   renderAdminGallery();
   renderAdminHonor();
   renderAdminApps();
+  renderAdminMegaGoal();
+  renderAdminRadar();
+  renderAdminMap();
+  renderAdminPatron();
+  if (typeof renderAdminRequests === 'function') renderAdminRequests();
+  if (typeof renderAdminHonorWall === 'function') renderAdminHonorWall();
+  if (typeof renderAdminShop === 'function') renderAdminShop();
+  if (typeof renderAdminTraining === 'function') renderAdminTraining();
+  if (typeof renderAdminRehab === 'function') renderAdminRehab();
+  if (typeof renderAdminInter === 'function') renderAdminInter();
+  if (typeof renderAdminMemorial === 'function') renderAdminMemorial();
+  if (typeof renderAdminAuctions === 'function') renderAdminAuctions();
 }
 
 // === Section 1: Stats ===
@@ -536,4 +560,555 @@ async function handleBulkGalleryUpload(event) {
   event.target.value = '';
   renderAllAdmin();
   alert(`🚀 Успішно завантажено та оптимізовано ${processed} фотографій! Вони вже на сайті.`);
+}
+
+
+// ==========================================
+// TOP-5 NEW FEATURES ADMIN MANAGEMENT
+// ==========================================
+
+function renderAdminMegaGoal() {
+  if (!window.FoundationStore || !FoundationStore.getMegaGoal) return;
+  const mg = FoundationStore.getMegaGoal();
+  const elColl = document.getElementById('mgCollected');
+  const elTarg = document.getElementById('mgTarget');
+  if (elColl && elTarg) {
+    elColl.value = mg.collected;
+    elTarg.value = mg.target;
+  }
+
+  const container = document.getElementById('adminMilestonesContainer');
+  if (!container) return;
+  container.innerHTML = (mg.milestones || []).map((m, idx) => {
+    const title = typeof m.title === 'object' ? m.title.uk : m.title;
+    const desc = typeof m.desc === 'object' ? m.desc.uk : m.desc;
+    return `
+      <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <strong style="color: var(--admin-accent); font-size: 1.1rem;">${m.icon} ${m.pct}% — ${title}</strong>
+          <div style="color: #aaa; font-size: 0.9rem;">${desc}</div>
+        </div>
+        <div>
+          <button class="btn-admin ${m.unlocked ? 'btn-del' : 'btn-add'}" onclick="toggleMilestone(${idx})">
+            ${m.unlocked ? '✅ Розблоковано (Натисніть щоб заблокувати)' : '🔒 Заблоковано (Натисніть щоб розблокувати)'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function saveAdminMegaGoal(e) {
+  e.preventDefault();
+  const mg = FoundationStore.getMegaGoal();
+  mg.collected = Number(document.getElementById('mgCollected').value);
+  mg.target = Number(document.getElementById('mgTarget').value);
+  FoundationStore.save();
+  renderAdminMegaGoal();
+  alert('✅ Дані Мега-Цілі оновлено!');
+}
+
+function toggleMilestone(idx) {
+  const mg = FoundationStore.getMegaGoal();
+  if (mg && mg.milestones && mg.milestones[idx]) {
+    mg.milestones[idx].unlocked = !mg.milestones[idx].unlocked;
+    FoundationStore.save();
+    renderAdminMegaGoal();
+  }
+}
+
+function renderAdminRadar() {
+  const container = document.getElementById('adminRadarContainer');
+  if (!container || !window.FoundationStore || !FoundationStore.getFrontlineRadar) return;
+  const requests = FoundationStore.getFrontlineRadar();
+  container.innerHTML = requests.map((req, idx) => {
+    const bName = typeof req.brigade === 'object' ? req.brigade.uk : req.brigade;
+    const need = typeof req.need === 'object' ? req.need.uk : req.need;
+    const isComp = req.status === 'completed';
+    return `
+      <div class="panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong style="color: #fff; font-size: 1.1rem;">${bName}</strong>
+            <span style="background: ${isComp ? '#10b981' : '#ef4444'}; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem;">${isComp ? 'Виконано' : 'В процесі'}</span>
+          </div>
+          <div style="color: var(--admin-accent); margin-bottom: 12px;">📌 ${need}</div>
+          <div style="font-size: 0.85rem; color: #aaa; margin-bottom: 16px;">Зібрано: ${Number(req.collected).toLocaleString()} ₴ / ${Number(req.target).toLocaleString()} ₴</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-admin ${isComp ? 'btn-add' : 'btn-del'}" style="flex: 1;" onclick="toggleRadarStatus(${idx})">${isComp ? '↩️ Повернути в роботу' : '✅ Позначити виконаним'}</button>
+          <button class="btn-admin btn-del" onclick="deleteRadarItem(${idx})">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleRadarStatus(idx) {
+  const reqs = FoundationStore.getFrontlineRadar();
+  if (reqs && reqs[idx]) {
+    reqs[idx].status = reqs[idx].status === 'completed' ? 'urgent' : 'completed';
+    reqs[idx].badge = reqs[idx].status === 'completed' ? '✅ Збір закрито! В дорозі' : '🔥 Збираємо зараз';
+    FoundationStore.save();
+    renderAdminRadar();
+  }
+}
+
+function deleteRadarItem(idx) {
+  if (confirm('Видалити цей запит?')) {
+    const reqs = FoundationStore.getFrontlineRadar();
+    reqs.splice(idx, 1);
+    FoundationStore.save();
+    renderAdminRadar();
+  }
+}
+
+function openRadarModal() {
+  document.getElementById('radarModal').style.display = 'flex';
+}
+
+function saveNewRadarItem(e) {
+  e.preventDefault();
+  const reqs = FoundationStore.getFrontlineRadar();
+  reqs.push({
+    brigade: document.getElementById('newRadarBrigade').value,
+    need: document.getElementById('newRadarNeed').value,
+    target: Number(document.getElementById('newRadarTarget').value),
+    collected: Number(document.getElementById('newRadarCollected').value),
+    status: 'urgent',
+    badge: '🔥 Збираємо зараз'
+  });
+  FoundationStore.save();
+  document.getElementById('radarModal').style.display = 'none';
+  renderAdminRadar();
+  alert('✅ Запит від бригади успішно додано!');
+}
+
+function renderAdminMap() {
+  const container = document.getElementById('adminMapContainer');
+  if (!container || !window.FoundationStore || !FoundationStore.getImpactMap) return;
+  const mapData = FoundationStore.getImpactMap();
+  container.innerHTML = mapData.map((item, idx) => {
+    const name = typeof item.name === 'object' ? item.name.uk : item.name;
+    return `
+      <div class="panel">
+        <h3 style="color: #fff; margin-bottom: 12px;">${item.icon} ${name}</h3>
+        <form onsubmit="saveAdminMapItem(${idx}, event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 0.8rem; color: #aaa;">Дрони / РЕБ:</label>
+            <input type="text" id="mapDrones_${idx}" value="${item.drones}" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: #aaa;">Медицина (IFAK):</label>
+            <input type="text" id="mapMed_${idx}" value="${item.med}" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: #aaa;">Транспорт:</label>
+            <input type="text" id="mapAuto_${idx}" value="${item.auto}" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: #aaa;">Статус:</label>
+            <select id="mapStatus_${idx}" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+              <option value="hot" ${item.status === 'hot' ? 'selected' : ''}>🔥 Гаряча точка</option>
+              <option value="active" ${item.status === 'active' ? 'selected' : ''}>Активний напрямок</option>
+              <option value="logistics" ${item.status === 'logistics' ? 'selected' : ''}>📦 Логістичний хаб</option>
+            </select>
+          </div>
+          <div style="grid-column: span 2;">
+            <button type="submit" class="btn-admin btn-add" style="width: 100%;">💾 Зберегти регіон</button>
+          </div>
+        </form>
+      </div>
+    `;
+  }).join('');
+}
+
+function saveAdminMapItem(idx, e) {
+  e.preventDefault();
+  const mapData = FoundationStore.getImpactMap();
+  if (mapData && mapData[idx]) {
+    mapData[idx].drones = document.getElementById(`mapDrones_${idx}`).value;
+    mapData[idx].med = document.getElementById(`mapMed_${idx}`).value;
+    mapData[idx].auto = document.getElementById(`mapAuto_${idx}`).value;
+    mapData[idx].status = document.getElementById(`mapStatus_${idx}`).value;
+    FoundationStore.save();
+    alert('✅ Статистику регіону оновлено!');
+  }
+}
+
+function renderAdminPatron() {
+  const container = document.getElementById('adminPatronContainer');
+  if (!container || !window.FoundationStore || !FoundationStore.getPatronTiers) return;
+  const tiers = FoundationStore.getPatronTiers();
+  container.innerHTML = tiers.map((tier, idx) => {
+    const title = typeof tier.title === 'object' ? tier.title.uk : tier.title;
+    const desc = typeof tier.desc === 'object' ? tier.desc.uk : tier.desc;
+    return `
+      <div class="panel" style="text-align: center;">
+        <h3 style="color: #fff; margin-bottom: 8px;">${title}</h3>
+        <div style="font-size: 1.5rem; color: var(--admin-accent); font-weight: 800; margin-bottom: 12px;">${tier.amount} / ${typeof tier.period === 'object' ? tier.period.uk : tier.period}</div>
+        <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 16px;">${desc}</p>
+        <button class="btn-admin btn-add" style="width: 100%;" onclick="alert('Редагування пакетів меценатів у розробці')">✏️ Редагувати пакет</button>
+      </div>
+    `;
+  }).join('');
+}
+
+// === Section 10: Military Requests CRM ===
+function renderAdminRequests() {
+  const tbody = document.getElementById('reqCrmTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getMilitaryRequests) return;
+  const list = FoundationStore.getMilitaryRequests();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">Запитів від ЗСУ поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(r => `
+    <tr>
+      <td style="font-family: monospace; font-weight: 700; color: #ffb703;">${r.id}</td>
+      <td>
+        <strong>${r.unit}</strong><br>
+        <span style="font-size: 0.8rem; color: #aaa;">${r.contact}</span>
+      </td>
+      <td>
+        <strong style="color: #60a5fa;">${r.category}</strong><br>
+        <span style="font-size: 0.85rem; color: #ccc;">${r.items}</span>
+      </td>
+      <td style="color: #f59e0b;">${r.priority}</td>
+      <td>
+        <select onchange="changeReqStatus('${r.id}', this.value)" style="padding: 6px; border-radius: 6px; background: #1e293b; color: #fff; border: 1px solid #475569;">
+          <option value="review" ${r.status === 'review' ? 'selected' : ''}>🔍 Верифікація</option>
+          <option value="fundraising" ${r.status === 'fundraising' ? 'selected' : ''}>🟡 Збір відкрито</option>
+          <option value="purchased" ${r.status === 'purchased' ? 'selected' : ''}>🟢 Закуплено / В дорозі</option>
+          <option value="delivered" ${r.status === 'delivered' ? 'selected' : ''}>✅ Доставлено / Акт підписано</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminRequest('${r.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function changeReqStatus(id, status) {
+  let label = '🔍 Верифікація безпеки та документів';
+  if (status === 'fundraising') label = '🟡 Відкрито публічний збір';
+  if (status === 'purchased') label = '🟢 Закуплено — у дорозі на фронт';
+  if (status === 'delivered') label = '✅ Доставлено — Акт підписано';
+  
+  FoundationStore.updateMilitaryRequestStatus(id, status, label);
+  renderAdminRequests();
+  alert(`✅ Статус запиту ${id} оновлено на "${label}"!`);
+}
+
+function deleteAdminRequest(id) {
+  if (confirm(`Видалити запит ${id}?`)) {
+    FoundationStore.deleteMilitaryRequest(id);
+    renderAdminRequests();
+  }
+}
+
+// === Section 11: Honor Wall Bricks CRM ===
+function renderAdminHonorWall() {
+  const tbody = document.getElementById('honorWallTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getHonorWallBricks) return;
+  const list = FoundationStore.getHonorWallBricks();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">Цеглинок на стіні поки немає</td></tr>';
+    return;
+  }
+
+  const flagMap = { uk: '🇺🇦', us: '🇺🇸', pl: '🇵🇱', de: '🇩🇪', gb: '🇬🇧', ro: '🇷🇴', it: '🇮🇹' };
+
+  tbody.innerHTML = list.map(b => `
+    <tr>
+      <td><strong>${b.name}</strong></td>
+      <td style="color: #10b981; font-weight: 700;">${b.amount}</td>
+      <td>${flagMap[b.country] || '🌍'} (${b.country})</td>
+      <td style="font-style: italic; max-width: 300px;">«${b.message}»</td>
+      <td style="color: #aaa; font-size: 0.8rem;">${b.date}</td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminBrick('${b.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function deleteAdminBrick(id) {
+  if (confirm('Видалити цю цеглинку з Стіни Слави?')) {
+    FoundationStore.deleteHonorWallBrick(id);
+    renderAdminHonorWall();
+  }
+}
+
+
+// === Section 12: Shop Orders CRM ===
+function renderAdminShop() {
+  const tbody = document.getElementById('shopOrdersTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getShopOrders) return;
+  const list = FoundationStore.getShopOrders();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Замовлень поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(o => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${o.id}</strong><br><small style="color: #888;">${o.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${o.item}</td>
+      <td><strong>${o.customer}</strong></td>
+      <td><a href="tel:${o.phone}" style="color: #60a5fa;">${o.phone}</a></td>
+      <td style="font-size: 0.85rem; color: #ccc;">${o.address}</td>
+      <td>
+        <select onchange="changeShopStatus('${o.id}', this.value)" style="padding: 6px; border-radius: 8px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;">
+          <option value="new" ${o.status === 'new' ? 'selected' : ''}>🟡 Очікує відправки</option>
+          <option value="sent" ${o.status === 'sent' ? 'selected' : ''}>🟢 Відправлено Новою Поштою</option>
+          <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>✅ Доставлено меценату</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminShopOrder('${o.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function changeShopStatus(id, status) {
+  let label = '🟡 Очікує відправки';
+  if (status === 'sent') label = '🟢 Відправлено Новою Поштою / DHL';
+  if (status === 'delivered') label = '✅ Доставлено меценату';
+  
+  FoundationStore.updateShopOrderStatus(id, status, label);
+  renderAdminShop();
+  alert(`✅ Статус замовлення ${id} оновлено!`);
+}
+
+function deleteAdminShopOrder(id) {
+  if (confirm(`Видалити замовлення ${id}?`)) {
+    FoundationStore.deleteShopOrder(id);
+    renderAdminShop();
+  }
+}
+
+// === Section 13: Training Registrations CRM ===
+function renderAdminTraining() {
+  const tbody = document.getElementById('trainingRegTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getTrainingRegistrations) return;
+  const list = FoundationStore.getTrainingRegistrations();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Заявок на тренінги поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(r => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${r.id}</strong><br><small style="color: #888;">${r.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${r.courseTitle}</td>
+      <td><strong>${r.name}</strong></td>
+      <td><a href="tel:${r.phone}" style="color: #60a5fa;">${r.phone}</a></td>
+      <td><span style="background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">${r.role}</span></td>
+      <td>
+        <select onchange="changeTrainingStatus('${r.id}', this.value)" style="padding: 6px; border-radius: 8px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;">
+          <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>🟡 В обробці</option>
+          <option value="approved" ${r.status === 'approved' ? 'selected' : ''}>🟢 Підтверджено (Зараховано)</option>
+          <option value="rejected" ${r.status === 'rejected' ? 'selected' : ''}>🔴 Відхилено / Перенесено</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminTrainingReg('${r.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function changeTrainingStatus(id, status) {
+  let label = '🟡 В обробці';
+  if (status === 'approved') label = '🟢 Підтверджено (Зараховано у групу)';
+  if (status === 'rejected') label = '🔴 Відхилено / Перенесено на наступний місяць';
+  
+  FoundationStore.updateTrainingRegStatus(id, status, label);
+  renderAdminTraining();
+  alert(`✅ Статус заявки ${id} оновлено!`);
+}
+
+function deleteAdminTrainingReg(id) {
+  if (confirm(`Видалити заявку ${id}?`)) {
+    FoundationStore.deleteTrainingRegistration(id);
+    renderAdminTraining();
+  }
+}
+
+// === Section 14: Rehab Applications CRM ===
+function renderAdminRehab() {
+  const tbody = document.getElementById('rehabAppTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getRehabApplications) return;
+  const list = FoundationStore.getRehabApplications();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Заявок на реабілітацію поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(a => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${a.id}</strong><br><small style="color: #888;">${a.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${a.name}</td>
+      <td><a href="tel:${a.phone}" style="color: #60a5fa;">${a.phone}</a></td>
+      <td><span style="background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">${a.type}</span></td>
+      <td style="font-size: 0.85rem; color: #ccc; max-width: 250px;">${a.details}</td>
+      <td>
+        <select onchange="changeRehabStatus('${a.id}', this.value)" style="padding: 6px; border-radius: 8px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;">
+          <option value="review" ${a.status === 'review' ? 'selected' : ''}>🟡 Медична перевірка</option>
+          <option value="active" ${a.status === 'active' ? 'selected' : ''}>🟢 В роботі клініки</option>
+          <option value="done" ${a.status === 'done' ? 'selected' : ''}>✅ Протез виготовлено / Терапію завершено</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminRehabApp('${a.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function changeRehabStatus(id, status) {
+  let label = '🟡 Медична перевірка';
+  if (status === 'active') label = '🟢 В роботі клініки (Superhumans/Unbroken)';
+  if (status === 'done') label = '✅ Протез виготовлено / Терапію успішно завершено';
+  
+  FoundationStore.updateRehabAppStatus(id, status, label);
+  renderAdminRehab();
+  alert(`✅ Статус заявки ${id} оновлено!`);
+}
+
+function deleteAdminRehabApp(id) {
+  if (confirm(`Видалити заявку ${id}?`)) {
+    FoundationStore.deleteRehabApplication(id);
+    renderAdminRehab();
+  }
+}
+
+// === Section 15: International Donors CRM ===
+function renderAdminInter() {
+  const tbody = document.getElementById('interDonorsTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getInternationalDonors) return;
+  const list = FoundationStore.getInternationalDonors();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Міжнародних переказів поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(d => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${d.id}</strong><br><small style="color: #888;">${d.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${d.donor}</td>
+      <td>${d.countryName}</td>
+      <td style="font-weight: 800; color: #10b981;">${d.amount}</td>
+      <td><span style="background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">${d.method}</span></td>
+      <td style="font-style: italic; color: #aaa; max-width: 250px;">«${d.msg || ''}»</td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminInterDonor('${d.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function deleteAdminInterDonor(id) {
+  if (confirm(`Видалити запис про міжнародний переказ ${id}?`)) {
+    FoundationStore.deleteInternationalDonor(id);
+    renderAdminInter();
+  }
+}
+
+// === Section 16: Memorial Applications CRM ===
+function renderAdminMemorial() {
+  const tbody = document.getElementById('memAppTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getMemorialApplications) return;
+  const list = FoundationStore.getMemorialApplications();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Заявок в Пантеон поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(a => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${a.id}</strong><br><small style="color: #888;">${a.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${a.name}</td>
+      <td><a href="tel:${a.phone}" style="color: #60a5fa;">${a.phone}</a></td>
+      <td><strong style="color: #fff;">${a.heroName}</strong><br><small style="color: #aaa;">${a.brigade}</small></td>
+      <td style="font-size: 0.85rem; color: #ccc; max-width: 250px;">${a.details}</td>
+      <td>
+        <select onchange="changeMemStatus('${a.id}', this.value)" style="padding: 6px; border-radius: 8px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff; font-size: 0.85rem;">
+          <option value="review" ${a.status === 'review' ? 'selected' : ''}>🟡 Перевірка документів</option>
+          <option value="approved" ${a.status === 'approved' ? 'selected' : ''}>🟢 Додано в Пантеон</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminMemApp('${a.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function changeMemStatus(id, status) {
+  let label = '🟡 Перевірка документів';
+  if (status === 'approved') label = '🟢 Додано в Пантеон';
+  
+  const data = FoundationStore.getData();
+  if (data.memorialApplications) {
+    const idx = data.memorialApplications.findIndex(a => a.id === id);
+    if (idx !== -1) {
+      data.memorialApplications[idx].status = status;
+      data.memorialApplications[idx].statusLabel = label;
+      FoundationStore.saveData(data);
+    }
+  }
+  renderAdminMemorial();
+  alert(`✅ Статус заявки ${id} оновлено!`);
+}
+
+function deleteAdminMemApp(id) {
+  if (confirm(`Видалити заявку ${id}?`)) {
+    FoundationStore.deleteMemorialApp(id);
+    renderAdminMemorial();
+  }
+}
+
+// === Section 17: Auctions & Raffles CRM ===
+function renderAdminAuctions() {
+  const tbody = document.getElementById('aucTrxTableBody');
+  if (!tbody || !window.FoundationStore || !FoundationStore.getAuctionTransactions) return;
+  const list = FoundationStore.getAuctionTransactions();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Операцій лотерей поки немає</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(t => `
+    <tr>
+      <td><strong style="color: var(--accent-gold);">${t.id}</strong><br><small style="color: #888;">${t.date}</small></td>
+      <td style="font-weight: 700; color: #fff;">${t.lotTitle}</td>
+      <td><strong style="color: #fff;">${t.participant}</strong></td>
+      <td><a href="tel:${t.phone}" style="color: #60a5fa;">${t.phone}</a></td>
+      <td style="font-weight: 800; color: #10b981;">${t.amount}</td>
+      <td><span style="background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; color: #ccc;">${t.ticketsCount}</span><br><small style="color: #888;">${t.type}</small></td>
+      <td>
+        <button class="btn-admin btn-del" onclick="deleteAdminAucTrx('${t.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function deleteAdminAucTrx(id) {
+  if (confirm(`Видалити операцію ${id}?`)) {
+    FoundationStore.deleteAuctionTransaction(id);
+    renderAdminAuctions();
+  }
 }
