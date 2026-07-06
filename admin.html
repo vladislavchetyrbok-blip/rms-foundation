@@ -70,6 +70,9 @@
           <li class="nav-item" onclick="switchSection('users', this)">👥 База Профілів та Меценатів</li>
           <li class="nav-item" onclick="switchSection('eco', this)">🌱 Еко-Оборона (Розмінування)</li>
           <li class="nav-item" onclick="switchSection('kids', this)">👧👦 Діти Війни (Освітній Хаб)</li>
+          <li class="nav-item" onclick="switchSection('energy', this)">⚡ Енерго-Щит (Генератори)</li>
+          <li class="nav-item" onclick="switchSection('vetbiz', this)">🚀 Ветеранський Бізнес (Гранти)</li>
+          <li class="nav-item" onclick="switchSection('hosp', this)">🏥 Мобільні Шпиталі (Стоматологія)</li>
         </ul>
       </div>
 
@@ -1052,6 +1055,84 @@
                 </tr>
               </thead>
               <tbody id="kidsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 30: Energy Shield -->
+      <section id="sec-energy" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">⚡ Управління Енерго-Щитом та Зв'язком ЗСУ</h1>
+          <div style="color: #f59e0b; font-weight: 700;">● Генератори • Starlink • EcoFlow</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🔋 Каталог енергетичних проєктів</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Назва проєкту</th>
+                  <th>Регіон / Область</th>
+                  <th>Зібрано / Ціль</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="energyTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 31: Veteran Business -->
+      <section id="sec-vetbiz" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🚀 Управління Ветеранським Бізнес-Інкубатором</h1>
+          <div style="color: #10b981; font-weight: 700;">● Гранти до 250,000 ₴ • Вітрина «Купуй Ветеранське!»</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🛍️ Реєстр бізнесів та заявок на гранти</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Бренд / Засновник</th>
+                  <th>Місто / Категорія</th>
+                  <th>Грант</th>
+                  <th>Опис</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="vetbizTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 32: Mobile Hospitals -->
+      <section id="sec-hosp" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🏥 Управління Мобільними Шпиталями та Стоматологіями</h1>
+          <div style="color: #ef4444; font-weight: 700;">● Стоматології на колесах • Броне-реанімобілі</div>
+        </div>
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🚑 Каталог мобільних медичних авто</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Назва проєкту</th>
+                  <th>Регіон / Напрямок</th>
+                  <th>Зібрано / Ціль</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="hospTableBody"></tbody>
             </table>
           </div>
         </div>

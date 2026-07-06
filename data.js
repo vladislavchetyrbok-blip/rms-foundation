@@ -590,6 +590,20 @@ const INITIAL_DATA = {
   childrenRequests: [
     { id: 'KID-1', childName: 'Остап (10 років)', parentInfo: 'Син полеглого Героя 93-ї ОМБр', city: 'Бахмут / Київ', requestType: 'Ноутбук для школи', date: '06.07.2026', status: 'in_progress', statusLabel: '🟡 В процесі закупівлі', notes: 'Потрібен ноутбук для дистанційного навчання та курсів програмування' },
     { id: 'KID-2', childName: 'Софія (14 років)', parentInfo: 'Донька ветерана з інвалідністю', city: 'Харків', requestType: 'Путівка в кемп "Горизонт"', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Путівку надано', notes: 'Зміна в Карпатах з 15 по 28 липня, оплачено фондом' }
+  ],
+  energyProjects: [
+    { id: 'ENG-1', title: 'Дизель-генератор 50 кВт для прифронтового шпиталю', region: 'Запорізька область', needAmount: 380000, collected: 290000, desc: 'Забезпечення безперебійного живлення реанімації та операційних під час зимових блекаутів.', status: 'active', img: 'media__1783040943183.jpg' },
+    { id: 'ENG-2', title: '15 терміналів Starlink v3 + авто-адаптери', region: 'Донецький напрямок (Авдіївка/Покровськ)', needAmount: 300000, collected: 300000, desc: 'Супутниковий шифрований зв\'язок для командних пунктів та розрахунків БПЛА.', status: 'completed', img: 'media__1783040943180.jpg' },
+    { id: 'ENG-3', title: 'Зарядні станції EcoFlow Delta Pro (5 шт)', region: 'Харківщина (Мобільні ППО)', needAmount: 450000, collected: 120000, desc: 'Живлення прожекторів та радіолокаційних планшетів мисливців за шахедами.', status: 'active', img: 'media__1783040943186.jpg' }
+  ],
+  veteranBusinesses: [
+    { id: 'VET-1', brand: '☕ "Кава Кіборгів" (Ветеранська Ростерія)', founder: 'Олександр "Титан" (Ветеран 95-ї ОДШБр)', city: 'Житомир', grantAmount: 150000, desc: 'Крафтове обсмажування кави. Частина прибутку йде на дрони для рідної бригади.', category: 'Кава та пекарні', status: 'active', img: 'media__1783040943196.jpg' },
+    { id: 'VET-2', brand: '🍯 "Мед Перемоги" (Пасіка ветерана)', founder: 'Микола Петренко (Ветеран-сапер)', city: 'Полтавщина', grantAmount: 100000, desc: 'Екологічно чистий липовий та гречаний мед з Полтавщини. Подарункові набори.', category: 'Крафтові продукти', status: 'active', img: 'media__1783040943183.jpg' },
+    { id: 'VET-3', brand: '🛠️ СТО "Бронювання та Ремонт 4x4"', founder: 'Брати Бойко (Ветерани ТрО)', city: 'Дніпро', grantAmount: 250000, desc: 'Ремонт та підготовка пікапів і позашляховиків для фронтових підрозділів.', category: 'Автосервіс та СТО', status: 'completed', img: 'media__1783040943180.jpg' }
+  ],
+  mobileHospitals: [
+    { id: 'HOSP-1', title: 'Мобільний стоматологічний кабінет на базі автобуса', region: 'Слов\'янськ / Краматорськ', needAmount: 650000, collected: 480000, desc: 'Повноцінне стоматологічне обладнання, рентген та генератор для лікування бійців на нулі.', status: 'active', img: 'media__1783040943246.jpg' },
+    { id: 'HOSP-2', title: 'Броньований евакуаційний реанімобіль Pinzgauer', region: 'Куп\'янський напрямок', needAmount: 850000, collected: 850000, desc: 'Вивіз важкопоранених бійців під ворожим обстрілом по бездоріжжю з підтримкою ШВЛ.', status: 'completed', img: 'media__1783040943180.jpg' }
   ]
 };
 window.FoundationStore = {
@@ -1439,10 +1453,75 @@ window.FoundationStore = {
       this.saveData(data);
     }
   },
-  deleteChildRequest(id) {
     const data = this.getData();
     if (data.childrenRequests) {
       data.childrenRequests = data.childrenRequests.filter(c => c.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === Energy Shield Methods ===
+  getEnergyProjects() {
+    return this.getData().energyProjects || [];
+  },
+  addEnergyDonation(id, amount) {
+    const data = this.getData();
+    if (!data.energyProjects) return;
+    const p = data.energyProjects.find(x => x.id === id);
+    if (p) {
+      p.collected += Number(amount);
+      if (p.collected >= p.needAmount) p.status = 'completed';
+      this.saveData(data);
+    }
+  },
+  deleteEnergyProject(id) {
+    const data = this.getData();
+    if (data.energyProjects) {
+      data.energyProjects = data.energyProjects.filter(x => x.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === Veteran Business Methods ===
+  getVeteranBusinesses() {
+    return this.getData().veteranBusinesses || [];
+  },
+  addVeteranBusiness(brand, founder, city, category, desc) {
+    const data = this.getData();
+    if (!data.veteranBusinesses) data.veteranBusinesses = [];
+    const id = 'VET-' + Math.floor(100 + Math.random() * 900);
+    data.veteranBusinesses.unshift({
+      id, brand, founder, city, grantAmount: 150000, desc, category, status: 'active', img: 'media__1783040943196.jpg'
+    });
+    this.saveData(data);
+    return id;
+  },
+  deleteVeteranBusiness(id) {
+    const data = this.getData();
+    if (data.veteranBusinesses) {
+      data.veteranBusinesses = data.veteranBusinesses.filter(x => x.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  // === Mobile Hospitals Methods ===
+  getMobileHospitals() {
+    return this.getData().mobileHospitals || [];
+  },
+  addHospitalDonation(id, amount) {
+    const data = this.getData();
+    if (!data.mobileHospitals) return;
+    const h = data.mobileHospitals.find(x => x.id === id);
+    if (h) {
+      h.collected += Number(amount);
+      if (h.collected >= h.needAmount) h.status = 'completed';
+      this.saveData(data);
+    }
+  },
+  deleteMobileHospital(id) {
+    const data = this.getData();
+    if (data.mobileHospitals) {
+      data.mobileHospitals = data.mobileHospitals.filter(x => x.id !== id);
       this.saveData(data);
     }
   }

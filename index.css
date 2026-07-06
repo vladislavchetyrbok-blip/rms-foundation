@@ -1533,10 +1533,10 @@ html, body {
 
 @media (max-width: 600px) {
   .live-ticker {
-    bottom: 80px;
+    bottom: 85px;
     left: 12px;
-    right: 12px;
-    max-width: calc(100% - 24px);
+    right: auto;
+    max-width: calc(100% - 80px);
     font-size: 0.82rem;
   }
 }
@@ -2088,25 +2088,64 @@ html, body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* Sleek Glass Cards Polish & Luxury Hover Transitions */
-.sleek-card, .card, .panel, .admin-card, .faq-item, .hotline-card, .region-card, .stat-card {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  position: relative;
-  overflow: hidden;
+/* ==========================================================================
+   ULTRA-RELAXING LUXURY ERGONOMICS & SOFT EYE-CARE POLISH
+   (Приятный, не напрягающий глаза дизайн, мягкие формы и размеры)
+   ========================================================================== */
+
+/* 1. Eye-Soothing Typography & Breathing Line Spacing */
+body {
+  color: #e2e8f0;
+  line-height: 1.72;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-.sleek-card:hover, .card:hover, .panel:hover, .admin-card:hover, .faq-item:hover, .hotline-card:hover, .region-card:hover, .stat-card:hover {
-  border-color: var(--accent-gold) !important;
-  background: rgba(26, 46, 90, 0.75) !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 183, 3, 0.22) !important;
-  transform: translateY(-6px) scale(1.01);
+p, .desc, .subtitle, .card-desc, .faq-answer, .mission-desc {
+  color: #cbd5e1 !important;
+  line-height: 1.75 !important;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Luxury Button Shimmer & Pulsating Glow */
-.btn, .btn-primary, .btn-gold, button {
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* 2. Soft, Relaxing Ergonomic Shapes (Скругленные, гармоничные формы) */
+.sleek-card, .card, .panel, .admin-card, .faq-item, .hotline-card, .region-card, .stat-card, .campaign-card, .news-card, .gallery-card, .module-card, .focus-card {
+  background: rgba(15, 28, 63, 0.72) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 24px !important;
+  padding: 26px 30px !important;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 3. Gentle, Relaxing Hover States (Без резких скачков и едкого неона) */
+.sleek-card:hover, .card:hover, .panel:hover, .admin-card:hover, .faq-item:hover, .hotline-card:hover, .region-card:hover, .stat-card:hover, .campaign-card:hover, .news-card:hover, .gallery-card:hover, .module-card:hover, .focus-card:hover {
+  border-color: rgba(255, 183, 3, 0.45) !important;
+  background: rgba(22, 40, 85, 0.82) !important;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 183, 3, 0.15) !important;
+  transform: translateY(-5px) !important;
+}
+
+/* 4. Ergonomic Buttons with Soothing Tactile Feedback */
+.btn, .btn-primary, .btn-gold, button:not(#rmsMegaMenuBtn):not(.top-lang-btn):not(.titan-qbtn):not(.lang-btn) {
+  border-radius: 16px !important;
+  padding: 14px 28px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .btn::after, .btn-primary::after, .btn-gold::after {
@@ -2114,8 +2153,8 @@ html, body {
   position: absolute;
   top: 0; left: -100%;
   width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-  transition: left 0.6s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transition: left 0.65s ease;
   pointer-events: none;
 }
 
@@ -2124,16 +2163,35 @@ html, body {
 }
 
 .btn-primary:hover, .btn-gold:hover {
-  box-shadow: 0 0 25px rgba(255, 183, 3, 0.6), 0 10px 30px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 183, 3, 0.4) !important;
+  transform: translateY(-2px) !important;
+  filter: brightness(1.08);
 }
 
-/* Smooth Page Load Fade-In & Float Up */
+/* 5. Soothing Badges & Soft Pills */
+.badge {
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 6px 14px !important;
+  border-radius: 50px !important;
+  background: rgba(255, 183, 3, 0.12) !important;
+  border: 1px solid rgba(255, 183, 3, 0.3) !important;
+  color: #ffb703 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.badge:hover {
+  transform: scale(1.03);
+  background: rgba(255, 183, 3, 0.2) !important;
+  box-shadow: 0 6px 20px rgba(255, 183, 3, 0.25);
+}
+
+/* 6. Smooth Page Load Fade-In & Float Up */
 @keyframes fadeInSmooth {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
   }
   100% {
     opacity: 1;
@@ -2142,13 +2200,14 @@ html, body {
 }
 
 main > section, .container > div {
-  animation: fadeInSmooth 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInSmooth 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Header Navigation Luxury Glow Underline */
+/* 7. Header Navigation Luxury Glow Underline */
 header nav ul li a {
   position: relative;
   transition: color 0.25s ease, text-shadow 0.25s ease;
+  padding: 6px 0;
 }
 
 header nav ul li a::after {
@@ -2159,9 +2218,9 @@ header nav ul li a::after {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-gold));
-  transition: width 0.3s ease, left 0.3s ease;
+  transition: width 0.35s ease, left 0.35s ease;
   border-radius: 2px;
-  box-shadow: 0 0 8px var(--accent-gold);
+  box-shadow: 0 0 8px rgba(255, 183, 3, 0.6);
 }
 
 header nav ul li a:hover::after, header nav ul li a.active::after {
@@ -2171,29 +2230,16 @@ header nav ul li a:hover::after, header nav ul li a.active::after {
 
 header nav ul li a:hover {
   color: var(--accent-gold) !important;
-  text-shadow: 0 0 12px rgba(255, 183, 3, 0.5);
+  text-shadow: 0 0 12px rgba(255, 183, 3, 0.4);
 }
 
-/* Badges sleek italic polish & Shimmer */
-.badge {
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.badge:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(255, 183, 3, 0.35);
-}
-
-/* Comfortable Reading Typography for Lists and Descriptions */
+/* 8. Comfortable Reading Typography for Lists and Descriptions */
 p, li, td, th {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Smooth custom scrollbar for comfortable viewing */
+/* 9. Smooth custom scrollbar for comfortable viewing */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -2208,6 +2254,6 @@ p, li, td, th {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-gold);
-  box-shadow: 0 0 10px var(--accent-gold);
+  box-shadow: 0 0 10px rgba(255, 183, 3, 0.5);
 }
 

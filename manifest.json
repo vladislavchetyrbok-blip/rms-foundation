@@ -1,0 +1,59 @@
+{
+  "name": "БФ «Разом ми — сила» | Екосистема Допомоги",
+  "short_name": "РазомМиСила",
+  "description": "Офіційний PWA-додаток 32+ модулів допомоги ЗСУ, ветеранам, шпиталям та дітям. НБУ та 501(c)(3) верифікація.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070e1e",
+  "theme_color": "#f59e0b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "🎯 Підтримати ЗСУ (Донат)",
+      "short_name": "Донат",
+      "description": "Швидкий внесок на термінові збори",
+      "url": "./join.html",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "🛠️ Інженерний Хаб Дронів",
+      "short_name": "Дрони",
+      "description": "Збірка FPV та РЕБ",
+      "url": "./drone_hub.html",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "🏥 Мобільні Шпиталі",
+      "short_name": "Шпиталі",
+      "description": "Стоматології та операційні на колесах",
+      "url": "./mobile_hospitals.html",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "⚙️ CRM-Система Фонду",
+      "short_name": "CRM",
+      "description": "Управління заявками та логістикою",
+      "url": "./admin.html",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    }
+  ]
+}
