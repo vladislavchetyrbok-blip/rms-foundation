@@ -504,6 +504,18 @@ const INITIAL_DATA = {
     { id: 'BAT-101', teamName: 'EPAM Ukraine Titans', category: '🏢 IT-Корпорація', captainName: 'Максим Сидоренко', phone: '+380671112233', goal: '1 000 000 ₴', details: 'Готові долучитися до турніру, маємо 500+ активних фахівців у внутрішньому чаті', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Прийнято в турнір' },
     { id: 'BAT-102', teamName: 'КНУ ім. Шевченка (Юрфак)', category: '🎓 Університет', captainName: 'Олена Ковальчук', phone: '+380509988771', goal: '500 000 ₴', details: 'Кидаємо виклик КПІ! Хочемо зібрати на 3 нічні дрони Mavic 3T', date: '04.07.2026', status: 'review', statusLabel: '🟡 Модерація заявки' }
   ]
+,
+  b2bPartners: [
+    { id: 'b2b_1', name: 'Sigma Software', tier: '🥇 Золотий Титан', tierClass: 'tier-gold', contribution: '1 500 000 ₴ / міс', icon: '💻', desc: 'Системне шефство над батальйоном БПЛА 3-ї ОШБр. Фінансування нічної оптики та старлінків.' },
+    { id: 'b2b_2', name: 'SoftServe Ukraine', tier: '🥇 Золотий Титан', tierClass: 'tier-gold', contribution: '1 200 000 ₴ / міс', icon: '🚀', desc: 'Забезпечення мобільних вогневих груп ППО Київщини прожекторами та автономними зарядними станціями.' },
+    { id: 'b2b_3', name: 'Monobank (Фінтех)', tier: '🥈 Срібний Партнер', tierClass: 'tier-silver', contribution: '800 000 ₴ / міс', icon: '🐱', desc: 'Регулярні спільні збори, розіграші благодійних банок та покриття витрат на тактичну медицину.' },
+    { id: 'b2b_4', name: 'Нова Пошта (Логістика)', tier: '🥈 Срібний Партнер', tierClass: 'tier-silver', contribution: '500 000 ₴ / міс', icon: '📦', desc: 'Безкоштовне логістичне партнерство та щомісячне закупівля гуманітарних наборів для деокупованих територій.' },
+    { id: 'b2b_5', name: 'Ajax Systems', tier: '🥉 Бронзовий Партнер', tierClass: 'tier-bronze', contribution: '250 000 ₴ / міс', icon: '🛡️', desc: 'Технологічна підтримка та оснащення ветеранських реабілітаційних хабів системами безпеки.' }
+  ],
+  b2bApplications: [
+    { id: 'B2B-901', company: 'Grammarly Ukraine', contactName: 'Ігор Власенко (CSR Lead)', phone: '+380671122334', email: 'csr@grammarly.com', tier: '🥇 Золотий Титан (500к+ ₴)', details: 'Бажаємо взяти шефство над підрозділом розвідки та провести благодійний хакатон для співробітників', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Договір підписано' },
+    { id: 'B2B-902', company: 'MacPaw', contactName: 'Олена Сидоренко', phone: '+380509988771', email: 'social@macpaw.com', tier: '🥈 Срібний Партнер (200к+ ₴)', details: 'Цікавить брендування 5 FPV-дронів та лекція від ветерана для команди в Києві', date: '04.07.2026', status: 'review', statusLabel: '🟡 Перемовини' }
+  ]
 };
 window.FoundationStore = {
   getData() {
@@ -1008,6 +1020,52 @@ window.FoundationStore = {
     const data = this.getData();
     if (data.battleApplications) {
       data.battleApplications = data.battleApplications.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
+    getB2bPartners() {
+    return this.getData().b2bPartners || [];
+  },
+
+  getB2bApplications() {
+    return this.getData().b2bApplications || [];
+  },
+
+  registerB2bApp(company, contactName, phone, email, tier, details) {
+    const data = this.getData();
+    if (!data.b2bApplications) data.b2bApplications = [];
+    const newId = 'B2B-' + (Math.floor(Math.random() * 899) + 100);
+    const today = new Date();
+    const dateStr = [today.getDate().toString().padStart(2, '0'), (today.getMonth() + 1).toString().padStart(2, '0'), today.getFullYear()].join('.');
+    data.b2bApplications.unshift({
+      id: newId,
+      company,
+      contactName,
+      phone,
+      email,
+      tier,
+      details,
+      date: dateStr,
+      status: 'review',
+      statusLabel: '🟡 Перемовини'
+    });
+    this.saveData(data);
+    return newId;
+  },
+
+  deleteB2bPartner(id) {
+    const data = this.getData();
+    if (data.b2bPartners) {
+      data.b2bPartners = data.b2bPartners.filter(p => p.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  deleteB2bApp(id) {
+    const data = this.getData();
+    if (data.b2bApplications) {
+      data.b2bApplications = data.b2bApplications.filter(a => a.id !== id);
       this.saveData(data);
     }
   },

@@ -60,6 +60,7 @@
           <li class="nav-item" onclick="switchSection('memorial', this)">🕯️ Заявки в Пантеон Героїв</li>
           <li class="nav-item" onclick="switchSection('auctions', this)">🎟️ Учасники Аукціонів та Лотерей</li>
           <li class="nav-item" onclick="switchSection('battles', this)">⚔️ Корпоративні Батли та Турніри</li>
+          <li class="nav-item" onclick="switchSection('b2b', this)">🤝 B2B-Партнери та КСВ</li>
         </ul>
       </div>
 
@@ -697,7 +698,79 @@
   </div>
 
   
-  <!-- Modal: Add Radar Item -->
+  <!-- SECTION 19: B2B Partners & CSR CRM -->
+      <section id="sec-b2b" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🤝 B2B-Партнери та КСВ-заявки</h1>
+          <button class="btn-admin btn-add" onclick="showAddB2bPartnerModal()">+ Додати Партнера</button>
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 30px;">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🌟 Реєстр Діючих Корпоративних Партнерів</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Назва Компанії</th>
+                  <th>Пакет</th>
+                  <th>Внесок</th>
+                  <th>Опис</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="b2bPartnersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">📬 Нові Заявки на B2B-Партнерство та КСВ</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Дата</th>
+                  <th>Компанія</th>
+                  <th>Контактна особа</th>
+                  <th>Телефон / Email</th>
+                  <th>Формат / Пакет</th>
+                  <th>Побажання</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="b2bAppsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal: Add B2B Partner -->
+      <div id="b2bPartnerModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000;">
+        <div style="background: #0f1c3f; padding: 32px; border-radius: 20px; width: 90%; max-width: 500px; border: 1px solid var(--accent-gold);">
+          <h3 style="color: #fff; margin-bottom: 20px;">Додати Офіційного B2B-Партнера</h3>
+          <form onsubmit="saveNewB2bPartner(event)" style="display: flex; flex-direction: column; gap: 14px;">
+            <input type="text" id="newB2bName" placeholder="Назва Компанії (напр. Ajax Systems)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <select id="newB2bTier" style="padding: 12px; border-radius: 10px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff;">
+                <option value="🥇 Золотий Титан">🥇 Золотий Титан</option>
+                <option value="🥈 Срібний Партнер">🥈 Срібний Партнер</option>
+                <option value="🥉 Бронзовий Партнер">🥉 Бронзовий Партнер</option>
+              </select>
+              <input type="text" id="newB2bIcon" placeholder="Іконка (напр. 💻, 🚀, 📦)" value="🤝" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            </div>
+            <input type="text" id="newB2bContrib" placeholder="Внесок (напр. 500 000 ₴ / міс)" required value="500 000 ₴ / міс" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            <textarea id="newB2bDesc" rows="3" placeholder="Коротко про партнерство та шефство..." style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;"></textarea>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+              <button type="button" class="btn-admin btn-del" onclick="document.getElementById('b2bPartnerModal').style.display='none'">Скасувати</button>
+              <button type="submit" class="btn-admin btn-add">Додати Партнера</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal: Add Radar Item -->
   <div id="radarModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 4000;">
     <div style="background: #0f1c3f; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; border: 1px solid var(--admin-border); box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
       <h3 style="color: #fff; margin-bottom: 20px;">Новий запит від бригади</h3>

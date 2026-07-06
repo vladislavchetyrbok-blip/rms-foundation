@@ -60,6 +60,7 @@ function switchSection(sec, btnEl) {
   document.getElementById('sec-memorial').style.display = sec === 'memorial' ? 'block' : 'none';
   document.getElementById('sec-auctions').style.display = sec === 'auctions' ? 'block' : 'none';
   document.getElementById('sec-battles').style.display = sec === 'battles' ? 'block' : 'none';
+  if (document.getElementById('sec-b2b')) document.getElementById('sec-b2b').style.display = sec === 'b2b' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -83,6 +84,7 @@ function renderAllAdmin() {
   if (typeof renderAdminMemorial === 'function') renderAdminMemorial();
   if (typeof renderAdminAuctions === 'function') renderAdminAuctions();
   if (typeof renderAdminBattles === 'function') renderAdminBattles();
+  if (typeof renderAdminB2b === 'function') renderAdminB2b();
 }
 
 // === Section 1: Stats ===
@@ -1236,4 +1238,134 @@ function saveNewBattleTeam(event) {
   event.target.reset();
   renderAdminBattles();
   alert('🎉 Команду успішно додано на Арену Батлів!');
+}
+
+
+// === Section 19: B2B Partners & CSR CRM ===
+function renderAdminB2b() {
+  const pBody = document.getElementById('b2bPartnersTableBody');
+  const aBody = document.getElementById('b2bAppsTableBody');
+  if (!pBody || !aBody || !window.FoundationStore) return;
+
+  const partners = FoundationStore.getB2bPartners ? FoundationStore.getB2bPartners() : [];
+  const apps = FoundationStore.getB2bApplications ? FoundationStore.getB2bApplications() : [];
+
+  if (partners.length === 0) {
+    pBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">Партнеров поки немає</td></tr>';
+  } else {
+    pBody.innerHTML = partners.map(p => `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${p.id}</strong></td>
+        <td style="font-weight: 700; color: #fff;"><span style="font-size: 1.2rem; margin-right: 6px;">${p.icon || '🤝'}</span> ${p.name}</td>
+        <td><span style="background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.85rem;">${p.tier}</span></td>
+        <td style="color: #10b981; font-weight: 700;">${p.contribution}</td>
+        <td style="font-size: 0.85rem; color: #ccc; max-width: 250px;">${p.desc}</td>
+        <td>
+          <button class="btn-admin btn-del" onclick="deleteAdminB2bPartner('${p.id}')">🗑️ Видалити</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  if (apps.length === 0) {
+    aBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px; color: #888;">Нових заявок поки немає</td></tr>';
+  } else {
+    aBody.innerHTML = apps.map(a => `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${a.id}</strong><br><small style="color: #888;">${a.date}</small></td>
+        <td style="font-weight: 700; color: #fff;">${a.company}</td>
+        <td><strong>${a.contactName}</strong></td>
+        <td><a href="tel:${a.phone}" style="color: #60a5fa;">${a.phone}</a><br><small style="color: #aaa;">${a.email}</small></td>
+        <td><span style="background: rgba(255,183,3,0.15); color: #ffb703; padding: 4px 8px; border-radius: 8px; font-weight: 700; font-size: 0.85rem;">${a.tier}</span></td>
+        <td style="font-size: 0.85rem; color: #ccc; max-width: 200px;">${a.details}</td>
+        <td>
+          <span style="background: ${a.status === 'approved' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; color: ${a.status === 'approved' ? '#10b981' : '#f59e0b'}; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">${a.statusLabel}</span>
+        </td>
+        <td>
+          <div style="display: flex; gap: 6px;">
+            ${a.status !== 'approved' ? `<button class="btn-admin btn-add" style="padding: 4px 10px; font-size: 0.8rem;" onclick="changeB2bAppStatus('${a.id}')">🤝 Підписати договір</button>` : ''}
+            <button class="btn-admin btn-del" style="padding: 4px 8px;" onclick="deleteAdminB2bApp('${a.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function changeB2bAppStatus(id) {
+  const apps = FoundationStore.getB2bApplications();
+  const app = apps.find(a => a.id === id);
+  if (!app) return;
+
+  const data = FoundationStore.getData();
+  if (!data.b2bPartners) data.b2bPartners = [];
+  
+  let tierClass = 'tier-gold';
+  if (app.tier.includes('Срібний')) tierClass = 'tier-silver';
+  if (app.tier.includes('Бронзовий')) tierClass = 'tier-bronze';
+
+  data.b2bPartners.push({
+    id: 'b2b_' + Date.now().toString().slice(-4),
+    name: app.company,
+    tier: app.tier.split(' ')[0] + ' ' + app.tier.split(' ')[1],
+    tierClass,
+    contribution: 'За договором КСВ',
+    icon: '🤝',
+    desc: `Офіційний партнер фонду. Контакт: ${app.contactName}. ${app.details}`
+  });
+
+  app.status = 'approved';
+  app.statusLabel = '🟢 Договір підписано';
+  FoundationStore.saveData(data);
+  renderAdminB2b();
+  alert(`🎉 Компанію «${app.company}» переведено в статус офіційного B2B-Партнера!`);
+}
+
+function deleteAdminB2bApp(id) {
+  if (confirm(`Видалити заявку ${id}?`)) {
+    FoundationStore.deleteB2bApp(id);
+    renderAdminB2b();
+  }
+}
+
+function deleteAdminB2bPartner(id) {
+  if (confirm(`Видалити партнера ${id} з реєстру?`)) {
+    FoundationStore.deleteB2bPartner(id);
+    renderAdminB2b();
+  }
+}
+
+function showAddB2bPartnerModal() {
+  document.getElementById('b2bPartnerModal').style.display = 'flex';
+}
+
+function saveNewB2bPartner(event) {
+  event.preventDefault();
+  const name = document.getElementById('newB2bName').value.trim();
+  const tier = document.getElementById('newB2bTier').value;
+  const icon = document.getElementById('newB2bIcon').value.trim() || '🤝';
+  const contrib = document.getElementById('newB2bContrib').value.trim();
+  const desc = document.getElementById('newB2bDesc').value.trim();
+
+  let tierClass = 'tier-gold';
+  if (tier.includes('Срібний')) tierClass = 'tier-silver';
+  if (tier.includes('Бронзовий')) tierClass = 'tier-bronze';
+
+  const data = FoundationStore.getData();
+  if (!data.b2bPartners) data.b2bPartners = [];
+  data.b2bPartners.push({
+    id: 'b2b_' + Date.now().toString().slice(-4),
+    name,
+    tier,
+    tierClass,
+    contribution: contrib,
+    icon,
+    desc: desc || `Офіційний корпоративний партнер ${name} у програмі підтримки ЗСУ.`
+  });
+
+  FoundationStore.saveData(data);
+  document.getElementById('b2bPartnerModal').style.display = 'none';
+  event.target.reset();
+  renderAdminB2b();
+  alert('🎉 Нового B2B-Партнера успішно додано до Реєстру Титанів!');
 }
