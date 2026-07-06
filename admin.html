@@ -58,6 +58,7 @@
           <li class="nav-item" onclick="switchSection('inter', this)">🌍 Міжнародні та Крипто-донати</li>
           <li class="nav-item" onclick="switchSection('memorial', this)">🕯️ Заявки в Пантеон Героїв</li>
           <li class="nav-item" onclick="switchSection('auctions', this)">🎟️ Учасники Аукціонів та Лотерей</li>
+          <li class="nav-item" onclick="switchSection('battles', this)">⚔️ Корпоративні Батли та Турніри</li>
         </ul>
       </div>
 
@@ -478,6 +479,55 @@
         </div>
       </section>
 
+      <!-- SECTION 18: Corporate Battles -->
+      <section id="sec-battles" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">⚔️ Управління Корпоративними Батлами та Турнірами</h1>
+          <button class="btn-admin btn-add" onclick="showAddBattleTeamModal()">+ Додати Команду / Корпорацію</button>
+        </div>
+
+        <div class="panel" style="margin-bottom: 30px;">
+          <h3 style="color: #fff; margin-bottom: 16px; font-size: 1.2rem;">🏆 Турнірна Таблиця Арени (Активні Команди)</h3>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ранг</th>
+                  <th>Іконка</th>
+                  <th>Назва Команди</th>
+                  <th>Категорія</th>
+                  <th>Зібрано / Ціль</th>
+                  <th>Титанів</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="battlesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 style="color: #ffb703; margin-bottom: 16px; font-size: 1.2rem;">📬 Нові Заявки на Участь у Батлі</h3>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Команда</th>
+                  <th>Категорія</th>
+                  <th>Капітан / Контакти</th>
+                  <th>Ціль</th>
+                  <th>Опис</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="battleAppsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -675,6 +725,34 @@
         <div id="bulkProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); transition: width 0.2s;"></div>
       </div>
       <p style="color: #aaa; font-size: 0.85rem; margin-top: 14px;">Будь ласка, зачекайте, фотографії автоматично стискаються та оптимізуються для швидкого відображення.</p>
+    </div>
+  </div>
+
+    <!-- Modal: Add Battle Team -->
+  <div id="battleTeamModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000;">
+    <div style="background: #0f1c3f; padding: 32px; border-radius: 20px; width: 90%; max-width: 500px; border: 1px solid var(--accent-gold);">
+      <h3 style="color: #fff; margin-bottom: 20px;">Додати Нову Команду в Турнір</h3>
+      <form onsubmit="saveNewBattleTeam(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="text" id="newBatName" placeholder="Назва Команди (напр. EPAM Ukraine)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <select id="newBatCat" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            <option value="🏢 IT-Корпорація">🏢 IT-Корпорація</option>
+            <option value="🏦 Банк та Фінтех">🏦 Банк та Фінтех</option>
+            <option value="🎓 Університет">🎓 Університет</option>
+            <option value="📢 Медіа та Блогери">📢 Медіа та Блогери</option>
+          </select>
+          <input type="text" id="newBatIcon" placeholder="Іконка (напр. 💻 або 🚀)" value="💻" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input type="number" id="newBatTarget" placeholder="Цільова сума (грн)" required value="1000000" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+          <input type="number" id="newBatCollected" placeholder="Зібрано (грн)" value="0" style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+        </div>
+        <textarea id="newBatDesc" rows="3" placeholder="Короткий опис команди та збору..." style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;"></textarea>
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" class="btn-admin btn-del" onclick="document.getElementById('battleTeamModal').style.display='none'">Скасувати</button>
+          <button type="submit" class="btn-admin btn-add">Додати на Арену</button>
+        </div>
+      </form>
     </div>
   </div>
 

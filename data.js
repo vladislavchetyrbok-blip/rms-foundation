@@ -493,8 +493,18 @@ const INITIAL_DATA = {
     { id: 'TRX-702', lotId: 'auc_3', lotTitle: '🚀 Тубус NLAW 3 ОШБр', participant: 'Alex_K (IT-компанія)', phone: '+380678899000', amount: '45 000 ₴', ticketsCount: 'Ставка', date: '04.07.2026', type: '🔨 Аукціон' },
     { id: 'TRX-703', lotId: 'auc_2', lotTitle: '🥊 Рукавичка Олександра Усика', participant: 'Ігор Власенко', phone: '+380504433221', amount: '1 500 ₴', ticketsCount: '5 білетів', date: '03.07.2026', type: '🎟️ Лотерея' }
   ]
+,
+  battles: [
+    { id: 'bat_1', name: 'Sigma Software Titan Team', category: '🏢 IT-Корпорація', targetAmount: 1500000, collectedAmount: 1420000, supportersCount: 380, rank: 1, rankBadge: '🥇 1 місце', icon: '💻', desc: 'Команда інженерів та розробників Sigma Software, які збирають на нічні розвідувальні крила для 3-ї ОШБр.' },
+    { id: 'bat_2', name: 'SoftServe United Force', category: '🏢 IT-Корпорація', targetAmount: 1500000, collectedAmount: 1250000, supportersCount: 410, rank: 2, rankBadge: '🥈 2 місце', icon: '🚀', desc: 'Обєднана команда фахівців SoftServe зі Львова, Харкова та Києва в гонці за покупку комплексу Валькірія.' },
+    { id: 'bat_3', name: 'Монобанк / Коти Підтримки', category: '🏦 Банк та Фінтех', targetAmount: 1500000, collectedAmount: 1100000, supportersCount: 890, rank: 3, rankBadge: '🥉 3 місце', icon: '🐱', desc: 'Спільнота клієнтів та співробітників Monobank, що донатять за кешбек та розбивають банки на ЗСУ.' },
+    { id: 'bat_4', name: 'КПІ ім. Сікорського (Студентський фронт)', category: '🎓 Університет', targetAmount: 1000000, collectedAmount: 780000, supportersCount: 1240, rank: 4, rankBadge: '🎖️ 4 місце', icon: '🎓', desc: 'Студенти, викладачі та випускники Київського політехнічного інституту в батлі за технологічну перевагу.' }
+  ],
+  battleApplications: [
+    { id: 'BAT-101', teamName: 'EPAM Ukraine Titans', category: '🏢 IT-Корпорація', captainName: 'Максим Сидоренко', phone: '+380671112233', goal: '1 000 000 ₴', details: 'Готові долучитися до турніру, маємо 500+ активних фахівців у внутрішньому чаті', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Прийнято в турнір' },
+    { id: 'BAT-102', teamName: 'КНУ ім. Шевченка (Юрфак)', category: '🎓 Університет', captainName: 'Олена Ковальчук', phone: '+380509988771', goal: '500 000 ₴', details: 'Кидаємо виклик КПІ! Хочемо зібрати на 3 нічні дрони Mavic 3T', date: '04.07.2026', status: 'review', statusLabel: '🟡 Модерація заявки' }
+  ]
 };
-
 window.FoundationStore = {
   getData() {
     try {
@@ -936,6 +946,72 @@ window.FoundationStore = {
       this.saveData(data);
     }
   },
+    getBattles() {
+    const list = this.getData().battles || [];
+    list.sort((a, b) => b.collectedAmount - a.collectedAmount);
+    list.forEach((b, idx) => {
+      b.rank = idx + 1;
+      if (idx === 0) b.rankBadge = '🥇 1 місце';
+      else if (idx === 1) b.rankBadge = '🥈 2 місце';
+      else if (idx === 2) b.rankBadge = '🥉 3 місце';
+      else b.rankBadge = `🎖️ ${idx + 1} місце`;
+    });
+    return list;
+  },
+
+  getBattleApplications() {
+    return this.getData().battleApplications || [];
+  },
+
+  addBattleDonation(teamId, donorName, amount) {
+    const data = this.getData();
+    if (!data.battles) return false;
+    const idx = data.battles.findIndex(b => b.id === teamId);
+    if (idx === -1) return false;
+    data.battles[idx].collectedAmount += amount;
+    data.battles[idx].supportersCount += 1;
+    this.saveData(data);
+    return true;
+  },
+
+  registerBattleTeam(teamName, category, captainName, phone, goal, details) {
+    const data = this.getData();
+    if (!data.battleApplications) data.battleApplications = [];
+    const newId = 'BAT-' + (Math.floor(Math.random() * 899) + 100);
+    const today = new Date();
+    const dateStr = [today.getDate().toString().padStart(2, '0'), (today.getMonth() + 1).toString().padStart(2, '0'), today.getFullYear()].join('.');
+    data.battleApplications.unshift({
+      id: newId,
+      teamName,
+      category,
+      captainName,
+      phone,
+      goal,
+      details,
+      date: dateStr,
+      status: 'review',
+      statusLabel: '🟡 Модерація заявки'
+    });
+    this.saveData(data);
+    return newId;
+  },
+
+  deleteBattleTeam(id) {
+    const data = this.getData();
+    if (data.battles) {
+      data.battles = data.battles.filter(b => b.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  deleteBattleApp(id) {
+    const data = this.getData();
+    if (data.battleApplications) {
+      data.battleApplications = data.battleApplications.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
   deleteApplication(id) {
     const data = this.getData();
     data.applications = data.applications?.filter(a => a.id !== id) || [];

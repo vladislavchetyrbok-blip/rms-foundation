@@ -59,6 +59,7 @@ function switchSection(sec, btnEl) {
   document.getElementById('sec-inter').style.display = sec === 'inter' ? 'block' : 'none';
   document.getElementById('sec-memorial').style.display = sec === 'memorial' ? 'block' : 'none';
   document.getElementById('sec-auctions').style.display = sec === 'auctions' ? 'block' : 'none';
+  document.getElementById('sec-battles').style.display = sec === 'battles' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -81,6 +82,7 @@ function renderAllAdmin() {
   if (typeof renderAdminInter === 'function') renderAdminInter();
   if (typeof renderAdminMemorial === 'function') renderAdminMemorial();
   if (typeof renderAdminAuctions === 'function') renderAdminAuctions();
+  if (typeof renderAdminBattles === 'function') renderAdminBattles();
 }
 
 // === Section 1: Stats ===
@@ -1111,4 +1113,127 @@ function deleteAdminAucTrx(id) {
     FoundationStore.deleteAuctionTransaction(id);
     renderAdminAuctions();
   }
+}
+
+
+// === Section 18: Corporate Battles ===
+function renderAdminBattles() {
+  const battlesBody = document.getElementById('battlesTableBody');
+  const appsBody = document.getElementById('battleAppsTableBody');
+  if (!battlesBody || !appsBody || !window.FoundationStore) return;
+
+  const list = FoundationStore.getBattles();
+  battlesBody.innerHTML = list.map(b => {
+    const pct = Math.min(100, Math.round((b.collectedAmount / b.targetAmount) * 100));
+    return `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${b.rankBadge}</strong></td>
+        <td style="font-size: 1.5rem;">${b.icon || '🏆'}</td>
+        <td><strong style="color: #fff;">${b.name}</strong></td>
+        <td>${b.category}</td>
+        <td>
+          <div style="color: #10b981; font-weight: 700;">${b.collectedAmount.toLocaleString()} ₴</div>
+          <div style="font-size: 0.75rem; color: #888;">з ${b.targetAmount.toLocaleString()} ₴ (${pct}%)</div>
+        </td>
+        <td>👥 ${b.supportersCount}</td>
+        <td>
+          <button class="btn-admin btn-del" onclick="deleteAdminBattleTeam('${b.id}')">Видалити</button>
+        </td>
+      </tr>
+    `;
+  }).join('') || '<tr><td colspan="7" style="text-align:center; color:#888;">Немає активних команд</td></tr>';
+
+  const apps = FoundationStore.getBattleApplications();
+  appsBody.innerHTML = apps.map(a => `
+    <tr>
+      <td><code>${a.id}</code></td>
+      <td><strong style="color: #fff;">${a.teamName}</strong></td>
+      <td>${a.category}</td>
+      <td>${a.captainName}<br><small style="color:#aaa;">${a.phone}</small></td>
+      <td style="color: var(--accent-gold); font-weight: 700;">${a.goal}</td>
+      <td style="max-width: 200px; font-size: 0.85rem; color:#ccc;">${a.details}</td>
+      <td><span class="status-badge ${a.status === 'approved' ? 'status-active' : 'status-pending'}">${a.statusLabel}</span></td>
+      <td>
+        ${a.status !== 'approved' ? `<button class="btn-admin btn-add" style="margin-bottom: 4px;" onclick="approveBattleApp('${a.id}')">Прийняти</button><br>` : ''}
+        <button class="btn-admin btn-del" onclick="deleteAdminBattleApp('${a.id}')">Видалити</button>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="8" style="text-align:center; color:#888;">Немає нових заявок</td></tr>';
+}
+
+function deleteAdminBattleTeam(id) {
+  if (confirm('Ви впевнені, що хочете видалити цю команду з турніру?')) {
+    FoundationStore.deleteBattleTeam(id);
+    renderAdminBattles();
+  }
+}
+
+function deleteAdminBattleApp(id) {
+  if (confirm('Видалити заявку?')) {
+    FoundationStore.deleteBattleApp(id);
+    renderAdminBattles();
+  }
+}
+
+function approveBattleApp(id) {
+  const apps = FoundationStore.getBattleApplications();
+  const app = apps.find(a => a.id === id);
+  if (!app) return;
+
+  const targetNum = parseInt(app.goal.replace(/[^0-9]/g, ''), 10) || 500000;
+  const data = FoundationStore.getData();
+  if (!data.battles) data.battles = [];
+  data.battles.push({
+    id: 'bat_' + Date.now().toString().slice(-4),
+    name: app.teamName,
+    category: app.category,
+    targetAmount: targetNum,
+    collectedAmount: 0,
+    supportersCount: 1,
+    rank: data.battles.length + 1,
+    rankBadge: `🎖️ ${data.battles.length + 1} місце`,
+    icon: '🏢',
+    desc: `Команда ${app.teamName}. Капітан: ${app.captainName}. ${app.details}`
+  });
+
+  app.status = 'approved';
+  app.statusLabel = '🟢 Прийнято в турнір';
+  FoundationStore.saveData(data);
+  renderAdminBattles();
+  alert(`🎉 Команда «${app.teamName}» успішно додана в Турнірну Таблицю!`);
+}
+
+function showAddBattleTeamModal() {
+  document.getElementById('battleTeamModal').style.display = 'flex';
+}
+
+function saveNewBattleTeam(event) {
+  event.preventDefault();
+  const name = document.getElementById('newBatName').value.trim();
+  const cat = document.getElementById('newBatCat').value;
+  const icon = document.getElementById('newBatIcon').value.trim() || '🏆';
+  const target = parseInt(document.getElementById('newBatTarget').value, 10) || 1000000;
+  const collected = parseInt(document.getElementById('newBatCollected').value, 10) || 0;
+  const desc = document.getElementById('newBatDesc').value.trim();
+
+  const data = FoundationStore.getData();
+  if (!data.battles) data.battles = [];
+  data.battles.push({
+    id: 'bat_' + Date.now().toString().slice(-4),
+    name,
+    category: cat,
+    targetAmount: target,
+    collectedAmount: collected,
+    supportersCount: 15,
+    rank: data.battles.length + 1,
+    rankBadge: `🎖️ ${data.battles.length + 1} місце`,
+    icon,
+    desc: desc || `Офіційна турнірна команда ${name} у зборі на потреби ЗСУ.`
+  });
+
+  FoundationStore.saveData(data);
+  document.getElementById('battleTeamModal').style.display = 'none';
+  event.target.reset();
+  renderAdminBattles();
+  alert('🎉 Команду успішно додано на Арену Батлів!');
 }
