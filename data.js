@@ -1229,18 +1229,52 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     const widgetDiv = document.createElement('div');
     widgetDiv.id = 'aiTitanWidgetContainer';
     widgetDiv.innerHTML = `
+      <!-- AI Widget Responsive Styles -->
+      <style id="aiWidgetStyles">
+        #aiChatBtn {
+          position: fixed;
+          bottom: 28px;
+          right: 28px;
+          z-index: 9999;
+          transition: bottom 0.3s ease, transform 0.2s, box-shadow 0.2s;
+        }
+        #aiChatBox {
+          position: fixed;
+          bottom: 90px;
+          right: 28px;
+          z-index: 10000;
+          transition: bottom 0.3s ease;
+        }
+        /* On mobile: rise above sticky bar (~70px) */
+        @media (max-width: 768px) {
+          #aiChatBtn {
+            bottom: 84px;
+            right: 14px;
+            padding: 10px 16px !important;
+          }
+          #aiChatBtn .ai-label { display: none; }
+          #aiChatBox {
+            bottom: 150px;
+            right: 10px;
+            width: calc(100vw - 20px) !important;
+            max-height: 60vh;
+            height: 60vh !important;
+          }
+        }
+      </style>
+
       <!-- Floating Button -->
-      <div id="aiChatBtn" onclick="toggleAiChat()" style="position: fixed; bottom: 28px; right: 28px; background: linear-gradient(135deg, #0f1c3f, #1e3a8a); border: 2px solid var(--accent-gold); color: #fff; padding: 14px 24px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255,183,3,0.4); display: flex; align-items: center; gap: 12px; cursor: pointer; z-index: 9999; transition: transform 0.2s, box-shadow 0.2s;">
-        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulseGreen 1.5s infinite;"></div>
+      <div id="aiChatBtn" onclick="toggleAiChat()" style="background: linear-gradient(135deg, #0f1c3f, #1e3a8a); border: 2px solid var(--accent-gold); color: #fff; padding: 14px 24px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255,183,3,0.4); display: flex; align-items: center; gap: 12px; cursor: pointer;">
+        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulseGreen 1.5s infinite; flex-shrink:0;"></div>
         <span style="font-size: 1.5rem;">🤖</span>
-        <div style="text-align: left; line-height: 1.2;">
+        <div class="ai-label" style="text-align: left; line-height: 1.2;">
           <strong style="font-size: 0.95rem; display: block; color: var(--accent-gold);">AI-Консультант</strong>
           <span style="font-size: 0.75rem; color: #ccc;">Підтримка 24/7</span>
         </div>
       </div>
 
       <!-- Popup Chat Box -->
-      <div id="aiChatBox" style="position: fixed; bottom: 90px; right: 28px; width: 380px; max-width: calc(100vw - 40px); height: 540px; background: #0f1c3f; border: 2px solid var(--accent-gold); border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.85); display: none; flex-direction: column; z-index: 10000; overflow: hidden; font-family: 'Inter', sans-serif;">
+      <div id="aiChatBox" style="width: 380px; max-width: calc(100vw - 40px); height: 540px; background: #0f1c3f; border: 2px solid var(--accent-gold); border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.85); display: none; flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif;">
         <!-- Chat Header -->
         <div style="background: linear-gradient(90deg, #1e3a8a, #0f1c3f); padding: 16px 20px; border-bottom: 1px solid rgba(255,183,3,0.3); display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; gap: 12px;">

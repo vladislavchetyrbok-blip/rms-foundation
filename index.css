@@ -1327,8 +1327,9 @@ html, body {
     display: block;
   }
   body {
-    padding-bottom: 85px; /* Ensure space above sticky bar */
+    padding-bottom: 155px; /* Ensure space above sticky bar + AI button */
   }
+
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 30px;
