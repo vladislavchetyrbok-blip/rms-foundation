@@ -61,6 +61,7 @@ function switchSection(sec, btnEl) {
   document.getElementById('sec-auctions').style.display = sec === 'auctions' ? 'block' : 'none';
   document.getElementById('sec-battles').style.display = sec === 'battles' ? 'block' : 'none';
   if (document.getElementById('sec-b2b')) document.getElementById('sec-b2b').style.display = sec === 'b2b' ? 'block' : 'none';
+  if (document.getElementById('sec-podcasts')) document.getElementById('sec-podcasts').style.display = sec === 'podcasts' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -85,6 +86,7 @@ function renderAllAdmin() {
   if (typeof renderAdminAuctions === 'function') renderAdminAuctions();
   if (typeof renderAdminBattles === 'function') renderAdminBattles();
   if (typeof renderAdminB2b === 'function') renderAdminB2b();
+  if (typeof renderAdminPodcasts === 'function') renderAdminPodcasts();
 }
 
 // === Section 1: Stats ===
@@ -1368,4 +1370,121 @@ function saveNewB2bPartner(event) {
   event.target.reset();
   renderAdminB2b();
   alert('🎉 Нового B2B-Партнера успішно додано до Реєстру Титанів!');
+}
+
+
+// === Section 20: Podcasts & Radio CRM ===
+function renderAdminPodcasts() {
+  const pBody = document.getElementById('podcastsTableBody');
+  const qBody = document.getElementById('podQuestionsTableBody');
+  if (!pBody || !qBody || !window.FoundationStore) return;
+
+  const pods = FoundationStore.getPodcasts ? FoundationStore.getPodcasts() : [];
+  const quests = FoundationStore.getPodcastQuestions ? FoundationStore.getPodcastQuestions() : [];
+
+  if (pods.length === 0) {
+    pBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Епізодів поки немає</td></tr>';
+  } else {
+    pBody.innerHTML = pods.map(p => `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${p.id}</strong><br><small style="color: #888;">${p.date}</small></td>
+        <td style="font-weight: 800; color: #ffb703;">${p.episode}</td>
+        <td style="font-weight: 700; color: #fff;">${p.title}</td>
+        <td style="color: #10b981; font-weight: 600;">🎙️ ${p.guest}</td>
+        <td><span style="background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 700;">${p.category}</span></td>
+        <td style="color: #ccc;">⏱️ ${p.duration}</td>
+        <td>
+          <button class="btn-admin btn-del" onclick="deleteAdminPodcast('${p.id}')">🗑️ Видалити</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  if (quests.length === 0) {
+    qBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Питань від глядачів поки немає</td></tr>';
+  } else {
+    qBody.innerHTML = quests.map(q => `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${q.id}</strong><br><small style="color: #888;">${q.date}</small></td>
+        <td style="font-weight: 700; color: #fff;">${q.author}</td>
+        <td><span style="color: #60a5fa;">${q.contact}</span></td>
+        <td style="font-weight: 600; color: #ffb703;">${q.targetGuest}</td>
+        <td style="font-size: 0.9rem; color: #ccc; max-width: 250px;">${q.question}</td>
+        <td>
+          <span style="background: ${q.status === 'answered' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; color: ${q.status === 'answered' ? '#10b981' : '#f59e0b'}; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">${q.statusLabel}</span>
+        </td>
+        <td>
+          <div style="display: flex; gap: 6px;">
+            ${q.status !== 'answered' ? `<button class="btn-admin btn-add" style="padding: 4px 10px; font-size: 0.8rem;" onclick="markPodQuestionAnswered('${q.id}')">🎙️ Озвучити в ефірі</button>` : ''}
+            <button class="btn-admin btn-del" style="padding: 4px 8px;" onclick="deleteAdminPodQuestion('${q.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function markPodQuestionAnswered(id) {
+  const quests = FoundationStore.getPodcastQuestions();
+  const q = quests.find(item => item.id === id);
+  if (!q) return;
+
+  q.status = 'answered';
+  q.statusLabel = '🟢 Озвучено в ефірі';
+  const data = FoundationStore.getData();
+  data.podcastQuestions = quests;
+  FoundationStore.saveData(data);
+  renderAdminPodcasts();
+  alert(`🎉 Питання ${id} позначено як озвучене в ефірі!`);
+}
+
+function deleteAdminPodcast(id) {
+  if (confirm(`Видалити епізод ${id}?`)) {
+    FoundationStore.deletePodcast(id);
+    renderAdminPodcasts();
+  }
+}
+
+function deleteAdminPodQuestion(id) {
+  if (confirm(`Видалити питання ${id}?`)) {
+    FoundationStore.deletePodcastQuestion(id);
+    renderAdminPodcasts();
+  }
+}
+
+function showAddPodcastModal() {
+  document.getElementById('addPodcastModal').style.display = 'flex';
+}
+
+function saveNewPodcast(event) {
+  event.preventDefault();
+  const ep = document.getElementById('newPodEp').value.trim();
+  const dur = document.getElementById('newPodDur').value.trim();
+  const title = document.getElementById('newPodTitle').value.trim();
+  const guest = document.getElementById('newPodGuest').value.trim();
+  const cat = document.getElementById('newPodCat').value;
+  const desc = document.getElementById('newPodDesc').value.trim();
+
+  const data = FoundationStore.getData();
+  if (!data.podcasts) data.podcasts = [];
+  const today = new Date();
+  const dateStr = [today.getDate().toString().padStart(2, '0'), (today.getMonth() + 1).toString().padStart(2, '0'), today.getFullYear()].join('.');
+
+  data.podcasts.unshift({
+    id: 'pod_' + Date.now().toString().slice(-4),
+    episode: ep,
+    title,
+    guest,
+    category: cat,
+    duration: dur,
+    date: dateStr,
+    listens: '1 050',
+    desc
+  });
+
+  FoundationStore.saveData(data);
+  document.getElementById('addPodcastModal').style.display = 'none';
+  event.target.reset();
+  renderAdminPodcasts();
+  alert('🎉 Новий епізод подкасту успішно опубліковано на Радіо!');
 }

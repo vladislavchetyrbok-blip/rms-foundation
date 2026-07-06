@@ -516,6 +516,17 @@ const INITIAL_DATA = {
     { id: 'B2B-901', company: 'Grammarly Ukraine', contactName: 'Ігор Власенко (CSR Lead)', phone: '+380671122334', email: 'csr@grammarly.com', tier: '🥇 Золотий Титан (500к+ ₴)', details: 'Бажаємо взяти шефство над підрозділом розвідки та провести благодійний хакатон для співробітників', date: '05.07.2026', status: 'approved', statusLabel: '🟢 Договір підписано' },
     { id: 'B2B-902', company: 'MacPaw', contactName: 'Олена Сидоренко', phone: '+380509988771', email: 'social@macpaw.com', tier: '🥈 Срібний Партнер (200к+ ₴)', details: 'Цікавить брендування 5 FPV-дронів та лекція від ветерана для команди в Києві', date: '04.07.2026', status: 'review', statusLabel: '🟡 Перемовини' }
   ]
+,
+  podcasts: [
+    { id: 'pod_1', episode: 'Епізод #42', title: 'Еволюція нічних дронів: від Mavic до Валькірії', guest: 'Командир роти БПЛА «Птахи Мадяра»', category: '🛰️ Технології війни', duration: '48 хв', date: '05.07.2026', listens: '14 200', desc: 'Ексклюзивна розмова про те, як штучний інтелект та тепловізійна оптика змінюють правила нічного полювання на фронті.' },
+    { id: 'pod_2', episode: 'Епізод #41', title: 'Життя після поранення: як біонічні протези повертають свободу', guest: 'Ветеран Олексій «Молот» та лікар-протезист', category: '🦿 Реабілітація', duration: '55 хв', date: '28.06.2026', listens: '18 900', desc: 'Відверта історія відновлення, психологічної адаптації та запуску ветеранського бізнесу в Києві.' },
+    { id: 'pod_3', episode: 'Епізод #40', title: 'Американська зброя та дипломатія: погляд з Вашингтона', guest: 'Представник української діаспори в США', category: '🌍 Міжнародний фронт', duration: '62 хв', date: '21.06.2026', listens: '22 400', desc: 'Аналіз військової допомоги, робота з конгресменами та як кожен українець за кордоном може бути послом перемоги.' },
+    { id: 'pod_4', episode: 'Епізод #39', title: 'Тактична медицина 2026: стандарти TCCC в окопах', guest: 'Головний інструктор медбатальйону Госпітальєри', category: '📖 Історії з окопів', duration: '41 хв', date: '14.06.2026', listens: '16 700', desc: 'Що рятує життя в перші 3 хвилини після поранення, розбір помилок та еволюція українських аптечок.' }
+  ],
+  podcastQuestions: [
+    { id: 'Q-801', author: 'Максим (Київ)', contact: '+380631112233', question: 'Питання до пілотів FPV: які РЕБ-системи ворога зараз найнебезпечніші для наших дронів?', targetGuest: 'Ефір #43 (Розвідка)', date: '06.07.2026', status: 'pending', statusLabel: '🟡 Очікує ефіру' },
+    { id: 'Q-802', author: 'Олена (Львів)', contact: 'olena@gmail.com', question: 'Як правильно підготувати родину до повернення ветерана з фронту з ПТСР?', targetGuest: 'Психолог Ветеранського хабу', date: '05.07.2026', status: 'answered', statusLabel: '🟢 Озвучено в ефірі #41' }
+  ]
 };
 window.FoundationStore = {
   getData() {
@@ -1066,6 +1077,50 @@ window.FoundationStore = {
     const data = this.getData();
     if (data.b2bApplications) {
       data.b2bApplications = data.b2bApplications.filter(a => a.id !== id);
+      this.saveData(data);
+    }
+  },
+
+    getPodcasts() {
+    return this.getData().podcasts || [];
+  },
+
+  getPodcastQuestions() {
+    return this.getData().podcastQuestions || [];
+  },
+
+  addPodcastQuestion(author, contact, question, targetGuest) {
+    const data = this.getData();
+    if (!data.podcastQuestions) data.podcastQuestions = [];
+    const newId = 'Q-' + (Math.floor(Math.random() * 899) + 100);
+    const today = new Date();
+    const dateStr = [today.getDate().toString().padStart(2, '0'), (today.getMonth() + 1).toString().padStart(2, '0'), today.getFullYear()].join('.');
+    data.podcastQuestions.unshift({
+      id: newId,
+      author,
+      contact,
+      question,
+      targetGuest,
+      date: dateStr,
+      status: 'pending',
+      statusLabel: '🟡 Очікує ефіру'
+    });
+    this.saveData(data);
+    return newId;
+  },
+
+  deletePodcast(id) {
+    const data = this.getData();
+    if (data.podcasts) {
+      data.podcasts = data.podcasts.filter(p => p.id !== id);
+      this.saveData(data);
+    }
+  },
+
+  deletePodcastQuestion(id) {
+    const data = this.getData();
+    if (data.podcastQuestions) {
+      data.podcastQuestions = data.podcastQuestions.filter(q => q.id !== id);
       this.saveData(data);
     }
   },

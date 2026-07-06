@@ -61,6 +61,7 @@
           <li class="nav-item" onclick="switchSection('auctions', this)">🎟️ Учасники Аукціонів та Лотерей</li>
           <li class="nav-item" onclick="switchSection('battles', this)">⚔️ Корпоративні Батли та Турніри</li>
           <li class="nav-item" onclick="switchSection('b2b', this)">🤝 B2B-Партнери та КСВ</li>
+          <li class="nav-item" onclick="switchSection('podcasts', this)">🎧 Подкасти та Радіо</li>
         </ul>
       </div>
 
@@ -765,6 +766,80 @@
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
               <button type="button" class="btn-admin btn-del" onclick="document.getElementById('b2bPartnerModal').style.display='none'">Скасувати</button>
               <button type="submit" class="btn-admin btn-add">Додати Партнера</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SECTION 20: Podcasts & Radio CRM -->
+      <section id="sec-podcasts" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">🎧 Ветеранські Подкасти та Радіо-Ефіри</h1>
+          <button class="btn-admin btn-add" onclick="showAddPodcastModal()">+ Додати Епізод</button>
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 30px;">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">🎙️ Архів Опублікованих Випусків</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Епізод</th>
+                  <th>Назва випуску</th>
+                  <th>Гість / Спікер</th>
+                  <th>Категорія</th>
+                  <th>Тривалість</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="podcastsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">💬 Питання від Глядачів та Слухачів в Ефір</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Дата</th>
+                  <th>Автор</th>
+                  <th>Контакт</th>
+                  <th>Кому адресовано</th>
+                  <th>Текст питання / історії</th>
+                  <th>Статус</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="podQuestionsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal: Add Podcast Episode -->
+      <div id="addPodcastModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000;">
+        <div style="background: #0f1c3f; padding: 32px; border-radius: 20px; width: 90%; max-width: 520px; border: 1px solid var(--accent-gold);">
+          <h3 style="color: #fff; margin-bottom: 20px;">Опублікувати Новий Епізод Подкасту</h3>
+          <form onsubmit="saveNewPodcast(event)" style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <input type="text" id="newPodEp" placeholder="Номер (напр. Епізод #43)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+              <input type="text" id="newPodDur" placeholder="Тривалість (напр. 52 хв)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            </div>
+            <input type="text" id="newPodTitle" placeholder="Назва випуску (напр. Бойові роботи на фронті)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            <input type="text" id="newPodGuest" placeholder="Гість (напр. Інженер-розробник наземних дронів)" required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;">
+            <select id="newPodCat" style="padding: 12px; border-radius: 10px; background: #0b1530; border: 1px solid var(--admin-border); color: #fff;">
+              <option value="🛰️ Технології війни">🛰️ Технології війни</option>
+              <option value="🦿 Реабілітація">🦿 Реабілітація</option>
+              <option value="🌍 Міжнародний фронт">🌍 Міжнародний фронт</option>
+              <option value="📖 Історії з окопів">📖 Історії з окопів</option>
+            </select>
+            <textarea id="newPodDesc" rows="3" placeholder="Опис тем та про що розмова..." required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff;"></textarea>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+              <button type="button" class="btn-admin btn-del" onclick="document.getElementById('addPodcastModal').style.display='none'">Скасувати</button>
+              <button type="submit" class="btn-admin btn-add">🎙️ Опублікувати</button>
             </div>
           </form>
         </div>
