@@ -62,6 +62,7 @@
           <li class="nav-item" onclick="switchSection('battles', this)">⚔️ Корпоративні Батли та Турніри</li>
           <li class="nav-item" onclick="switchSection('b2b', this)">🤝 B2B-Партнери та КСВ</li>
           <li class="nav-item" onclick="switchSection('podcasts', this)">🎧 Подкасти та Радіо</li>
+          <li class="nav-item" onclick="switchSection('support', this)">💬 Live-Чат Підтримки</li>
         </ul>
       </div>
 
@@ -840,6 +841,50 @@
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
               <button type="button" class="btn-admin btn-del" onclick="document.getElementById('addPodcastModal').style.display='none'">Скасувати</button>
               <button type="submit" class="btn-admin btn-add">🎙️ Опублікувати</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SECTION 21: Support Chat CRM -->
+      <section id="sec-support" style="display: none;">
+        <div class="topbar">
+          <h1 class="page-title">💬 Live-Чат Підтримки та Звернення</h1>
+          <div style="color: #10b981; font-weight: 700;">● AI-Консультант онлайн • 4 запити в обробці</div>
+        </div>
+
+        <div class="admin-card">
+          <h2 style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">📬 Вхідні Звернення з Live-Чату та Форми Підтримки</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Дата</th>
+                  <th>Автор</th>
+                  <th>Контакти</th>
+                  <th>Тема</th>
+                  <th>Текст запиту</th>
+                  <th>Статус / Відповідь</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody id="supportTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal: Reply Support Message -->
+      <div id="replySupportModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000;">
+        <div style="background: #0f1c3f; padding: 32px; border-radius: 20px; width: 90%; max-width: 500px; border: 1px solid var(--accent-gold);">
+          <h3 style="color: #fff; margin-bottom: 20px;">Відповісти на звернення <span id="replySupId" style="color: var(--accent-gold);"></span></h3>
+          <form onsubmit="saveSupportReply(event)" style="display: flex; flex-direction: column; gap: 14px;">
+            <input type="hidden" id="replySupHiddenId">
+            <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; color: #ccc; font-size: 0.9rem;" id="replySupOriginalText"></div>
+            <textarea id="replySupText" rows="4" placeholder="Напишіть відповідь координатора фонду..." required style="padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); color: #fff; font-size: 1rem;"></textarea>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+              <button type="button" class="btn-admin btn-del" onclick="document.getElementById('replySupportModal').style.display='none'">Скасувати</button>
+              <button type="submit" class="btn-admin btn-add">🟢 Надіслати Відповідь</button>
             </div>
           </form>
         </div>

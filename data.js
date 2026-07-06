@@ -527,6 +527,17 @@ const INITIAL_DATA = {
     { id: 'Q-801', author: 'Максим (Київ)', contact: '+380631112233', question: 'Питання до пілотів FPV: які РЕБ-системи ворога зараз найнебезпечніші для наших дронів?', targetGuest: 'Ефір #43 (Розвідка)', date: '06.07.2026', status: 'pending', statusLabel: '🟡 Очікує ефіру' },
     { id: 'Q-802', author: 'Олена (Львів)', contact: 'olena@gmail.com', question: 'Як правильно підготувати родину до повернення ветерана з фронту з ПТСР?', targetGuest: 'Психолог Ветеранського хабу', date: '05.07.2026', status: 'answered', statusLabel: '🟢 Озвучено в ефірі #41' }
   ]
+,
+  supportMessages: [
+    { id: 'SUP-501', author: 'Андрій (Волонтер)', contact: '+380671112233', subject: 'Питання щодо передачі дрон-детекторів', text: 'Вітаю! Маємо 3 детектори дронів від партнерів з Польщі. Як передати їх безпосередньо на Бахмутський напрямок через ваш фонд?', date: '06.07.2026', status: 'pending', statusLabel: '🟡 Очікує оператора', reply: '' },
+    { id: 'SUP-502', author: 'Марія (HR Tech)', contact: 'maria@company.com', subject: 'Корпоративний збір', text: 'Хочемо відкрити корпоративну банку на 500 тис грн для ППО. Надішліть реквізити та договір.', date: '05.07.2026', status: 'answered', statusLabel: '🟢 Відповіли в чаті', reply: 'Вітаємо, Маріє! Надіслали вам пакет документів для B2B партнерства на пошту.' }
+  ],
+  supportFaq: [
+    { id: 'faq_1', q: '🎯 Як перевірити, куди пішов мій донат?', a: 'Усі надходження та витрати публікуються в реальному часі на сторінці «🛡️ Прозорість та Звіти». Кожна закупівля супроводжується актами приймання-передачі від військових частин та фіскальними чеками.' },
+    { id: 'faq_2', q: '⚔️ Як військовослужбовцю подати офіційний запит на дрони або РЕБ?', a: 'Перейдіть у розділ «⚔️ Запити ЗСУ» та заповніть форму. Необхідно вказати номер ВЧ, ПІБ командира, телефон та додати скан-копію офіційного листа-запиту з печаткою.' },
+    { id: 'faq_3', q: '🤝 Які податкові пільги отримує бізнес за B2B-партнерство?', a: 'Благодійний фонд «Разом ми — сила» включено до Реєстру неприбуткових організацій (ознака 0036). Юридичні особи можуть включати благодійні внески до витрат згідно з ПКУ.' },
+    { id: 'faq_4', q: '🌍 Як зробити внесок з-за кордону у USD або EUR?', a: 'На сторінці «🤝 Долучитися / Донат» доступні міжнародні реквізити IBAN (USD/EUR/GBP), PayPal, Stripe, Apple Pay та криптовалютні гаманці (USDT, BTC, ETH).' }
+  ]
 };
 window.FoundationStore = {
   getData() {
@@ -1125,6 +1136,55 @@ window.FoundationStore = {
     }
   },
 
+    getSupportMessages() {
+    return this.getData().supportMessages || [];
+  },
+
+  getSupportFaq() {
+    return this.getData().supportFaq || [];
+  },
+
+  addSupportMessage(author, contact, subject, text) {
+    const data = this.getData();
+    if (!data.supportMessages) data.supportMessages = [];
+    const newId = 'SUP-' + (Math.floor(Math.random() * 899) + 100);
+    const today = new Date();
+    const dateStr = [today.getDate().toString().padStart(2, '0'), (today.getMonth() + 1).toString().padStart(2, '0'), today.getFullYear()].join('.');
+    data.supportMessages.unshift({
+      id: newId,
+      author,
+      contact,
+      subject: subject || 'Питання з Live-чату',
+      text,
+      date: dateStr,
+      status: 'pending',
+      statusLabel: '🟡 Очікує оператора',
+      reply: ''
+    });
+    this.saveData(data);
+    return newId;
+  },
+
+  answerSupportMessage(id, replyText) {
+    const data = this.getData();
+    if (!data.supportMessages) return;
+    const msg = data.supportMessages.find(m => m.id === id);
+    if (msg) {
+      msg.status = 'answered';
+      msg.statusLabel = '🟢 Відповіли в чаті';
+      msg.reply = replyText;
+      this.saveData(data);
+    }
+  },
+
+  deleteSupportMessage(id) {
+    const data = this.getData();
+    if (data.supportMessages) {
+      data.supportMessages = data.supportMessages.filter(m => m.id !== id);
+      this.saveData(data);
+    }
+  },
+
   deleteApplication(id) {
     const data = this.getData();
     data.applications = data.applications?.filter(a => a.id !== id) || [];
@@ -1158,3 +1218,130 @@ if (typeof window !== 'undefined') {
     }
   });
 }
+
+
+// === УНІВЕРСАЛЬНИЙ ВІДЖЕТ AI-КОНСУЛЬТАНТА ТА LIVE-ЧАТУ (Бот Титан 🇺🇦) ===
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Do not inject on admin login screen if desired, but good everywhere
+    if (document.getElementById('aiTitanWidgetContainer')) return;
+
+    const widgetDiv = document.createElement('div');
+    widgetDiv.id = 'aiTitanWidgetContainer';
+    widgetDiv.innerHTML = `
+      <!-- Floating Button -->
+      <div id="aiChatBtn" onclick="toggleAiChat()" style="position: fixed; bottom: 28px; right: 28px; background: linear-gradient(135deg, #0f1c3f, #1e3a8a); border: 2px solid var(--accent-gold); color: #fff; padding: 14px 24px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255,183,3,0.4); display: flex; align-items: center; gap: 12px; cursor: pointer; z-index: 9999; transition: transform 0.2s, box-shadow 0.2s;">
+        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulseGreen 1.5s infinite;"></div>
+        <span style="font-size: 1.5rem;">🤖</span>
+        <div style="text-align: left; line-height: 1.2;">
+          <strong style="font-size: 0.95rem; display: block; color: var(--accent-gold);">AI-Консультант</strong>
+          <span style="font-size: 0.75rem; color: #ccc;">Підтримка 24/7</span>
+        </div>
+      </div>
+
+      <!-- Popup Chat Box -->
+      <div id="aiChatBox" style="position: fixed; bottom: 90px; right: 28px; width: 380px; max-width: calc(100vw - 40px); height: 540px; background: #0f1c3f; border: 2px solid var(--accent-gold); border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.85); display: none; flex-direction: column; z-index: 10000; overflow: hidden; font-family: 'Inter', sans-serif;">
+        <!-- Chat Header -->
+        <div style="background: linear-gradient(90deg, #1e3a8a, #0f1c3f); padding: 16px 20px; border-bottom: 1px solid rgba(255,183,3,0.3); display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: rgba(255,183,3,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid var(--accent-gold);">🤖</div>
+            <div>
+              <strong style="color: #fff; font-size: 1rem; display: block;">Титан 🇺🇦 AI-Помічник</strong>
+              <span style="color: #10b981; font-size: 0.75rem; font-weight: 700;">● Онлайн • Відповідає миттєво</span>
+            </div>
+          </div>
+          <button onclick="toggleAiChat()" style="background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; padding: 4px;">✕</button>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="aiChatMessages" style="flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.25);">
+          <div style="align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;">
+            👋 Вітаю! Я <strong>Титан</strong> — штучний інтелект та гід БФ «Разом ми — сила». Чим можу допомогти вам сьогодні?
+          </div>
+          <div style="align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;">
+            💡 Оберіть популярне питання нижче або напишіть своє повідомлення:
+          </div>
+        </div>
+
+        <!-- Quick Chips -->
+        <div id="aiQuickChips" style="padding: 10px 14px; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 6px; overflow-x: auto; white-space: nowrap;">
+          <button onclick="aiClickChip('🎯 Як задонатити з-за кордону?')" style="background: rgba(255,183,3,0.15); color: #ffb703; border: 1px solid var(--accent-gold); padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🎯 Як задонатити?</button>
+          <button onclick="aiClickChip('⚔️ Як подати запит від ЗСУ?')" style="background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid #3b82f6; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">⚔️ Запит ЗСУ</button>
+          <button onclick="aiClickChip('🤝 Корпоративне B2B партнерство')" style="background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🤝 B2B партнерство</button>
+          <button onclick="aiClickChip('🧑‍💻 Зв\'язатися з живим оператором')" style="background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🧑‍💻 Живий волонтер</button>
+        </div>
+
+        <!-- Input Area -->
+        <form onsubmit="sendAiMessage(event)" style="padding: 12px; background: #0b1530; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px;">
+          <input type="text" id="aiInputText" placeholder="Напишіть ваше питання..." style="flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.9rem; outline: none;">
+          <button type="submit" style="background: var(--accent-gold); color: #000; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">➤</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(widgetDiv);
+
+    // Add pulse animation style if not present
+    if (!document.getElementById('aiPulseStyle')) {
+      const st = document.createElement('style');
+      st.id = 'aiPulseStyle';
+      st.innerHTML = `@keyframes pulseGreen { 0% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.6; transform: scale(0.9); } }`;
+      document.head.appendChild(st);
+    }
+  });
+}
+
+window.toggleAiChat = function() {
+  const box = document.getElementById('aiChatBox');
+  if (!box) return;
+  box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+};
+
+window.aiClickChip = function(text) {
+  const input = document.getElementById('aiInputText');
+  if (input) {
+    input.value = text;
+    sendAiMessage({ preventDefault: () => {} });
+  }
+};
+
+window.sendAiMessage = function(event) {
+  event.preventDefault();
+  const input = document.getElementById('aiInputText');
+  const msgs = document.getElementById('aiChatMessages');
+  if (!input || !msgs) return;
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Add User Message
+  const uDiv = document.createElement('div');
+  uDiv.style.cssText = 'align-self: flex-end; background: var(--accent-gold); color: #000; font-weight: 600; padding: 10px 16px; border-radius: 18px 18px 4px 18px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;';
+  uDiv.textContent = text;
+  msgs.appendChild(uDiv);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Simulate AI thinking & reply
+  setTimeout(() => {
+    const aiDiv = document.createElement('div');
+    aiDiv.style.cssText = 'align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;';
+    
+    let reply = "Дякую за питання! Щоб отримати вичерпну відповідь, перейдіть до нашого «💬 Центру Підтримки» або залиште запит для живого оператора.";
+    const lower = text.toLowerCase();
+
+    if (lower.includes('донат') || lower.includes('задонати') || lower.includes('реквізит') || lower.includes('кордон')) {
+      reply = "💰 Всі реквізити (IBAN у гривні, USD, EUR, PayPal, Stripe, Apple Pay та Крипто-гаманці) доступні на сторінці «🤝 Долучитися / Донат». Кожна гривня йде безпосередньо на забезпечення бригад ЗСУ!";
+    } else if (lower.includes('запит') || lower.includes('зсу') || lower.includes('військ') || lower.includes('дрон')) {
+      reply = "⚔️ Офіційний запит від військової частини можна подати у розділі «⚔️ Запити ЗСУ». Потрібно вказати контакти командира та завантажити скан-копію листа-запиту.";
+    } else if (lower.includes('b2b') || lower.includes('партнер') || lower.includes('ксв') || lower.includes('бізнес')) {
+      reply = "🤝 Для корпоративних клієнтів ми пропонуємо пакети від Бронзового до Золотого Титана з брендуванням дронів та податковими пільгами! Деталі на сторінці «🤝 B2B-Партнери».";
+    } else if (lower.includes('звіт') || lower.includes('прозор') || lower.includes('чеки') || lower.includes('акт')) {
+      reply = "🛡️ Ми пишаємося 100% прозорістю! Усі фінансові звіти, акти приймання-передачі та квитанції знаходяться у розділі «🛡️ Прозорість та Звіти».";
+    } else if (lower.includes('оператор') || lower.includes('волонтер') || lower.includes('живий') || lower.includes("зв'яз")) {
+      reply = "🧑‍💻 Щоб зв'язатися з черговим координатором фонду, перейдіть на сторінку «💬 Центр Підтримки» або напишіть ваші контакти просто тут, і я передам їх у CRM!";
+    }
+
+    aiDiv.innerHTML = reply;
+    msgs.appendChild(aiDiv);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+};

@@ -62,6 +62,7 @@ function switchSection(sec, btnEl) {
   document.getElementById('sec-battles').style.display = sec === 'battles' ? 'block' : 'none';
   if (document.getElementById('sec-b2b')) document.getElementById('sec-b2b').style.display = sec === 'b2b' ? 'block' : 'none';
   if (document.getElementById('sec-podcasts')) document.getElementById('sec-podcasts').style.display = sec === 'podcasts' ? 'block' : 'none';
+  if (document.getElementById('sec-support')) document.getElementById('sec-support').style.display = sec === 'support' ? 'block' : 'none';
 
   renderAllAdmin();
 }
@@ -87,6 +88,7 @@ function renderAllAdmin() {
   if (typeof renderAdminBattles === 'function') renderAdminBattles();
   if (typeof renderAdminB2b === 'function') renderAdminB2b();
   if (typeof renderAdminPodcasts === 'function') renderAdminPodcasts();
+  if (typeof renderAdminSupport === 'function') renderAdminSupport();
 }
 
 // === Section 1: Stats ===
@@ -1487,4 +1489,68 @@ function saveNewPodcast(event) {
   event.target.reset();
   renderAdminPodcasts();
   alert('🎉 Новий епізод подкасту успішно опубліковано на Радіо!');
+}
+
+
+// === Section 21: Support Chat CRM ===
+function renderAdminSupport() {
+  const body = document.getElementById('supportTableBody');
+  if (!body || !window.FoundationStore) return;
+
+  const msgs = FoundationStore.getSupportMessages ? FoundationStore.getSupportMessages() : [];
+
+  if (msgs.length === 0) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #888;">Звернень у підтримку поки немає</td></tr>';
+  } else {
+    body.innerHTML = msgs.map(m => `
+      <tr>
+        <td><strong style="color: var(--accent-gold);">${m.id}</strong><br><small style="color: #888;">${m.date}</small></td>
+        <td style="font-weight: 700; color: #fff;">${m.author}</td>
+        <td><span style="color: #60a5fa;">${m.contact}</span></td>
+        <td style="font-weight: 700; color: #ffb703;">${m.subject}</td>
+        <td style="font-size: 0.9rem; color: #ccc; max-width: 250px;">${m.text}</td>
+        <td>
+          <span style="background: ${m.status === 'answered' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; color: ${m.status === 'answered' ? '#10b981' : '#f59e0b'}; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">${m.statusLabel}</span>
+          ${m.reply ? `<div style="font-size: 0.8rem; color: #10b981; margin-top: 6px; font-style: italic;">«${m.reply}»</div>` : ''}
+        </td>
+        <td>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-admin btn-add" style="padding: 4px 10px; font-size: 0.8rem;" onclick="openSupportReplyModal('${m.id}')">💬 Відповісти</button>
+            <button class="btn-admin btn-del" style="padding: 4px 8px;" onclick="deleteAdminSupportMsg('${m.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function openSupportReplyModal(id) {
+  const msgs = FoundationStore.getSupportMessages();
+  const m = msgs.find(item => item.id === id);
+  if (!m) return;
+
+  document.getElementById('replySupId').textContent = id;
+  document.getElementById('replySupHiddenId').value = id;
+  document.getElementById('replySupOriginalText').textContent = `Запит від ${m.author}: «${m.text}»`;
+  document.getElementById('replySupportModal').style.display = 'flex';
+}
+
+function saveSupportReply(event) {
+  event.preventDefault();
+  const id = document.getElementById('replySupHiddenId').value;
+  const reply = document.getElementById('replySupText').value.trim();
+  if (!id || !reply) return;
+
+  FoundationStore.answerSupportMessage(id, reply);
+  document.getElementById('replySupportModal').style.display = 'none';
+  event.target.reset();
+  renderAdminSupport();
+  alert(`🎉 Відповідь відправлено на звернення ${id}!`);
+}
+
+function deleteAdminSupportMsg(id) {
+  if (confirm(`Видалити звернення ${id}?`)) {
+    FoundationStore.deleteSupportMessage(id);
+    renderAdminSupport();
+  }
 }
