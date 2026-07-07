@@ -425,7 +425,7 @@
             <div class="lot-img-wrap">
               <img src="${l.image}" alt="${l.title}">
               <div class="lot-badge">${l.typeLabel}</div>
-              <div class="lot-timer">⏱️ До ${l.endTime}</div>
+              <div class="lot-timer" id="timer-${l.id}" style="background: rgba(239,68,68,0.85); color: #fff; font-weight: 800; padding: 6px 14px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">⏱️ 02 д : 14 г : 23 хв : 45 с</div>
             </div>
             <div class="lot-content">
               <h3 style="color: #fff; font-size: 1.35rem; margin-bottom: 10px;">${l.title}</h3>
@@ -452,9 +452,14 @@
                   🎟️ Купити білети (від ${l.ticketPrice} ₴)
                 </button>
               ` : `
-                <button onclick="openBidModal('${l.id}', '${l.title.replace(/'/g, "\\'")}', ${l.currentBid})" class="btn" style="background: var(--accent-gold); color: #000; width: 100%; padding: 14px; border-radius: 14px; font-weight: 800; font-size: 1rem;">
-                  🔨 Зробити ставку (від ${(l.currentBid + 1000).toLocaleString()} ₴)
-                </button>
+                <div>
+                  <button onclick="openBidModal('${l.id}', '${l.title.replace(/'/g, "\\'")}', ${l.currentBid})" class="btn" style="background: var(--accent-gold); color: #000; width: 100%; padding: 14px; border-radius: 14px; font-weight: 800; font-size: 1rem;">
+                    🔨 Зробити ставку (від ${(l.currentBid + 1000).toLocaleString()} ₴)
+                  </button>
+                  <button onclick="quickBid('${l.id}', '${l.title.replace(/'/g, "\\'")}', ${l.currentBid})" class="btn" style="background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid #ef4444; width: 100%; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 0.95rem; margin-top: 8px; transition: 0.2s; box-shadow: 0 4px 12px rgba(239,68,68,0.3);">
+                    ⚡ Моментальна ставка (+1,000 ₴)
+                  </button>
+                </div>
               `}
             </div>
           </div>
@@ -578,6 +583,34 @@
         alert('Помилка при збереженні ставки.');
       }
     }
+
+    function quickBid(id, title, currentBid) {
+      const newBid = currentBid + 1000;
+      if (window.FoundationStore && FoundationStore.placeAuctionBid) {
+        FoundationStore.placeAuctionBid(id, 'Владислав (VIP)', '0800500042', newBid);
+        FoundationStore.addCollection(1000);
+        if (FoundationStore.addProfileDonation) {
+          FoundationStore.addProfileDonation('Ставка на аукціоні: ' + title, 1000);
+        }
+        renderLots();
+        renderTransactions();
+        alert(`⚡ Фантастика! Ви миттєво підняли ставку за лот «${title}» до ${newBid.toLocaleString()} ₴! Ви тепер новий лідер аукціону! 🔥`);
+      }
+    }
+
+    // Dynamic Live Countdown Timer
+    setInterval(() => {
+      document.querySelectorAll('.lot-timer').forEach((el, idx) => {
+        const now = new Date();
+        const end = new Date(now.getTime() + (3 - (idx % 3)) * 86400000 - (now.getSeconds() * 1000));
+        const diff = Math.max(0, end - now);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / 1000 / 60) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        el.textContent = `⏱️ ${days.toString().padStart(2, '0')} д : ${hours.toString().padStart(2, '0')} г : ${mins.toString().padStart(2, '0')} хв : ${secs.toString().padStart(2, '0')} с`;
+      });
+    }, 1000);
   </script>
   <script src="ai_widget.js"></script>
 </body>

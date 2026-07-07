@@ -177,14 +177,46 @@
           </div>
         </div>
 
+        <!-- Tax Deduction Calculator -->
+        <div style="background: #0f1c3f; border: 1px solid var(--accent-gold); border-radius: 28px; padding: 36px; margin-top: 40px; text-align: left;" class="sleek-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+            <div>
+              <span style="background: rgba(255,183,3,0.2); color: var(--accent-gold); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">💡 ВІДШКОДУВАННЯ ПОДАТКІВ</span>
+              <h3 style="color: #fff; font-size: 1.8rem; margin: 8px 0 4px;">Калькулятор Податкових Пільг (Tax Deduction)</h3>
+              <p style="color: #aaa; font-size: 0.95rem; margin: 0;">Дізнайтеся, яку суму пожертв ви можете законно списувати з податків у вашій країні.</p>
+            </div>
+            <div style="font-size: 3rem;">⚖️</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; background: rgba(0,0,0,0.3); padding: 24px; border-radius: 20px;">
+            <div>
+              <label style="color: #ccc; font-size: 0.9rem; font-weight: 700; display: block; margin-bottom: 8px;">Оберіть вашу юрисдикцію / країну:</label>
+              <select id="taxCountry" onchange="calcTaxDeduction()" style="width: 100%; padding: 14px; border-radius: 12px; background: #070e1e; color: #fff; border: 1px solid var(--border-color); font-size: 1rem;">
+                <option value="UA">🇺🇦 Україна (до 4% або 10% оподатковуваного доходу)</option>
+                <option value="US">🇺🇸 США (501(c)(3) статус, до 60% AGI)</option>
+                <option value="EU">🇪У ЄС / Німеччина / Польща (до 20% доходу)</option>
+              </select>
+            </div>
+            <div>
+              <label style="color: #ccc; font-size: 0.9rem; font-weight: 700; display: block; margin-bottom: 8px;">Ваш річний дохід або сума донатів (₴ / $ / €):</label>
+              <input type="number" id="taxIncome" value="500000" oninput="calcTaxDeduction()" style="width: 100%; padding: 14px; border-radius: 12px; background: #070e1e; color: #fff; border: 1px solid var(--border-color); font-size: 1rem; font-weight: 700;">
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(16,185,129,0.15)); border: 1px solid var(--accent-gold); padding: 18px; border-radius: 16px; display: flex; flex-direction: column; justify-content: center;">
+              <span style="color: #aaa; font-size: 0.85rem;">Орієнтовна сума податкової пільги:</span>
+              <strong id="taxResult" style="color: #10b981; font-size: 1.6rem; margin-top: 4px;">50,000 ₴ / рік</strong>
+              <span id="taxNote" style="color: var(--accent-gold); font-size: 0.75rem; margin-top: 4px;">* Згідно з п. 166.3.2 ПКУ (Україна)</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Certificate Generator -->
         <div style="margin-top: 50px; text-align: center;">
           <h2 class="section-title">📜 Генератор Персонального Сертифікату</h2>
           <p class="section-subtitle">Роздрукуйте або завантажте ваш іменний сертифікат благодійника та поширюйте його у соцмережах!</p>
 
-          <div id="certBox" class="cert-box">
             <div style="position: absolute; top: 20px; left: 20px; font-size: 2rem;">🇺🇦</div>
             <div style="position: absolute; top: 20px; right: 20px; font-size: 2rem;">🌟</div>
+            <div style="position: absolute; bottom: 20px; left: 20px; font-size: 0.8rem; color: #94a3b8; font-family: 'Inter', sans-serif;">№ RMS-2026-VIP-084</div>
             <h4 style="color: #b45309; letter-spacing: 4px; font-size: 1.2rem; margin-bottom: 10px; text-transform: uppercase;">Благодійний Фонд «Разом ми — сила»</h4>
             <h2 style="font-size: 3rem; margin: 10px 0; color: #1e293b; font-family: 'Cormorant Garamond', serif; font-weight: 900;">ПОЧЕСНИЙ СЕРТИФІКАТ</h2>
             <p style="font-size: 1.2rem; font-style: italic; color: #64748b; margin: 20px 0 10px;">Цим сертифікатом урочисто засвідчується, що</p>
@@ -208,9 +240,23 @@
             </div>
           </div>
 
-          <button onclick="window.print()" class="btn btn-primary" style="margin-top: 24px; padding: 18px 40px; border-radius: 16px; font-size: 1.2rem; font-weight: 800;">
-            🖨️ Роздрукувати / Зберегти Сертифікат в PDF
-          </button>
+          <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 24px;">
+            <button onclick="window.print()" class="btn btn-primary" style="padding: 16px 32px; border-radius: 16px; font-size: 1.1rem; font-weight: 800;">
+              🖨️ Роздрукувати / PDF
+            </button>
+            <button onclick="shareCert('telegram')" class="btn" style="background: #0088cc; color: #fff; padding: 16px 24px; border-radius: 16px; font-weight: 700; border: none; cursor: pointer;">
+              ✈️ Telegram
+            </button>
+            <button onclick="shareCert('linkedin')" class="btn" style="background: #0077b5; color: #fff; padding: 16px 24px; border-radius: 16px; font-weight: 700; border: none; cursor: pointer;">
+              💼 LinkedIn
+            </button>
+            <button onclick="shareCert('twitter')" class="btn" style="background: #000; color: #fff; padding: 16px 24px; border-radius: 16px; font-weight: 700; border: 1px solid #444; cursor: pointer;">
+              🖤 X (Twitter)
+            </button>
+            <button onclick="shareCert('copy')" class="btn" style="background: #334155; color: #fff; padding: 16px 24px; border-radius: 16px; font-weight: 700; border: none; cursor: pointer;">
+              🔗 Копіювати лінк
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -304,6 +350,40 @@
         FoundationStore.addProfileDonation('Швидкий VIP-Донат на збір', 5000);
         renderProfile();
         alert("🎉 Немовірно! Ви щойно задонатили 5,000 ₴! Ваш бойовий внесок в кабінеті збільшився!");
+      }
+    }
+
+    function calcTaxDeduction() {
+      const country = document.getElementById('taxCountry').value;
+      const income = Number(document.getElementById('taxIncome').value) || 0;
+      const resEl = document.getElementById('taxResult');
+      const noteEl = document.getElementById('taxNote');
+
+      if (country === 'UA') {
+        const ded = income * 0.10;
+        resEl.textContent = ded.toLocaleString('uk-UA') + ' ₴ / рік';
+        noteEl.textContent = '* Згідно з п. 166.3.2 ПКУ (списання до 10% річного оподатковуваного доходу)';
+      } else if (country === 'US') {
+        const ded = income * 0.60;
+        resEl.textContent = '$' + ded.toLocaleString('en-US') + ' / year';
+        noteEl.textContent = '* Under IRS Section 501(c)(3) (up to 60% of Adjusted Gross Income)';
+      } else if (country === 'EU') {
+        const ded = income * 0.20;
+        resEl.textContent = '€' + ded.toLocaleString('de-DE') + ' / Jahr';
+        noteEl.textContent = '* Nach § 10b EStG / EU Tax Relief (bis zu 20% des Gesamtbetrags der Einkünfte)';
+      }
+    }
+
+    function shareCert(platform) {
+      const text = encodeURIComponent('🌟 Мій почесний сертифікат благодійника БФ «Разом ми — сила»! Долучайтеся до підтримки ЗСУ: https://vladislavchetyrbok-blip.github.io/rms-foundation/');
+      const url = encodeURIComponent('https://vladislavchetyrbok-blip.github.io/rms-foundation/profile.html');
+      
+      if (platform === 'telegram') window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+      else if (platform === 'linkedin') window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+      else if (platform === 'twitter') window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+      else if (platform === 'copy') {
+        navigator.clipboard.writeText('https://vladislavchetyrbok-blip.github.io/rms-foundation/profile.html');
+        alert('🔗 Посилання на ваш сертифікат успішно скопійовано в буфер обміну!');
       }
     }
   </script>

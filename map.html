@@ -154,6 +154,11 @@
       border-color: var(--accent-gold);
       box-shadow: 0 0 20px rgba(255,183,3,0.4);
     }
+    @keyframes pulseAlert {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
+      70% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+    }
   </style>
 </head>
 <body>
@@ -477,11 +482,11 @@
 
       container.innerHTML = filtered.map((item, idx) => {
         const name = typeof item.name === 'object' ? item.name.uk : item.name;
-        let badgeHtml = '<span style="background: rgba(59,130,246,0.2); color: #60a5fa; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">⚡ Активний напрямок</span>';
+        let badgeHtml = '<span style="background: rgba(59,130,246,0.2); color: #60a5fa; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">🟡 ВИСОКА ТЕРМІНОВІСТЬ</span>';
         if (item.status === 'hot') {
-          badgeHtml = '<span style="background: rgba(239,68,68,0.2); color: #f87171; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; border: 1px solid #ef4444;">🔥 Гаряча точка</span>';
+          badgeHtml = '<span style="background: rgba(239,68,68,0.25); color: #f87171; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; border: 1px solid #ef4444; display: inline-block; animation: pulseAlert 2s infinite;">🔴 КРИТИЧНО (ГАРЯЧА ТОЧКА)</span>';
         } else if (item.status === 'logistics') {
-          badgeHtml = '<span style="background: rgba(16,185,129,0.2); color: #10b981; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">📦 Логістичний хаб</span>';
+          badgeHtml = '<span style="background: rgba(16,185,129,0.2); color: #10b981; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">🟢 ПЛАНОВА ПОСТАВКА</span>';
         }
 
         // Generate realistic brigades based on name
@@ -514,9 +519,14 @@
               </div>
             </div>
 
-            <button onclick="openRegionModal('${name.replace(/'/g, "\\'")}', '${item.icon || '📍'}', '${item.status}', '${item.drones || '1,200 шт'}', '${item.med || '3,400 шт'}', '${item.auto || '35 шт'}', '${brigades.replace(/'/g, "\\'")}')" class="btn" style="width: 100%; background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); padding: 12px; border-radius: 14px; font-weight: 700; margin-top: 16px; cursor: pointer; transition: 0.2s;">
-              🔍 Деталі напрямку та бригади
-            </button>
+            <div>
+              <button onclick="openRegionModal('${name.replace(/'/g, "\\'")}', '${item.icon || '📍'}', '${item.status}', '${item.drones || '1,200 шт'}', '${item.med || '3,400 шт'}', '${item.auto || '35 шт'}', '${brigades.replace(/'/g, "\\'")}')" class="btn" style="width: 100%; background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); padding: 12px; border-radius: 14px; font-weight: 700; margin-top: 16px; cursor: pointer; transition: 0.2s;">
+                🔍 Деталі напрямку та бригади
+              </button>
+              <button onclick="supportQuickRegion('${name.replace(/'/g, "\\'")}')" class="btn btn-primary" style="width: 100%; padding: 12px; border-radius: 14px; font-weight: 800; margin-top: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(245,158,11,0.4);">
+                🎯 Взяти під опіку / Закрити потребу
+              </button>
+            </div>
           </div>
         `;
       }).join('');
@@ -552,8 +562,17 @@
 
     function supportThisRegion() {
       document.getElementById('regionDetailModal').style.display = 'none';
-      alert(`🇺🇦 Дякуємо за рішення підтримати напрямок «${currentRegionName}»! Переходимо до безпечної платіжної форми.`);
-      window.location.href = 'join.html';
+      supportQuickRegion(currentRegionName);
+    }
+
+    function supportQuickRegion(regionName) {
+      if (window.FoundationStore && FoundationStore.addProfileDonation) {
+        FoundationStore.addProfileDonation('Опіка напрямку «' + regionName + '»', 10000);
+      }
+      alert(`🎉 Неймовірно! Ви взяли під опіку напрямок «${regionName}» та задонатили 10,000 ₴! Запис зафіксовано у вашому Особистому Кабінеті! 🇺🇦`);
+      if (confirm('Бажаєте перейти до Особистого Кабінету для перегляду ваших досягнень та сертифіката?')) {
+        window.location.href = 'profile.html';
+      }
     }
 
     function submitMapNeed(event) {

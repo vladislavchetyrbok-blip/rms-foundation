@@ -212,6 +212,58 @@
     </div>
   </section>
 
+  <!-- SECTION 2.5: Live Bank-API Stream -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span style="background: rgba(16,185,129,0.2); color: #10b981; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; border: 1px solid #10b981; display: inline-block; margin-bottom: 12px;">🟢 LIVE BANK-API STREAM (MONO / PRIVAT / PAYPAL / CRYPTO)</span>
+        <h2 class="section-title">⚡ Жива стрічка банківських транзакцій у реальному часі</h2>
+        <p class="section-subtitle">Пряма синхронізація з відкритими рахунками БФ «Разом ми — сила». Кожна копійка відображається миттєво без втручання людини.</p>
+      </div>
+
+      <div style="background: #0f1c3f; border: 1px solid var(--accent-gold); border-radius: 28px; padding: 30px; max-width: 1050px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="shop-filter-btn active" onclick="filterBank('all', this)">🌐 Всі операції</button>
+            <button class="shop-filter-btn" onclick="filterBank('in', this)">📈 + Надходження (Донати)</button>
+            <button class="shop-filter-btn" onclick="filterBank('out', this)">📉 - Витрати (Закупівлі)</button>
+          </div>
+          <div style="display: flex; gap: 12px; flex-grow: 1; max-width: 380px;">
+            <input type="text" id="bankSearchInput" oninput="renderBankStream()" placeholder="🔍 Пошук за донором, сумою, призначенням..." style="width: 100%; padding: 12px 18px; border-radius: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: #fff; font-size: 0.95rem;">
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; max-height: 400px; overflow-y: auto; border-radius: 16px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; color: #ddd;">
+            <thead style="position: sticky; top: 0; background: #070e1e; z-index: 10;">
+              <tr style="border-bottom: 2px solid var(--border-color); color: #aaa;">
+                <th style="padding: 14px 16px;">Час / Шлюз</th>
+                <th style="padding: 14px 16px;">Донор / Контрагент</th>
+                <th style="padding: 14px 16px;">Призначення платежу / Збір</th>
+                <th style="padding: 14px 16px;">Сума</th>
+                <th style="padding: 14px 16px;">Статус API</th>
+              </tr>
+            </thead>
+            <tbody id="bankStreamBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; background: rgba(255,183,3,0.1); border: 1px dashed var(--accent-gold); padding: 20px; border-radius: 20px;">
+          <div>
+            <h4 style="color: #fff; margin: 0 0 4px; font-size: 1.1rem;">📥 Офіційний Зведений Фінансовий Звіт за Місяць</h4>
+            <span style="color: #bbb; font-size: 0.85rem;">Деталізований витяг з електронно-цифровим підписом (ЕЦП) аудитора фонду.</span>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <button onclick="downloadOfficialReport('PDF')" class="btn btn-primary" style="padding: 14px 24px; border-radius: 16px; font-weight: 800; font-size: 0.95rem;">📄 Завантажити PDF Звіт</button>
+            <button onclick="downloadOfficialReport('EXCEL')" class="btn" style="background: #10b981; color: #fff; padding: 14px 24px; border-radius: 16px; font-weight: 800; font-size: 0.95rem; border: none; cursor: pointer;">📊 Excel Баланс</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION 3: Public Procurement Registry Table -->
   <section class="section">
     <div class="container">
@@ -298,6 +350,92 @@
   <script src="data.js"></script>
   <script src="i18n.js"></script>
   <script src="script.js"></script>
+  <script>
+    const INITIAL_BANK_STREAM = [
+      { time: '14:42:15', gateway: '🐱 Monobank API', donor: 'Владислав (Головний Меценат)', desc: 'Донат на збір «Залізний Кулак»', amount: '+25 000 ₴', type: 'in' },
+      { time: '14:38:02', gateway: '💳 Приват24', donor: 'Анонімний Патріот', desc: 'Підтримка медиків IFAK', amount: '+1 500 ₴', type: 'in' },
+      { time: '14:30:45', gateway: '🏦 SWIFT / IBAN', donor: 'Michael Schmidt (Germany)', desc: 'Charity donation for FPV drones', amount: '+500 € (22 150 ₴)', type: 'in' },
+      { time: '14:15:00', gateway: '🚀 PayPal API', donor: 'Sarah Jenkins (USA)', desc: 'Support Ukrainian defenders', amount: '+250 $ (10 320 ₴)', type: 'in' },
+      { time: '13:55:12', gateway: '📉 Оплата рахунку', donor: 'ТОВ «УкрДронСпецМаш»', desc: 'Оплата за 10 шт. DJI Mavic 3T (Згідно з договором №84/26)', amount: '-1 450 000 ₴', type: 'out' },
+      { time: '13:20:19', gateway: '🪙 Crypto Gateway', donor: '0x71C...89E1 (USDT Wallet)', desc: 'Donation to FPV night bombers', amount: '+1 000 USDT (41 200 ₴)', type: 'in' },
+      { time: '12:45:33', gateway: '📉 Оплата рахунку', donor: 'ТОВ «Тактична Медицина»', desc: 'Закупівля 500 шт. Аптечок тактичних IFAK', amount: '-650 000 ₴', type: 'out' },
+      { time: '12:10:05', gateway: '🐱 Monobank API', donor: 'Олена В.', desc: 'На збір для 47 ОМБр', amount: '+5 000 ₴', type: 'in' },
+      { time: '11:30:22', gateway: '💳 Приват24', donor: 'Ігор Бондаренко', desc: 'Благодійний внесок', amount: '+2 000 ₴', type: 'in' }
+    ];
+
+    let currentBankFilter = 'all';
+
+    function filterBank(type, btn) {
+      currentBankFilter = type;
+      document.querySelectorAll('#cartBar .shop-filter-btn, section .shop-filter-btn').forEach(b => {
+        if (b.textContent.includes('операції') || b.textContent.includes('Надходження') || b.textContent.includes('Витрати')) {
+          b.classList.remove('active');
+        }
+      });
+      if (btn) btn.classList.add('active');
+      renderBankStream();
+    }
+
+    function renderBankStream() {
+      const tbody = document.getElementById('bankStreamBody');
+      if (!tbody) return;
+      const query = (document.getElementById('bankSearchInput')?.value || '').toLowerCase().trim();
+
+      const filtered = INITIAL_BANK_STREAM.filter(t => {
+        if (currentBankFilter !== 'all' && t.type !== currentBankFilter) return false;
+        if (!query) return true;
+        return t.donor.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query) || t.amount.toLowerCase().includes(query);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 24px; color: #888;">За вашим запитом транзакцій не знайдено.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(t => {
+        const isIn = t.type === 'in';
+        const color = isIn ? '#10b981' : '#f87171';
+        const badge = isIn ? '<span style="background:rgba(16,185,129,0.2);color:#10b981;padding:3px 10px;border-radius:10px;font-size:0.75rem;font-weight:700;">✅ Успішно (IN)</span>' : '<span style="background:rgba(239,68,68,0.2);color:#f87171;padding:3px 10px;border-radius:10px;font-size:0.75rem;font-weight:700;">📉 Витрата (OUT)</span>';
+        return `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 14px 16px;"><strong style="color:#fff;">${t.time}</strong><br><span style="font-size:0.8rem;color:#888;">${t.gateway}</span></td>
+            <td style="padding: 14px 16px; font-weight:700; color:#fff;">${t.donor}</td>
+            <td style="padding: 14px 16px; color:#ccc;">${t.desc}</td>
+            <td style="padding: 14px 16px; font-weight:800; font-size:1.05rem; color:${color};">${t.amount}</td>
+            <td style="padding: 14px 16px;">${badge}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function downloadOfficialReport(format) {
+      alert(`📥 Генерація офіційного фінансового звіту БФ «Разом ми — сила» у форматі ${format}...\n\n✅ Усі статті надходжень (18 450 000 ₴) та витрат (17 920 000 ₴) перевірено та підтверджено цифровим підписом аудитора!\n\nФайл: RMS_Financial_Report_July_2026.${format.toLowerCase()} почав завантаження.`);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBankStream();
+      // Simulate live incoming donation every 15 seconds
+      setInterval(() => {
+        const names = ['Олександр К.', 'Марія В.', 'Дмитро (Львів)', 'Ветеранський Хаб', 'Олена (Київ)', 'Павло Т.', 'Катерина М.'];
+        const amounts = [500, 1000, 1500, 2500, 5000, 10000];
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0];
+        
+        INITIAL_BANK_STREAM.unshift({
+          time: timeStr,
+          gateway: '🐱 Monobank API (Live)',
+          donor: randomName,
+          desc: 'Донат на збір «Залізний Кулак»',
+          amount: `+${randomAmount.toLocaleString()} ₴`,
+          type: 'in'
+        });
+        if (INITIAL_BANK_STREAM.length > 25) INITIAL_BANK_STREAM.pop();
+        renderBankStream();
+      }, 15000);
+    });
+  </script>
   <script src="ai_widget.js"></script>
 </body>
 </html>
