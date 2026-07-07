@@ -20,7 +20,7 @@
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
-      z-index: 10001;
+      z-index: 900;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       animation: titanPulse 3s infinite;
     }
@@ -55,7 +55,7 @@
       display: none;
       flex-direction: column;
       overflow: hidden;
-      z-index: 10002;
+      z-index: 910;
       font-family: 'Inter', sans-serif;
     }
     @media (max-width: 768px) {
@@ -70,11 +70,14 @@
         max-height: 65vh !important;
       }
       #rmsPwaBanner {
-        top: 70px !important;
-        bottom: auto !important;
-        left: 16px !important;
-        right: 16px !important;
-        max-width: calc(100vw - 32px) !important;
+        top: auto !important;
+        bottom: 85px !important;
+        left: 12px !important;
+        right: 12px !important;
+        max-width: calc(100vw - 24px) !important;
+        padding: 10px 14px !important;
+        border-radius: 16px !important;
+        z-index: 980 !important;
       }
     }
     .titan-header {
@@ -334,7 +337,7 @@
     }
     @media (max-width: 768px) { 
       .mega-grid { grid-template-columns: 1fr; }
-      #rmsTopBar { padding: 8px 12px; justify-content: center; }
+      #rmsTopBar { position: relative !important; padding: 6px 12px; justify-content: center; }
       #rmsTopBar > div:first-child { display: none !important; }
       #rmsMegaMenuBtn { width: 100%; justify-content: center; font-size: 0.78rem; padding: 8px 12px; }
       .topbar-hide-mob { display: none !important; }
@@ -870,32 +873,38 @@
   pwaBanner.id = 'rmsPwaBanner';
   pwaBanner.style.cssText = `
     position: fixed;
-    top: 75px;
+    top: auto;
+    bottom: 85px;
     right: 28px;
-    background: linear-gradient(135deg, rgba(15, 28, 63, 0.95), rgba(7, 14, 30, 0.95));
-    border: 2px solid #f59e0b;
-    border-radius: 20px;
-    padding: 16px 22px;
+    background: linear-gradient(135deg, rgba(15, 28, 63, 0.96), rgba(7, 14, 30, 0.96));
+    border: 1.5px solid #f59e0b;
+    border-radius: 18px;
+    padding: 12px 18px;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 25px rgba(245,158,11,0.3);
-    z-index: 99999;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.85), 0 0 25px rgba(245,158,11,0.3);
+    z-index: 980;
     display: none;
     align-items: center;
-    gap: 16px;
-    max-width: 380px;
+    gap: 12px;
+    max-width: 360px;
+    width: auto;
     backdrop-filter: blur(20px);
     animation: pwaSlideUp 0.5s ease;
   `;
   pwaBanner.innerHTML = `
-    <span style="font-size: 2.2rem;">📱</span>
-    <div style="flex: 1;">
-      <strong style="color: #f59e0b; font-size: 0.95rem; display: block;">Встановити Додаток Фонду</strong>
-      <span style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.2; display: block; margin-top: 2px;">Швидкий доступ до 32+ модулів, офлайн-режим та збори на екрані вашого смартфона!</span>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 6px;">
-      <button id="pwaInstallBtn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 800; font-size: 0.8rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(245,158,11,0.4);">ВСТАНОВИТИ</button>
-      <button id="pwaCloseBtn" style="background: none; border: none; color: #94a3b8; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">Пізніше</button>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+        <span style="font-size: 1.5rem; flex-shrink: 0;">📱</span>
+        <div style="min-width: 0;">
+          <strong style="color: #f59e0b; font-size: 0.88rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Додаток Фонду 🇺🇦</strong>
+          <span style="font-size: 0.74rem; color: #cbd5e1; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Швидкий доступ та офлайн-режим</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+        <button id="pwaInstallBtn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 6px 14px; border-radius: 10px; font-weight: 800; font-size: 0.78rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 10px rgba(245,158,11,0.3); transition: transform 0.2s;">ВСТАНОВИТИ</button>
+        <button id="pwaCloseBtn" style="background: rgba(255,255,255,0.1); border: none; color: #94a3b8; width: 26px; height: 26px; border-radius: 50%; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" title="Закрити">✕</button>
+      </div>
     </div>
   `;
   if (document.body) {
