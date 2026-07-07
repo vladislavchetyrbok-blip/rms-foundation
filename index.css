@@ -2519,7 +2519,7 @@ p, li, td, th {
   line-height: 1.6;
 }
 
-/* --- 3. Advanced Sorting & Stats Bar (500 Modules Hub) --- */
+/* --- 3. Advanced Sorting & Stats Bar (1000 Modules Hub) --- */
 .stats-hero-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
