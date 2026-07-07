@@ -458,7 +458,7 @@ const INITIAL_DATA = {
     { id: 'br_5', name: 'Олена (волонтер з Києва)', amount: '5 000 ₴', message: 'Нехай наші захисники повертаються додому живими та здоровими! ❤️', country: 'uk', date: '01.07.2026' },
     { id: 'br_6', name: 'Hans Müller & Familie', amount: '300 EUR', message: 'Für Frieden und Freiheit in Europa. Grüße aus München! 🇩🇪', country: 'de', date: '30.06.2026' },
     { id: 'br_7', name: 'David Smith', amount: '£250', message: 'Support from London! Keep fighting the good fight! 🇬🇧', country: 'gb', date: '29.06.2026' },
-    { id: 'br_8', name: 'Анонімний Благодійник', amount: '25 000 ₴', message: 'На РЕБ для хлопців на Донбасі. Разом ми сила!', country: 'uk', date: '28.06.2026' }
+    { id: 'br_8', name: 'Анонімний Благодійник', amount: '25 000 ₴', message: 'На РЕБ для хлопців на Донбасі. Разом ми — сила!', country: 'uk', date: '28.06.2026' }
   ],
   shopItems: [
     { id: 'sh_1', title: 'Розписана гільза 155-мм від артилерії', category: '🏆 Артефакти з фронту', price: '10 000 ₴', desc: 'Аутентична гільза від гаубиці М777, привезена з Бахмутського напрямку. Художній петриківський розпис від волонтерів.', image: 'honor_cargo.jpg', inStock: true },
