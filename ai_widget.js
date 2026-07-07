@@ -429,7 +429,7 @@
         <span style="font-size: 1.5rem;">🤖</span>
         <div>
           <strong style="color: #fff; font-size: 1rem; display: block;">Бот Титан AI 🇺🇦</strong>
-          <span style="color: #10b981; font-size: 0.75rem;">● Онлайн • 500 модулів у пам'яті</span>
+          <span style="color: #10b981; font-size: 0.78rem; display: flex; align-items: center; gap: 6px;"><span class="live-dot" style="display: inline-block;"></span> Онлайн • 500 Модулів • Bank-API</span>
         </div>
       </div>
       <button id="titanCloseBtn" style="background: none; border: none; color: #aaa; font-size: 1.3rem; cursor: pointer;">✕</button>
@@ -446,6 +446,12 @@
           <button class="titan-qbtn" onclick="titanAsk('Конструктор рапорту')">⚖️ Юридична Опора</button>
         </div>
       </div>
+    </div>
+    <div class="ai-quick-chips">
+      <button class="ai-chip" type="button" onclick="titanAsk('Як працює Калькулятор Впливу?')">🧮 Калькулятор</button>
+      <button class="ai-chip" type="button" onclick="titanAsk('Які 500 модулів є у фонді?')">🌐 500 Модулів</button>
+      <button class="ai-chip" type="button" onclick="titanAsk('Як отримати податкову знижку?')">📜 Податкова</button>
+      <button class="ai-chip" type="button" onclick="titanAsk('Як долучитися волонтером?')">🤝 Волонтерство</button>
     </div>
     <form class="titan-footer" id="titanForm" onsubmit="titanSubmit(event)">
       <input type="text" id="titanInput" class="titan-input" placeholder="Задайте питання або оберіть тему..." autocomplete="off">
@@ -491,7 +497,15 @@
       let reply = "Дякую за звернення! Наша система містить 500 спеціалізованих модулів. Якщо ви хочете зробити донат — перейдіть на сторінку «🤝 Долучитися». Для зв'язку з живим координатором скористайтеся розділом «💬 Підтримка».";
       const lower = text.toLowerCase();
 
-      if (lower.includes('дрон') || lower.includes('збірк') || lower.includes('інженер') || lower.includes('fpv') || lower.includes('реб')) {
+      if (lower.includes('калькулятор') || lower.includes('вплив') || lower.includes('конверт') || lower.includes('сума')) {
+        reply = "🧮 <strong>Інтерактивний Калькулятор Впливу:</strong> На головній сторінці фонду ви можете потягнути повзунок і миттєво побачити, у які саме засоби порятунку (аптечки IFAK, турнікети, тепловізори, EcoFlow чи мобільні шпиталі) конвертується ваш донат! <br><a href='index.html#calc' style='color: #00d4ff; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Відкрити Калькулятор Впливу</a>";
+      } else if (lower.includes('500') || lower.includes('модул') || lower.includes('екосистем') || lower.includes('хаб') || lower.includes('кластер')) {
+        reply = "🌐 <strong>Екосистема 500 Модулів:</strong> Наш фонд об'єднує 500 активних напрямків у 5 кластерах (Оборона, Медицина, Спільнота, Відбудова, Майбутнє/ШІ). Ви можете відфільтрувати та знайти будь-який проєкт за лічені секунди! <br><a href='ecosystem.html' style='color: #ffb703; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Переглянути всі 500 модулів</a>";
+      } else if (lower.includes('податк') || lower.includes('знижк') || lower.includes('finanzamt') || lower.includes('501') || lower.includes('неприбутк') || lower.includes('звіт')) {
+        reply = "📜 <strong>Податкові знижки та звітність:</strong> Наш фонд має офіційний неприбутковий статус (ЄДРПОУ 44859201) та партнерство в ЄС і США (501c3). Після донату напишіть на support@razom-sila.org для отримання офіційного документа для Finanzamt чи податкової! <br><a href='transparency.html' style='color: #10b981; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Прозорість і звіти</a>";
+      } else if (lower.includes('волонтер') || lower.includes('долуч') || lower.includes('команда') || lower.includes('партнер')) {
+        reply = "🤝 <strong>Приєднатися до команди:</strong> Ми завжди шукаємо волонтерів-водіїв, перекладачів, IT-спеціалістів та координаторів! Заповніть коротку анкету або оберіть напрямок допомоги. <br><a href='join.html' style='color: #38bdf8; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Стати волонтером</a>";
+      } else if (lower.includes('дрон') || lower.includes('збірк') || lower.includes('інженер') || lower.includes('fpv') || lower.includes('реб')) {
         reply = "🛠️ <strong>Інженерний Хаб «Сталеві Крила»:</strong> Ви можете отримати безкоштовний кит-комплект або інструкцію для збірки FPV та РЕБ вдома! Переходьте: <br><a href='drone_hub.html' style='color: #f59e0b; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Відкрити Інженерний Хаб</a>";
       } else if (lower.includes('кров') || lower.includes('донор') || lower.includes('група')) {
         reply = "🩸 <strong>Банк Крові «Кров'яна Варта»:</strong> У нас працює світлофор потреб та реєстрація донорів для прифронтових шпиталів! 1 донація = 3 врятовані життя. <br><a href='donor_hub.html' style='color: #ef4444; font-weight: 700; display: inline-block; margin-top: 6px;'>👉 Переглянути потреби в крові</a>";

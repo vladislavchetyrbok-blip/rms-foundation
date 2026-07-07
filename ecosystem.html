@@ -89,20 +89,22 @@
       <h1 class="hero-title" style="font-size: 3.2rem; color: #fff; margin-bottom: 16px;">Екосистема 500 Модулів Фонду</h1>
       <p class="hero-subtitle" style="color: #ccc; max-width: 850px; margin: 0 auto 30px;">Ми створили наймасштабнішу цифрову благодійну інфраструктуру в Україні. Від ударних дронів та біонічних протезів до ШІ-консультантів, відбудови шкіл та космічної розвідки. Оберіть свій напрямок та впливайте на перемогу!</p>
       
-      <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 24px; max-width: 700px; margin: 0 auto; border: 1px solid var(--border-glass);">
-        <div>
-          <div style="font-size: 2rem; font-weight: 900; color: var(--accent-gold);">500</div>
+      <div class="stats-hero-bar" style="max-width: 950px; margin: 25px auto 0;">
+        <div class="stat-card-glass">
+          <div class="stat-val-neon">500</div>
           <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Активних Модулів</div>
         </div>
-        <div style="width: 1px; background: var(--border-glass);"></div>
-        <div>
-          <div style="font-size: 2rem; font-weight: 900; color: #10b981;">5</div>
-          <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Ключових Кластерів</div>
+        <div class="stat-card-glass">
+          <div class="stat-val-neon" style="color: #10b981;">100%</div>
+          <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Bank-API Прозорість</div>
         </div>
-        <div style="width: 1px; background: var(--border-glass);"></div>
-        <div>
-          <div style="font-size: 2rem; font-weight: 900; color: #38bdf8;">100%</div>
-          <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Прозорість (Bank-API)</div>
+        <div class="stat-card-glass">
+          <div class="stat-val-neon" style="color: #38bdf8;">24/7</div>
+          <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">ШІ-Синхронізація</div>
+        </div>
+        <div class="stat-card-glass">
+          <div class="stat-val-neon" style="color: #f43f5e;">0%</div>
+          <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Адмін. Затримка</div>
         </div>
       </div>
     </div>
@@ -117,13 +119,30 @@
           <input type="text" id="searchInput" oninput="filterModules()" placeholder="🔍 Пошук за назвою або ключовими словами (напр. дрон, шпиталь, ШІ, кров, відбудова)..." style="width: 100%; padding: 16px 24px; border-radius: 30px; background: #070e1e; border: 2px solid var(--border-color); color: #fff; font-size: 1.05rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='var(--border-color)'">
         </div>
 
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;">
           <button class="filter-btn active" onclick="setCluster('all', this)">🌐 Всі 500 модулів</button>
           <button class="filter-btn" onclick="setCluster('c1', this)">🛡️ Оборона і Технології (100)</button>
           <button class="filter-btn" onclick="setCluster('c2', this)">🏥 Медицина і Реабілітація (100)</button>
           <button class="filter-btn" onclick="setCluster('c3', this)">🤝 Спільнота та ВПО (100)</button>
           <button class="filter-btn" onclick="setCluster('c4', this)">⚡ Відбудова та Логістика (100)</button>
           <button class="filter-btn" onclick="setCluster('c5', this)">💎 Майбутнє, ШІ та Web3 (100)</button>
+        </div>
+
+        <!-- 🌟 ADVANCED SORTING & STATS BAR -->
+        <div class="sort-filter-bar">
+          <div style="font-weight: 700; color: #e0e7ff; font-size: 0.95rem;">
+            📊 Показано модулів: <span id="modulesCountBadge" style="color: var(--accent-gold); font-size: 1.1rem; font-weight: 800;">500</span> з 500
+          </div>
+          <div class="sort-group">
+            <span style="color: var(--text-muted); font-size: 0.88rem;">Сортувати за:</span>
+            <select class="sort-select" id="sortSelect" onchange="setSort(this.value)">
+              <option value="default">За номером (№001 ➔ №500)</option>
+              <option value="reverse">За номером (№500 ➔ №001)</option>
+              <option value="c1">Спочатку Оборона та Технології</option>
+              <option value="c2">Спочатку Медицина та Реабілітація</option>
+              <option value="c5">Спочатку Інновації, ШІ та Web3</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -674,16 +693,32 @@
     ];
 
     let currentCluster = 'all';
+    let currentSort = 'default';
 
     function renderModules() {
       const grid = document.getElementById('modulesGrid');
+      const badge = document.getElementById('modulesCountBadge');
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
       
-      const filtered = allModules.filter(m => {
+      let filtered = allModules.filter(m => {
         const matchCluster = currentCluster === 'all' || m.cluster === currentCluster;
         const matchQuery = !q || m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q) || m.tag.toLowerCase().includes(q);
         return matchCluster && matchQuery;
       });
+
+      if (currentSort === 'reverse') {
+        filtered.sort((a, b) => b.id - a.id);
+      } else if (currentSort === 'c1') {
+        filtered.sort((a, b) => (a.cluster === 'c1' ? -1 : (b.cluster === 'c1' ? 1 : a.id - b.id)));
+      } else if (currentSort === 'c2') {
+        filtered.sort((a, b) => (a.cluster === 'c2' ? -1 : (b.cluster === 'c2' ? 1 : a.id - b.id)));
+      } else if (currentSort === 'c5') {
+        filtered.sort((a, b) => (a.cluster === 'c5' ? -1 : (b.cluster === 'c5' ? 1 : a.id - b.id)));
+      } else {
+        filtered.sort((a, b) => a.id - b.id);
+      }
+
+      if (badge) badge.innerText = filtered.length;
 
       if (filtered.length === 0) {
         grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #aaa; font-size: 1.2rem;">😔 За вашим запитом нічого не знайдено. Спробуйте змінити фільтр або пошукове слово!</div>`;
@@ -691,7 +726,7 @@
       }
 
       grid.innerHTML = filtered.map(m => `
-        <div class="module-card">
+        <div class="module-card hover-tilt">
           <div class="module-badge">№${m.id < 10 ? '0' + m.id : m.id}</div>
           <div>
             <div style="font-size: 3rem; margin-bottom: 12px;">${m.icon}</div>
@@ -708,6 +743,11 @@
       currentCluster = cluster;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      renderModules();
+    }
+
+    function setSort(sortVal) {
+      currentSort = sortVal;
       renderModules();
     }
 

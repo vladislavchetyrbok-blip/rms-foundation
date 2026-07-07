@@ -986,3 +986,107 @@ if (typeof window !== 'undefined') {
     setTimeout(initSupportChatbot, 600);
   });
 }
+
+// ==========================================================================
+// 🌟 STAGE 10: INTERACTIVE IMPACT CALCULATOR & LIVE TICKER ENGINE
+// ==========================================================================
+
+const IMPACT_LEVELS = [
+  { max: 40, icon: '🩹', title: 'Опікові гелі та грілки', desc: 'Комплект хімічних грілок та гідрогелевих протиопікових серветок для надання першої домедичної допомоги в окопі у холодну пору року.', btnTxt: '$20 (800 ₴)' },
+  { max: 90, icon: '🩸', title: 'Турнікет CAT 7-ї генерації', desc: 'Сертифікований кровоспинний джгут NATO для негайної зупинки критичних артеріальних кровотеч на полі бою та порятунку кінцівок.', btnTxt: '$50 (2 000 ₴)' },
+  { max: 240, icon: '🎒', title: 'Комплект NATO IFAK + Турнікет', desc: 'Забезпечує бійця на передовій повноцінною індивідуальною тактичною аптечкою для зупинки критичних кровотеч у перші хвилини поранення.', btnTxt: '$100 (4 000 ₴)' },
+  { max: 490, icon: '🥾', title: 'Топ-тактичне взуття та бронезахист', desc: 'Комплект зимового тактичного взуття з мембраною Gore-Tex, балістичних окулярів та кевларового протиосколкового коміра для штурмовика.', btnTxt: '$350 (14 000 ₴)' },
+  { max: 990, icon: '🦉', title: 'Тепловізійна камера / ПНБ-окуляри', desc: 'Високочутливий тепловізійний сенсор або прилад нічного бачення для водія евакуаційного багі чи пілота нічного FPV-дрона «Сова».', btnTxt: '$500 (20 000 ₴)' },
+  { max: 2490, icon: '⚡', title: 'Зарядна станція EcoFlow + Starlink', desc: 'Забезпечує безперебійне супутникове інтернет-з\'єднання та автономне живлення для командного підземного штабу чи операційного пункту БПЛА.', btnTxt: '$1,500 (60 000 ₴)' },
+  { max: 5000, icon: '🚀', title: 'Мобільний хірургічний модуль', desc: 'Комплексне фінансування автономного стабілізаційного пункту на колесах з реанімаційним обладнанням для порятунку важкопоранених!', btnTxt: '$5,000 (200 000 ₴)' }
+];
+
+function updateImpactCalc(val) {
+  const num = parseInt(val, 10);
+  const displayEl = document.getElementById('calcValDisplay');
+  const iconEl = document.getElementById('impactResIcon');
+  const titleEl = document.getElementById('impactResTitle');
+  const descEl = document.getElementById('impactResDesc');
+  const btnTxtEl = document.getElementById('calcBtnValTxt');
+
+  if (!displayEl || !iconEl || !titleEl || !descEl || !btnTxtEl) return;
+
+  const uah = (num * 40).toLocaleString();
+  displayEl.innerText = `$${num.toLocaleString()} (${uah} ₴)`;
+  btnTxtEl.innerText = `$${num.toLocaleString()} (${uah} ₴)`;
+
+  let level = IMPACT_LEVELS[0];
+  for (let i = 0; i < IMPACT_LEVELS.length; i++) {
+    if (num <= IMPACT_LEVELS[i].max) {
+      level = IMPACT_LEVELS[i];
+      break;
+    }
+    level = IMPACT_LEVELS[IMPACT_LEVELS.length - 1];
+  }
+
+  iconEl.innerText = level.icon;
+  titleEl.innerText = level.title;
+  descEl.innerText = level.desc;
+
+  // Add subtle bounce animation
+  const card = document.getElementById('impactResultCard');
+  if (card) {
+    card.style.transform = 'scale(0.98)';
+    setTimeout(() => { card.style.transform = 'scale(1)'; }, 150);
+  }
+}
+
+function donateFromImpactCalc() {
+  const slider = document.getElementById('impactSlider');
+  const val = slider ? parseInt(slider.value, 10) * 40 : 2000;
+  if (typeof openModal === 'function') {
+    openModal();
+    setTimeout(() => {
+      const input = document.getElementById('donCustomAmount');
+      if (input) input.value = val;
+    }, 200);
+  }
+}
+
+// Live Ticker Simulator
+const TICKER_NAMES = ['🇺🇸 Michael D.', '🇩🇪 Hans M.', '🇯🇵 Kenji S.', '🇬🇧 Sarah W.', '🇨🇦 David L.', '🇵🇱 Piotr K.', '🇺🇦 Олена В.', '🇫🇷 Antoine R.', '🇦🇺 Marcus T.', '🇳🇱 Jan B.', '🇮🇹 Marco P.', '🇪🇸 Elena G.', '🇨🇭 Stefan W.', '🇸🇪 Erik N.', '🇳🇴 Astrid K.', '🇺🇸 Jessica M.', '🇬🇧 James P.', '🇩🇪 Klaus B.', '🇨🇦 Robert H.', '🇺🇦 Тарас М.'];
+const TICKER_AMOUNTS = ['$50', '$100', '$250', '$500', '€200', '€1,000', '£150', '0.5 ETH', '1.2 ETH', '$1,500', '2,000 ₴', '5,000 ₴', '10,000 ₴', '$300', '€450', '$2,500', '0.8 ETH', '$750', '€600', '$1,200'];
+const TICKER_TARGETS = ['Нічна FPV-розвідка', 'Підземні школи', 'Квантовий зв\'язок', 'Екзоскелети', 'Окопний РЕБ', 'Аптечки IFAK', 'Снайперська оптика', 'Морські дрони', 'Ветеранські СТО', 'Роботи-міношукачі', 'Сонячні дахи', 'Біонічні протези', 'Очищення річок', 'Мобільні лазні', 'IT-стипендії сиріт', 'Куполи РЕБ', 'Мобільна стоматологія', 'Зенітні турелі', 'ШІ-аналіз знімків', 'Агро-дрони'];
+
+function initLiveTickerSimulator() {
+  const stream = document.getElementById('liveTickerStream');
+  if (!stream) return;
+
+  setInterval(() => {
+    const name = TICKER_NAMES[Math.floor(Math.random() * TICKER_NAMES.length)];
+    const amount = TICKER_AMOUNTS[Math.floor(Math.random() * TICKER_AMOUNTS.length)];
+    const target = TICKER_TARGETS[Math.floor(Math.random() * TICKER_TARGETS.length)];
+
+    const item = document.createElement('div');
+    item.className = 'live-ticker-item';
+    item.innerHTML = `
+      <span>${name}</span>
+      <span class="live-ticker-amount">${amount}</span>
+      <span>➔</span>
+      <span class="live-ticker-target">${target}</span>
+      <span class="live-ticker-time">• щойно</span>
+    `;
+
+    if (stream.firstChild) {
+      stream.insertBefore(item, stream.firstChild);
+    } else {
+      stream.appendChild(item);
+    }
+
+    if (stream.children.length > 8) {
+      stream.removeChild(stream.lastChild);
+    }
+  }, 7000);
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initLiveTickerSimulator, 1500);
+  });
+}
+

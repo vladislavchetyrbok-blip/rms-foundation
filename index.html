@@ -60,6 +60,46 @@
     </div>
   </header>
 
+  <!-- 🌟 LIVE GLOBAL DONATION TICKER -->
+  <div class="live-ticker-wrap">
+    <div class="container live-ticker-inner">
+      <div class="live-ticker-label">
+        <span class="live-dot"></span>
+        <span>Прямий ефір</span>
+      </div>
+      <div class="live-ticker-stream" id="liveTickerStream">
+        <div class="live-ticker-item">
+          <span>🇺🇸 Michael D.</span>
+          <span class="live-ticker-amount">$500</span>
+          <span>➔</span>
+          <span class="live-ticker-target">Нічна FPV-розвідка</span>
+          <span class="live-ticker-time">• щойно</span>
+        </div>
+        <div class="live-ticker-item">
+          <span>🇩🇪 Hans M.</span>
+          <span class="live-ticker-amount">€1,000</span>
+          <span>➔</span>
+          <span class="live-ticker-target">Підземні школи</span>
+          <span class="live-ticker-time">• 3 хв тому</span>
+        </div>
+        <div class="live-ticker-item">
+          <span>🇯🇵 Kenji S.</span>
+          <span class="live-ticker-amount">1.5 ETH</span>
+          <span>➔</span>
+          <span class="live-ticker-target">Квантовий зв'язок</span>
+          <span class="live-ticker-time">• 7 хв тому</span>
+        </div>
+        <div class="live-ticker-item">
+          <span>🇬🇧 Sarah W.</span>
+          <span class="live-ticker-amount">£250</span>
+          <span>➔</span>
+          <span class="live-ticker-target">Екзоскелети</span>
+          <span class="live-ticker-time">• 12 хв тому</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero" id="about">
     <div class="container hero-grid">
@@ -142,48 +182,36 @@
     </div>
   </section>
 
-  <!-- Interactive Impact Calculator Section -->
-  <section class="section" id="calc" style="background: rgba(13, 24, 50, 0.4);">
+  <!-- 🌟 UPGRADED GAMIFIED IMPACT CALCULATOR SECTION -->
+  <section class="impact-calc-section" id="calc">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title" data-i18n="calc_title">🧮 Калькулятор впливу вашого внеску</h2>
-        <p class="section-subtitle" data-i18n="calc_subtitle">Потягніть повзунок, щоб побачити, у що саме конвертується ваш донат на передовій та в лікарнях.</p>
+        <div class="badge" style="background: rgba(0, 212, 255, 0.15); color: #00d4ff; border-color: rgba(0, 212, 255, 0.4); margin-bottom: 15px;">🧮 100% Прозорість і Конверсія</div>
+        <h2 class="section-title">Ваш Вплив на Перемогу</h2>
+        <p class="section-subtitle">Потягніть інтерактивний повзунок, щоб миттєво побачити, у які життєво необхідні засоби порятунку та технології перетворюється ваша підтримка.</p>
       </div>
 
-      <div class="calc-panel">
-        <div style="font-size: 1.1rem; color: var(--text-muted); text-align: center;" data-i18n="calc_label">Ваша сума внеску:</div>
-        <div class="calc-amount-display" id="calcValDisplay">500 ₴</div>
-
-        <div class="slider-wrap">
-          <input type="range" class="calc-slider" id="impactSlider" min="100" max="25000" step="100" value="500" oninput="updateCalculator(this.value)">
+      <div class="impact-calc-box">
+        <div class="impact-slider-header">
+          <span style="font-size: 1.15rem; color: var(--text-muted); font-weight: 600;">Сума вашого внеску:</span>
+          <span class="impact-current-val" id="calcValDisplay">$100 (4 000 ₴)</span>
         </div>
 
-        <div class="calc-results-grid">
-          <div class="calc-item">
-            <div class="calc-icon">🩹</div>
-            <div class="calc-count" id="resWarm">2 шт.</div>
-            <div class="calc-lbl" data-i18n="calc_res_warm">Хімічні грілки / опікові набори</div>
-          </div>
-          <div class="calc-item">
-            <div class="calc-icon">🩸</div>
-            <div class="calc-count" id="resTourniquet">1 шт.</div>
-            <div class="calc-lbl" data-i18n="calc_res_tourniquet">Турнікети CAT 7-ї генерації</div>
-          </div>
-          <div class="calc-item">
-            <div class="calc-icon">🎒</div>
-            <div class="calc-count" id="resIfak">0.2 шт.</div>
-            <div class="calc-lbl" data-i18n="calc_res_ifak">Професійні аптечки NATO IFAK</div>
-          </div>
-          <div class="calc-item">
-            <div class="calc-icon">⚡</div>
-            <div class="calc-count" id="resEcoflow">1.5%</div>
-            <div class="calc-lbl" data-i18n="calc_res_ecoflow">Внесок у зарядну станцію / дрон</div>
+        <div class="impact-slider-wrap">
+          <input type="range" class="impact-slider" id="impactSlider" min="10" max="5000" step="10" value="100" oninput="updateImpactCalc(this.value)">
+        </div>
+
+        <div class="impact-result-card" id="impactResultCard">
+          <div class="impact-icon-circle" id="impactResIcon">🎒</div>
+          <div class="impact-result-text">
+            <h3 id="impactResTitle">Комплект NATO IFAK + Турнікет CAT</h3>
+            <p id="impactResDesc">Забезпечує бійця на передовій повноцінною індивідуальною тактичною аптечкою для зупинки критичних кровотеч та врятування життя у перші хвилини поранення.</p>
           </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px;">
-          <button class="btn btn-primary" onclick="donateFromCalc()" style="padding: 16px 36px;">
-            <span>⚡ Підтримати на суму <strong id="calcBtnVal">500 ₴</strong></span>
+        <div style="text-align: center; margin-top: 35px;">
+          <button class="btn btn-primary" onclick="donateFromImpactCalc()" style="padding: 18px 42px; font-size: 1.15rem; font-weight: 800; border-radius: 35px; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); background: linear-gradient(135deg, #00d4ff, #1e60f2);">
+            <span>⚡ Підтримати на суму <strong id="calcBtnValTxt">$100</strong></span>
           </button>
         </div>
       </div>
