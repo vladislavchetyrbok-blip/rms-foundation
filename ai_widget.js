@@ -429,7 +429,7 @@
         <span style="font-size: 1.5rem;">🤖</span>
         <div>
           <strong style="color: #fff; font-size: 1rem; display: block;">Бот Титан AI 🇺🇦</strong>
-          <span style="color: #10b981; font-size: 0.75rem;">● Онлайн • 200 модулів у пам'яті</span>
+          <span style="color: #10b981; font-size: 0.75rem;">● Онлайн • 500 модулів у пам'яті</span>
         </div>
       </div>
       <button id="titanCloseBtn" style="background: none; border: none; color: #aaa; font-size: 1.3rem; cursor: pointer;">✕</button>
@@ -488,7 +488,7 @@
       const bMsg = document.createElement('div');
       bMsg.className = 'titan-msg-bot';
       
-      let reply = "Дякую за звернення! Наша система містить 200 спеціалізованих модулів. Якщо ви хочете зробити донат — перейдіть на сторінку «🤝 Долучитися». Для зв'язку з живим координатором скористайтеся розділом «💬 Підтримка».";
+      let reply = "Дякую за звернення! Наша система містить 500 спеціалізованих модулів. Якщо ви хочете зробити донат — перейдіть на сторінку «🤝 Долучитися». Для зв'язку з живим координатором скористайтеся розділом «💬 Підтримка».";
       const lower = text.toLowerCase();
 
       if (lower.includes('дрон') || lower.includes('збірк') || lower.includes('інженер') || lower.includes('fpv') || lower.includes('реб')) {
@@ -530,7 +530,7 @@
         <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
         ОНЛАЙН ЕКОСИСТЕМА ФОНДУ
       </span>
-      <span class="top-info topbar-hide-mob" style="color: #94a3b8;">● 200 активних напрямків • НБУ та 501(c)(3) верифікація</span>
+      <span class="top-info topbar-hide-mob" style="color: #94a3b8;">● 500 активних напрямків • НБУ та 501(c)(3) верифікація</span>
     </div>
     <div style="display: flex; align-items: center; gap: 12px;">
       <div id="topLangSwitcher" style="display: flex; gap: 4px; background: rgba(0,0,0,0.4); padding: 3px 6px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
@@ -542,7 +542,7 @@
         <button class="top-lang-btn topbar-hide-mob" data-lang="it" title="Italiano" style="background: none; border: none; color: #aaa; font-size: 0.8rem; cursor: pointer; padding: 2px 6px; border-radius: 12px; font-weight: 700;">🇮🇹 IT</button>
       </div>
       <button id="rmsMegaMenuBtn">
-        <span>🚀 ВСІ КАТЕГОРІЇ ТА МОДУЛІ (200)</span>
+        <span>🚀 ВСІ КАТЕГОРІЇ ТА МОДУЛІ (500)</span>
         <span style="background: #000; color: #fff; padding: 2px 8px; border-radius: 50px; font-size: 0.7rem; font-weight: 900;">▼</span>
       </button>
     </div>
@@ -561,7 +561,7 @@
             <span style="font-size: 1.8rem;">🇺🇦</span>
             <span style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; padding: 4px 12px; border-radius: 50px; font-weight: 800; font-size: 0.75rem;">ГЛОБАЛЬНИЙ КАТАЛОГ ЕКОСИСТЕМИ</span>
           </div>
-          <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; font-style: italic;">ВСІ 200 МОДУЛІВ ТА РОЗДІЛІВ ФОНДУ</h2>
+          <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; font-style: italic;">ВСІ 500 МОДУЛІВ ТА РОЗДІЛІВ ФОНДУ</h2>
           <p style="color: #cbd5e1; font-size: 0.95rem; margin: 5px 0 0;">Швидкий перехід до будь-якого напрямку, зборів, звітів, інновацій та сервісів БФ «Разом ми — сила».</p>
         </div>
         <button id="megaCloseBtn" style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;">✕ ЗАКРИТИ</button>
@@ -570,7 +570,7 @@
       <!-- Live Search Filter -->
       <div class="mega-search-wrap">
         <span style="font-size: 1.2rem; color: #aaa;">🔍</span>
-        <input type="text" id="megaSearchInput" placeholder="Швидкий пошук по всіх 200 розділах (напр: дрони, шпиталі, кров, гранти, аукціони, звітність)..." autocomplete="off">
+        <input type="text" id="megaSearchInput" placeholder="Швидкий пошук по всіх 500 розділах (напр: дрони, шпиталі, кров, гранти, аукціони, звітність)..." autocomplete="off">
         <button onclick="document.getElementById('megaSearchInput').value=''; window.filterMegaMenu();" style="background: none; border: none; color: #888; cursor: pointer; font-size: 1rem;">✕</button>
       </div>
 
@@ -674,9 +674,9 @@
   const WIDGET_I18N = {
     uk: {
       top_status: 'ОНЛАЙН ЕКОСИСТЕМА ФОНДУ',
-      top_info: '● 200 активних напрямків • НБУ та 501(c)(3) верифікація',
-      mega_btn: '🚀 ВСІ КАТЕГОРІЇ ТА МОДУЛІ (200)',
-      mega_title: 'ВСІ 200 МОДУЛІВ ТА РОЗДІЛІВ ФОНДУ',
+      top_info: '● 500 активних напрямків • НБУ та 501(c)(3) верифікація',
+      mega_btn: '🚀 ВСІ КАТЕГОРІЇ ТА МОДУЛІ (500)',
+      mega_title: 'ВСІ 500 МОДУЛІВ ТА РОЗДІЛІВ ФОНДУ',
       mega_sub: 'Оберіть будь-який напрямок для перегляду звітів, реквізитів та подачі заявок:',
       search_placeholder: '🔍 Пошук по модулях та програмах (напр: дрон, шпитал, крипта)...',
       titan_title: 'AI-Асистент фонду',
@@ -685,9 +685,9 @@
     },
     en: {
       top_status: 'ONLINE FOUNDATION ECOSYSTEM',
-      top_info: '● 200 active modules • NBU & 501(c)(3) verified',
-      mega_btn: '🚀 ALL CATEGORIES & MODULES (200)',
-      mega_title: 'ALL 200 MODULES & SECTIONS',
+      top_info: '● 500 active modules • NBU & 501(c)(3) verified',
+      mega_btn: '🚀 ALL CATEGORIES & MODULES (500)',
+      mega_title: 'ALL 500 MODULES & SECTIONS',
       mega_sub: 'Select any module to view reports, bank details, or submit requests:',
       search_placeholder: '🔍 Search modules & programs (e.g., drone, hospital, crypto)...',
       titan_title: 'Foundation AI Assistant',
@@ -696,9 +696,9 @@
     },
     pl: {
       top_status: 'EKOSYSTEM ONLINE FUNDACJI',
-      top_info: '● 200 aktywne moduły • Weryfikacja NBU i 501(c)(3)',
-      mega_btn: '🚀 WSZYSTKIE KATEGORIE I MODUŁY (200)',
-      mega_title: 'WSZYSTKIE 200 MODUŁÓW I DZIAŁÓW',
+      top_info: '● 500 aktywne moduły • Weryfikacja NBU i 501(c)(3)',
+      mega_btn: '🚀 WSZYSTKIE KATEGORIE I MODUŁY (500)',
+      mega_title: 'WSZYSTKIE 500 MODUŁÓW I DZIAŁÓW',
       mega_sub: 'Wybierz dowolny moduł, aby wyświetlić raporty, dane bankowe lub złożyć wniosek:',
       search_placeholder: '🔍 Szukaj modułów i programów (np. dron, szpital, krypto)...',
       titan_title: 'Asystent AI Fundacji',
@@ -707,9 +707,9 @@
     },
     de: {
       top_status: 'ONLINE-STIFTUNGSEKOSYSTEM',
-      top_info: '● 200 aktive Module • NBU- & 501(c)(3)-verifiziert',
-      mega_btn: '🚀 ALLE KATEGORIEN & MODULE (200)',
-      mega_title: 'ALLE 200 MODULE & BEREICHE',
+      top_info: '● 500 aktive Module • NBU- & 501(c)(3)-verifiziert',
+      mega_btn: '🚀 ALLE KATEGORIEN & MODULE (500)',
+      mega_title: 'ALLE 500 MODULE & BEREICHE',
       mega_sub: 'Wählen Sie ein Modul, um Berichte und Bankdaten anzuzeigen oder Anträge einzureichen:',
       search_placeholder: '🔍 Module & Programme suchen (z.B. Drohne, Spital, Krypto)...',
       titan_title: 'Stiftungs-KI-Assistent',
@@ -718,9 +718,9 @@
     },
     ro: {
       top_status: 'ECOSISTEMUL ONLINE AL FUNDAȚIEI',
-      top_info: '● 200 module active • Verificat NBU și 501(c)(3)',
-      mega_btn: '🚀 TOATE CATEGORIILE ȘI MODULELE (200)',
-      mega_title: 'TOATE CELE 200 DE MODULE ȘI SECȚIUNI',
+      top_info: '● 500 module active • Verificat NBU și 501(c)(3)',
+      mega_btn: '🚀 TOATE CATEGORIILE ȘI MODULELE (500)',
+      mega_title: 'TOATE CELE 500 DE MODULE ȘI SECȚIUNI',
       mega_sub: 'Selectați orice modul pentru a vedea rapoarte, detalii bancare sau pentru a trimite cereri:',
       search_placeholder: '🔍 Căutați module și programe (ex. dronă, spital, cripto)...',
       titan_title: 'Asistentul AI al Fundației',
@@ -729,9 +729,9 @@
     },
     it: {
       top_status: 'ECOSISTEMA ONLINE DELLA FONDAZIONE',
-      top_info: '● 200 moduli attivi • Verificato NBU e 501(c)(3)',
-      mega_btn: '🚀 TUTTE LE CATEGORIE E MODULI (200)',
-      mega_title: 'TUTTI I 200 MODULI E SEZIONI',
+      top_info: '● 500 moduli attivi • Verificato NBU e 501(c)(3)',
+      mega_btn: '🚀 TUTTE LE CATEGORIE E MODULI (500)',
+      mega_title: 'TUTTI I 500 MODULI E SEZIONI',
       mega_sub: 'Seleziona qualsiasi modulo per visualizzare report, coordinate bancarie o inviare richieste:',
       search_placeholder: '🔍 Cerca moduli e programmi (es. drone, ospedale, cripto)...',
       titan_title: 'Assistente AI della Fondazione',
