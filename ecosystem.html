@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Екосистема 50 Модулів | БФ «Разом ми — сила»</title>
+  <title>Екосистема 100 Модулів | БФ «Разом ми — сила»</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 0.95rem;
     }
     .filter-btn:hover, .filter-btn.active {
       background: var(--accent-gold);
@@ -71,7 +72,7 @@
       <nav>
         <ul>
           <li><a href="index.html"><span>ℹ️</span> <span>Головна</span></a></li>
-          <li><a href="ecosystem.html" class="active" style="color: var(--accent-gold); font-weight: 800;"><span>🌐</span> <span>Екосистема (50)</span></a></li>
+          <li><a href="ecosystem.html" class="active" style="color: var(--accent-gold); font-weight: 800;"><span>🌐</span> <span>Екосистема (100)</span></a></li>
           <li><a href="map.html"><span>🗺️</span> <span>Карта</span></a></li>
           <li><a href="transparency.html"><span>🛡️</span> <span>Прозорість</span></a></li>
         </ul>
@@ -84,13 +85,13 @@
 
   <section class="hero" style="background: linear-gradient(135deg, rgba(8,15,35,0.95) 0%, rgba(15,30,65,0.9) 100%), url('hero.png') center/cover; padding: 80px 0 50px; text-align: center;">
     <div class="container">
-      <div class="badge" style="background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); display: inline-block; margin-bottom: 16px;">🚀 ГЛОБАЛЬНИЙ ХАБ ДОПОМОГИ • 50 ІНТЕРАКТИВНИХ МОДУЛІВ</div>
-      <h1 class="hero-title" style="font-size: 3.2rem; color: #fff; margin-bottom: 16px;">Екосистема 50 Модулів Фонду</h1>
-      <p class="hero-subtitle" style="color: #ccc; max-width: 850px; margin: 0 auto 30px;">Ми створили наймасштабнішу цифрову благодійну інфраструктуру в Україні. Від ударних дронів та біонічних протезів до ШІ-консультантів та 3D-музеїв. Оберіть свій напрямок та впливайте на перемогу!</p>
+      <div class="badge" style="background: rgba(255,183,3,0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); display: inline-block; margin-bottom: 16px;">🚀 ГЛОБАЛЬНИЙ ХАБ ДОПОМОГИ • 100 ІНТЕРАКТИВНИХ МОДУЛІВ</div>
+      <h1 class="hero-title" style="font-size: 3.2rem; color: #fff; margin-bottom: 16px;">Екосистема 100 Модулів Фонду</h1>
+      <p class="hero-subtitle" style="color: #ccc; max-width: 850px; margin: 0 auto 30px;">Ми створили наймасштабнішу цифрову благодійну інфраструктуру в Україні. Від ударних дронів та біонічних протезів до ШІ-консультантів, відбудови шкіл та космічної розвідки. Оберіть свій напрямок та впливайте на перемогу!</p>
       
       <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 24px; max-width: 700px; margin: 0 auto; border: 1px solid var(--border-glass);">
         <div>
-          <div style="font-size: 2rem; font-weight: 900; color: var(--accent-gold);">50</div>
+          <div style="font-size: 2rem; font-weight: 900; color: var(--accent-gold);">100</div>
           <div style="font-size: 0.85rem; color: #aaa; text-transform: uppercase; font-weight: 700;">Активних Модулів</div>
         </div>
         <div style="width: 1px; background: var(--border-glass);"></div>
@@ -113,16 +114,16 @@
       <!-- Search and Filter Bar -->
       <div style="margin-bottom: 40px;">
         <div style="max-width: 600px; margin: 0 auto 24px;">
-          <input type="text" id="searchInput" oninput="filterModules()" placeholder="🔍 Пошук за назвою або ключовими словами (напр. дрон, шпиталь, ШІ, кров)..." style="width: 100%; padding: 16px 24px; border-radius: 30px; background: #070e1e; border: 2px solid var(--border-color); color: #fff; font-size: 1.05rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='var(--border-color)'">
+          <input type="text" id="searchInput" oninput="filterModules()" placeholder="🔍 Пошук за назвою або ключовими словами (напр. дрон, шпиталь, ШІ, кров, відбудова)..." style="width: 100%; padding: 16px 24px; border-radius: 30px; background: #070e1e; border: 2px solid var(--border-color); color: #fff; font-size: 1.05rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='var(--border-color)'">
         </div>
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-          <button class="filter-btn active" onclick="setCluster('all', this)">🌐 Всі 50 модулів</button>
-          <button class="filter-btn" onclick="setCluster('c1', this)">🛡️ Оборона і Технології (10)</button>
-          <button class="filter-btn" onclick="setCluster('c2', this)">🏥 Медицина і Реабілітація (10)</button>
-          <button class="filter-btn" onclick="setCluster('c3', this)">🤝 Спільнота і ВПО (10)</button>
-          <button class="filter-btn" onclick="setCluster('c4', this)">⚡ Волонтерство і Логістика (10)</button>
-          <button class="filter-btn" onclick="setCluster('c5', this)">💎 Web3, Гейміфікація і ШІ (10)</button>
+          <button class="filter-btn active" onclick="setCluster('all', this)">🌐 Всі 100 модулів</button>
+          <button class="filter-btn" onclick="setCluster('c1', this)">🛡️ Оборона і Технології (20)</button>
+          <button class="filter-btn" onclick="setCluster('c2', this)">🏥 Медицина і Реабілітація (20)</button>
+          <button class="filter-btn" onclick="setCluster('c3', this)">🤝 Спільнота та ВПО (20)</button>
+          <button class="filter-btn" onclick="setCluster('c4', this)">⚡ Відбудова та Логістика (20)</button>
+          <button class="filter-btn" onclick="setCluster('c5', this)">💎 Майбутнє, ШІ та Web3 (20)</button>
         </div>
       </div>
 
@@ -136,7 +137,7 @@
 
   <footer style="background: #080c1e; padding: 50px 0; border-top: 1px solid var(--border-glass); text-align: center; color: #aaa; font-size: 0.95rem;">
     <div class="container">
-      <p style="margin-bottom: 12px;">© 2026 Благодійний фонд «Разом ми — сила». Всі права захищено. • Екосистема 50 модулів</p>
+      <p style="margin-bottom: 12px;">© 2026 Благодійний фонд «Разом ми — сила». Всі права захищено. • Екосистема 100 модулів</p>
       <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
         <a href="index.html" style="color: #ccc; text-decoration: none;">Головна</a>
         <a href="transparency.html" style="color: #ccc; text-decoration: none;">Прозорість (Bank-API)</a>
@@ -149,7 +150,7 @@
   <script src="data.js"></script>
   <script>
     const allModules = [
-      // Cluster 1: Defense & Tech (10)
+      // Cluster 1: Defense & Tech (20)
       { id: 1, name: "Головний Портал Фонду", desc: "Центральна сторінка, загальна статистика зборів та місія фонду.", icon: "ℹ️", url: "index.html", cluster: "c1", tag: "Оборона" },
       { id: 2, name: "Дрон-Хаб та Авіація", desc: "Конструктор FPV-дронів, нічні бомбери та збір на крила розвідки.", icon: "🛸", url: "drone_hub.html", cluster: "c1", tag: "Оборона" },
       { id: 13, name: "Зв'язок, Starlink та РЕБ", desc: "Забезпечення підрозділів супутниковим інтернетом та окопним РЕБ.", icon: "📡", url: "comms_reb.html", cluster: "c1", tag: "Оборона" },
@@ -160,8 +161,18 @@
       { id: 31, name: "Робототехніка та Розмінування", desc: "Наземні роботи (НРК) для вивозу поранених та саперні дрони-трали.", icon: "🤖", url: "demining_robotics.html", cluster: "c1", tag: "Технології" },
       { id: 32, name: "Кібер-Фронт та OSINT-Академія", desc: "Ключі безпеки YubiKey, протидія пропаганді та курс «Кібер-Щит».", icon: "💻", url: "cyber_front.html", cluster: "c1", tag: "Технології" },
       { id: 33, name: "MilTech-Інкубатор та Гранти", desc: "Гранти до $10,000 для українських інженерів та винахідників РЕБ.", icon: "💡", url: "innovation_grants.html", cluster: "c1", tag: "Інновації" },
+      { id: 51, name: "Нічні FPV та Тепловізійні Дрони", desc: "Ударні дрони з нічною камерою та тепловізором для полювання у темряві.", icon: "🌙", url: "fpv_night_vision.html", cluster: "c1", tag: "Авіація" },
+      { id: 52, name: "Лазерні та Зенітні Анти-Дрон Системи", desc: "Мобільні зенітні турелі та лазерні установки для знищення ворожих крил.", icon: "💥", url: "laser_anti_drone.html", cluster: "c1", tag: "ППО" },
+      { id: 53, name: "Морські та Підводні Дрони", desc: "Безпілотні катери-камікадзе та підводні апарати для захисту акваторії Чорного моря.", icon: "🚤", url: "underwater_drones.html", cluster: "c1", tag: "Флот" },
+      { id: 54, name: "ШІ-Системи Розпізнавання Цільових Об'єктів", desc: "Нейромережі для автоматичного виявлення замаскованої техніки на відео з дронів.", icon: "🎯", url: "ai_targeting_sys.html", cluster: "c1", tag: "ШІ-Розвідка" },
+      { id: 55, name: "Рюкзаки та Мобільні Комплекси РЕБ", desc: "Портативні системи радіоелектронної боротьби для захисту штурмових груп від FPV.", icon: "🎒", url: "electronic_warfare_backpack.html", cluster: "c1", tag: "РЕБ" },
+      { id: 56, name: "Бойові Наземні Роботи (UGV)", desc: "Кулеметні та мінувальнi роботизовані платформи для збереження життів піхоти.", icon: "🚜", url: "ugv_combat_robots.html", cluster: "c1", tag: "Роботи" },
+      { id: 57, name: "Захищений Mesh-Зв'язок та Рації", desc: "Цифрові рації з псевдовипадковим перестроюванням частоти (ПРЧ) для штабів.", icon: "📻", url: "secure_mesh_comms.html", cluster: "c1", tag: "Зв'язок" },
+      { id: 58, name: "Снайперські Комплекси та Глушники", desc: "Високоточні гвинтівки, тепловізійні прицели, далекоміри та метеостанції.", icon: "🎯", url: "silent_sniper_gear.html", cluster: "c1", tag: "Снайпери" },
+      { id: 59, name: "Багі, Квадроцикли та Евакуаційний Транспорт", desc: "Швидкі та маневрені позашляховики для бездоріжжя та підвозу БК.", icon: "🏎️", url: "armored_buggy_atv.html", cluster: "c1", tag: "Транспорт" },
+      { id: 60, name: "Надувні та Макети-Пастки для Ворога", desc: "Високодеталізовані макети HIMARS, танків та РЛС для виснаження БК ворога.", icon: "🎈", url: "decoy_targets_inflated.html", cluster: "c1", tag: "Тактика" },
 
-      // Cluster 2: Med & Rehab (10)
+      // Cluster 2: Med & Rehab (20)
       { id: 3, name: "Мобільні Шпиталі та Стабпункти", desc: "Підземні операційні, апарати ШВЛ та реанімаційні автобуси.", icon: "🏥", url: "mobile_hospitals.html", cluster: "c2", tag: "Медицина" },
       { id: 4, name: "Протезування та Біоніка", desc: "Біонічні протези, 3D-друк суглобів та реабілітація ветеранів.", icon: "🦿", url: "rehab.html", cluster: "c2", tag: "Реабілітація" },
       { id: 19, name: "Банк Крові та Донорство", desc: "Центр збору крові для фронтових шпиталів та холодильні камери.", icon: "🩸", url: "donor_hub.html", cluster: "c2", tag: "Медицина" },
@@ -172,8 +183,18 @@
       { id: 37, name: "Центр Психологічної Незламності", desc: "Анонімна ПТСР-терапія, групи «Рівний-рівному» та оплата сеансів.", icon: "🌟", url: "psychological_aid.html", cluster: "c2", tag: "Психологія" },
       { id: 38, name: "Евакуаційний Транспорт", desc: "Броньовані швидкі для вивозу маломобільних громадян з Донеччини.", icon: "🚐", url: "evac_routes.html", cluster: "c2", tag: "Евакуація" },
       { id: 39, name: "Система «Донор Крові SOS»", desc: "Миттєве сповіщення донорів про критичну нестачу рідкісних груп крові.", icon: "💉", url: "blood_donor_matcher.html", cluster: "c2", tag: "Медицина" },
+      { id: 61, name: "Дронова Доставка Крові на Передову", desc: "Швидкісні дрони-кур'єри з термоконтейнерами для доставки крові на ноль.", icon: "🩸", url: "blood_transfusion_drone.html", cluster: "c2", tag: "Медицина" },
+      { id: 62, name: "Опікові Центри та Біо-Шкіра", desc: "Штучна біо-шкіра, гідрогелеві пов'язки та лазери для лікування опіків.", icon: "🩹", url: "burn_treatment_units.html", cluster: "c2", tag: "Медицина" },
+      { id: 63, name: "Екзоскелети для Реабілітації Ветеранів", desc: "Роботизовані костюми для вертикалізації та навчання ходьбі після травм хребта.", icon: "🦿", url: "rehab_exoskeletons.html", cluster: "c2", tag: "Реабілітація" },
+      { id: 64, name: "Мобільні Стоматологічні Кабінети", desc: "Спецтранспорт з рентгеном та стоматологічним кріслом для санації бійців на фронті.", icon: "🦷", url: "mobile_dental_trucks.html", cluster: "c2", tag: "Медицина" },
+      { id: 65, name: "VR-Терапія ПТСР для Військових", desc: "Іммерсивна віртуальна експозиційна терапія для подолання бойових травм.", icon: "🥽", url: "ptsd_vr_therapy.html", cluster: "c2", tag: "Психологія" },
+      { id: 66, name: "Евакуація Поранених по Воді", desc: "Швидкісні броньовані катери та водні дрони для евакуації з островів Дніпра.", icon: "🚤", url: "tactical_medevac_boats.html", cluster: "c2", tag: "Евакуація" },
+      { id: 67, name: "Мобільні Фронтові Аптеки", desc: "Аптечні фургони з безкоштовними життєво необхідними ліками для прифронту.", icon: "💊", url: "pharmacy_frontline.html", cluster: "c2", tag: "Фармація" },
+      { id: 68, name: "Біонічний Зір та Случ", desc: "Сучасні слухові апарати та оптика для відновлення чуття після контузій.", icon: "👁️", url: "bionic_eye_hearing.html", cluster: "c2", tag: "Реабілітація" },
+      { id: 69, name: "Адаптивний Одяг для Поранених", desc: "Спеціальний одяг на липучках та магнітах для ветеранів з апаратами Єлізарова.", icon: "👕", url: "amputation_support_pack.html", cluster: "c2", tag: "Турбота" },
+      { id: 70, name: "Гідротерапія та Басейни", desc: "Реабілітація у воді для зняття навантаження з суглобів та відновлення після поранень.", icon: "🏊‍♂️", url: "hydrotherapy_pools.html", cluster: "c2", tag: "Реабілітація" },
 
-      // Cluster 3: Community & Care (10)
+      // Cluster 3: Community, IDPs & Culture (20)
       { id: 6, name: "Карта Потреб та Гуманітарка", desc: "Інтерактивна мапа запитів від військових бригад та дитячих будинків.", icon: "🗺️", url: "map.html", cluster: "c3", tag: "Спільнота" },
       { id: 21, name: "Діти Війни та Сиротинці", desc: "Опіка над дітьми-сиротами, ноутбуки для школи та психолог.", icon: "👶", url: "children_future.html", cluster: "c3", tag: "Діти" },
       { id: 22, name: "Житло для ВПО (Модулі)", desc: "Будівництво модульних містечок для родин, які втратили дім.", icon: "🏡", url: "housing.html", cluster: "c3", tag: "Відбудова" },
@@ -184,8 +205,18 @@
       { id: 42, name: "Опора Родин Героїв та Полонених", desc: "Юридичний адвокат, оздоровчі табори в Карпатах та стипендії дітям.", icon: "👨‍👩‍👧‍👦", url: "family_support.html", cluster: "c3", tag: "Родини" },
       { id: 45, name: "Архітектура Відродження", desc: "Зелена відбудова міст, еко-містечка з конопляного бетону та ліси пам'яті.", icon: "🌱", url: "post_war_rebuild.html", cluster: "c3", tag: "Екологія" },
       { id: 46, name: "Культурний Десант та Арт-Опір", desc: "Концерти музикантів на фронті, друк книг для шпиталів та виставки.", icon: "🎸", url: "cultural_front.html", cluster: "c3", tag: "Культура" },
+      { id: 71, name: "Бізнес-Інкубатор для Ветеранів", desc: "Гранти, менторство та допомога у відкритті власної справи після служби.", icon: "💼", url: "veteran_business_hub.html", cluster: "c3", tag: "Бізнес" },
+      { id: 72, name: "Освітній Фонд для Дітей Загиблих Героїв", desc: "Стипендії, гранти на навчання в університетах та IT-курси для дітей полеглих.", icon: "🎓", url: "orphan_education_fund.html", cluster: "c3", tag: "Освіта" },
+      { id: 73, name: "Еко-Опалення та Пелети для ВПО", desc: "Забезпечення родин переселенців твердопаливними котлами, брикетами та дровами.", icon: "🔥", url: "eco_heating_pellets.html", cluster: "c3", tag: "Тепло" },
+      { id: 74, name: "Банно-Пральні Комплекси на Колесах", desc: "Мобільні душові та пральні машини у контейнерах для бійців на передовій.", icon: "🚿", url: "mobile_showers_laundry.html", cluster: "c3", tag: "Гігієна" },
+      { id: 75, name: "Архів Доказів Воєнних Злочинів", desc: "Збір та юридична фіксація свідчень очевидців для міжнародного трибуналу в Гаазі.", icon: "⚖️", url: "war_crimes_evidence.html", cluster: "c3", tag: "Правосуддя" },
+      { id: 76, name: "Інклюзивний Спортивний Центр", desc: "Тренування, турніри з баскетболу на візках та стрільби з лука для ветеранів.", icon: "🏹", url: "inclusive_sports_hub.html", cluster: "c3", tag: "Спорт" },
+      { id: 77, name: "Гранти на Фермерство на Розмінованих Землях", desc: "Насіння, добрива та міні-трактори для відновлення сільського господарства на деокупації.", icon: "🌾", url: "demined_farming_grants.html", cluster: "c3", tag: "Агро" },
+      { id: 78, name: "Патронаж Самотніх Літніх Людей на Прифронті", desc: "Гуманітарні пакунки, ліки та допомога по господарству для бабусь і дідусів у зоні обстрілів.", icon: "👵", url: "elderly_care_frontline.html", cluster: "c3", tag: "Патронаж" },
+      { id: 79, name: "Підтримка Жінок у ЗСУ", desc: "Жіноча анатомічна військова форма, полегшені бронеплити та спеціалізовані аптечки.", icon: "👩‍✈️", url: "women_in_combat_support.html", cluster: "c3", tag: "Жінки в ЗСУ" },
+      { id: 80, name: "Порятунок Музейних Фондів та Спадщини", desc: "Оцифрування колекцій, пакувальні кейси та евакуація експонатів з-під вогню.", icon: "🏛️", url: "cultural_heritage_rescue.html", cluster: "c3", tag: "Культура" },
 
-      // Cluster 4: Volunteering & Logistics (10)
+      // Cluster 4: Rebuilding, Eco & Logistics (20)
       { id: 5, name: "Прозорість та Bank-API", desc: "Відкрита звітність, інтеграція з Монобанк/Приват та чеки.", icon: "🛡️", url: "transparency.html", cluster: "c4", tag: "Прозорість" },
       { id: 9, name: "B2B та Корпоративне Партнерство", desc: "Співпраця з бізнесом, КСВ-проєкти та корпоративні збори.", icon: "💼", url: "b2b.html", cluster: "c4", tag: "Партнерство" },
       { id: 10, name: "Академія Тактичної Підготовки", desc: "Курси домедичної допомоги, пілотування FPV та мінної безпеки.", icon: "🎓", url: "training.html", cluster: "c4", tag: "Навчання" },
@@ -196,8 +227,18 @@
       { id: 43, name: "Волонтерський Автопоїзд", desc: "Логістична біржа для об'єднання водіїв та попутної доставки дронів.", icon: "🚚", url: "volunteer_carpooling.html", cluster: "c4", tag: "Логістика" },
       { id: 44, name: "Біржа Обміну «Віддам/Потребую»", desc: "Прямий peer-to-peer обмін амуніцією та генераторами між штабами.", icon: "🔄", url: "volunteer_exchange.html", cluster: "c4", tag: "Обмін" },
       { id: 47, name: "Хаб Іноземних Волонтерів", desc: "Підтримка International Legion, броня та англомовна координація.", icon: "🌍", url: "international_legion_hub.html", cluster: "c4", tag: "Global" },
+      { id: 81, name: "Очищення Води на Сонячній Енергії", desc: "Автономні мобільні системи фільтрації для забезпечення чистою водою прифронтових сіл.", icon: "💧", url: "water_purification_solar.html", cluster: "c4", tag: "Вода" },
+      { id: 82, name: "Відбудова Шкіл та Бомбосховищ", desc: "Ремонт пошкоджених класів, встановлення систем вентиляції та Wi-Fi в укриттях.", icon: "🏫", url: "rebuild_schools_shelters.html", cluster: "c4", tag: "Відбудова" },
+      { id: 83, name: "Мобільні Сховища Енергії та Повербанки Велетні", desc: "Промислові станції LiFePO4 від 10 кВт для живлення бліндажів, РЕБ та зв'язку.", icon: "⚡", url: "mobile_energy_storage.html", cluster: "c4", tag: "Енергія" },
+      { id: 84, name: "Очищення Річок від Нафтопродуктів", desc: "Біо-сорбенти, бонові загородження та скімери для ліквідації екоциду на водоймах.", icon: "🌊", url: "river_cleanup_oil.html", cluster: "c4", tag: "Екологія" },
+      { id: 85, name: "Дрони-Засівачі Лісів та Відновлення Сосен", desc: "Агро-дрони для скидання насіннєвих капсул (seed-balls) на згорілі та заміновані лісові території.", icon: "🌲", url: "forest_reforestation_drones.html", cluster: "c4", tag: "Відродження" },
+      { id: 86, name: "Евакуація Притулків Тварин та Корми", desc: "Вивіз котів і собак з-під обстрілів, ветеринарна допомога та оптові поставки кормів.", icon: "🐾", url: "animal_shelter_evac.html", cluster: "c4", tag: "Зоозахист" },
+      { id: 87, name: "Мікро-Грід Мережі для Лікарень", desc: "Розумні мікромережі (сонячні дахи + батареї + генератори) з ШІ-керуванням для реанімацій.", icon: "☀️", url: "smart_grid_micro.html", cluster: "c4", tag: "Енергонезалежність" },
+      { id: 88, name: "Теплоізоляція та Броноплівки для Вікон", desc: "Броньовані плівки від уламків та пакети екстреного закриття вікон OSB-плитами після прильотів.", icon: "🪟", url: "window_insulation_frontline.html", cluster: "c4", tag: "Захист" },
+      { id: 89, name: "Безпечна Утилізація Азбесту та Руйнувань", desc: "Костюми хімзахисту, спецпилососи та мобільні дробарки для безпечного розбирання завалів.", icon: "☣️", url: "asbestos_safe_removal.html", cluster: "c4", tag: "Екологія" },
+      { id: 90, name: "Ветеранські Теплиці та Агро-Кооперативи", desc: "Будівництво круглорічних теплиць з крапельним поливом та фіто-світлом для ветеранів і ВПО.", icon: "🍅", url: "greenhouse_veteran_coop.html", cluster: "c4", tag: "Агро-Кооператив" },
 
-      // Cluster 5: Web3, Gamification & AI (10)
+      // Cluster 5: Future, AI, Science & Web3 (20)
       { id: 7, name: "Благодійний Мерч-Шоп", desc: "Худі з патріотичним принтом, шеврони та гільзи-сувеніри від бійців.", icon: "🛍️", url: "shop.html", cluster: "c5", tag: "Мерч" },
       { id: 8, name: "Крипто-Донати та Web3", desc: "Анонімні донати в Bitcoin, Ethereum, USDT з миттєвою квитанцією.", icon: "₿", url: "crypto.html", cluster: "c5", tag: "Крипта" },
       { id: 26, name: "Волонтерські Аукціони Трофеїв", desc: "Унікальні лоти: розписані тубуси від NLAW, прапори з підписами.", icon: "🎨", url: "auctions.html", cluster: "c5", tag: "Аукціон" },
@@ -207,7 +248,17 @@
       { id: 34, name: "24/7 Фронтове Радіо та Зв'язок", desc: "Патріотичний музичний ефір, привіт бійцям та збір на рації.", icon: "📻", url: "frontline_radio.html", cluster: "c5", tag: "Радіо" },
       { id: 48, name: "Гейміфікована «Фронтова Монополія»", desc: "Купуйте віртуальні сектори (дрони, РЕБ) на інтерактивному полі.", icon: "🎲", url: "donor_cryptopoly.html", cluster: "c5", tag: "Гейміфікація" },
       { id: 49, name: "Віртуальний 3D-Музей Війни (VR)", desc: "3D-моделі трофейної техніки, панорами звільненого Ізюма 360°.", icon: "🥽", url: "metaverse_museum.html", cluster: "c5", tag: "VR/AR" },
-      { id: 50, name: "ШІ-Консультант Волонтера", desc: "Інтелектуальний помічник нейромережі, який відповідає на всі питання 24/7.", icon: "🤖", url: "ai_advisor.html", cluster: "c5", tag: "Штучний Інтелект" }
+      { id: 50, name: "ШІ-Консультант Волонтера", desc: "Інтелектуальний помічник нейромережі, який відповідає на всі питання 24/7.", icon: "🤖", url: "ai_advisor.html", cluster: "c5", tag: "Штучний Інтелект" },
+      { id: 91, name: "Юнацька Школа Інженерії та Пілотування Дронів", desc: "Симулятори, VR-окуляри, набори для паяння та 3D-друк для навчання підлітків та дітей ветеранів.", icon: "🛸", url: "drone_school_youth.html", cluster: "c5", tag: "Освіта" },
+      { id: 92, name: "ШІ-Асистент Психологічної Допомоги «Атлант»", desc: "Анонімна 24/7 підтримка для військових на базі ШІ, навченого протоколам ПТСР та інтегрованого з терапевтами.", icon: "🧠", url: "ai_psychology_bot.html", cluster: "c5", tag: "ШІ-Психологія" },
+      { id: 93, name: "Проєкт «Історична Правда» та Боротьба з Пропагандою", desc: "Англомовні документальні фільми, гранти для OSINT-фактчекерів та друк книг історії України.", icon: "📜", url: "history_truth_project.html", cluster: "c5", tag: "Історична Правда" },
+      { id: 94, name: "Квантове Шифрування та Захищений Зв'язок", desc: "Квантові генератори ключів (QRNG), захищені Mesh-радіостанції та тактичні планшети без GPS/GSM.", icon: "🔐", url: "quantum_encryption_mil.html", cluster: "c5", tag: "Квантовий Зв'язок" },
+      { id: 95, name: "Дослідження Біо-Кінцівок та Нейроімплантів", desc: "Гранти на нейросенсорні датчики, 3D-друк титанових протезів з зворотним зв'язком та лабораторії біомеханіки.", icon: "🦾", url: "biotech_limbs_research.html", cluster: "c5", tag: "Біоніка-Наука" },
+      { id: 96, name: "Українська Книга та Культурні Центри за Кордоном", desc: "Безкоштовна доставка україномовних книг у бібліотеки Європи та США і підручники для діаспори.", icon: "📚", url: "ukrainian_books_abroad.html", cluster: "c5", tag: "Культура" },
+      { id: 97, name: "Академія Кібербезпеки та Захисту Інфраструктури", desc: "Апаратні файрволи для лікарень/водоканалів, стипендії Ethical Hacking та пентести міських мереж.", icon: "🛡️", url: "cyber_defense_academy.html", cluster: "c5", tag: "Кібербезпека" },
+      { id: 98, name: "Космічна Розвідка та Супутникові Знімки", desc: "Закупівля оперативних радіолокаційних (SAR) та оптичних знімків від ICEYE, Maxar та Planet Labs для ЗСУ.", icon: "🛰️", url: "space_satellites_ua.html", cluster: "c5", tag: "Космос-Розвідка" },
+      { id: 99, name: "Генетична Лабораторія та ДНК-Ідентифікація", desc: "ДНК-секвенатори, реагенти та букальні набори для швидкої ідентифікації зниклих безвісти героїв.", icon: "🧬", url: "genetics_dnk_id.html", cluster: "c5", tag: "ДНК-Експертиза" },
+      { id: 100, name: "Фонд Архітекторів Майбутнього та Мастер-План", desc: "Ювілейний 100-й модуль! 3D-мастер-плани зеленої відбудови міст, стипендії архітекторам та генеральний фонд.", icon: "🏛️", url: "future_architects_fund.html", cluster: "c5", tag: "Майбутнє" }
     ];
 
     let currentCluster = 'all';
