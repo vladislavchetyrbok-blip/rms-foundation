@@ -1196,49 +1196,113 @@
 
     let currentCluster = 'all';
     let currentSort = 'default';
+    let filteredCache = [];
+    let visibleCount = 0;
+    const PAGE_SIZE = 60;
+    let debounceTimer = null;
 
-    function renderModules() {
-      const grid = document.getElementById('modulesGrid');
-      const badge = document.getElementById('modulesCountBadge');
+    // --- Cluster color map for badge styling ---
+    const clusterColors = {
+      c1: { bg: 'rgba(239,68,68,0.15)', color: '#ef4444', border: 'rgba(239,68,68,0.3)' },
+      c2: { bg: 'rgba(16,185,129,0.15)', color: '#10b981', border: 'rgba(16,185,129,0.3)' },
+      c3: { bg: 'rgba(59,130,246,0.15)', color: '#3b82f6', border: 'rgba(59,130,246,0.3)' },
+      c4: { bg: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: 'rgba(245,158,11,0.3)' },
+      c5: { bg: 'rgba(139,92,246,0.15)', color: '#8b5cf6', border: 'rgba(139,92,246,0.3)' }
+    };
+
+    function padId(id) {
+      if (id < 10) return '00' + id;
+      if (id < 100) return '0' + id;
+      return '' + id;
+    }
+
+    function getFilteredModules() {
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      
       let filtered = allModules.filter(m => {
         const matchCluster = currentCluster === 'all' || m.cluster === currentCluster;
         const matchQuery = !q || m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q) || m.tag.toLowerCase().includes(q);
         return matchCluster && matchQuery;
       });
-
       if (currentSort === 'reverse') {
         filtered.sort((a, b) => b.id - a.id);
-      } else if (currentSort === 'c1') {
-        filtered.sort((a, b) => (a.cluster === 'c1' ? -1 : (b.cluster === 'c1' ? 1 : a.id - b.id)));
-      } else if (currentSort === 'c2') {
-        filtered.sort((a, b) => (a.cluster === 'c2' ? -1 : (b.cluster === 'c2' ? 1 : a.id - b.id)));
-      } else if (currentSort === 'c5') {
-        filtered.sort((a, b) => (a.cluster === 'c5' ? -1 : (b.cluster === 'c5' ? 1 : a.id - b.id)));
+      } else if (['c1','c2','c3','c4','c5'].includes(currentSort)) {
+        filtered.sort((a, b) => (a.cluster === currentSort ? -1 : (b.cluster === currentSort ? 1 : a.id - b.id)));
       } else {
         filtered.sort((a, b) => a.id - b.id);
       }
+      return filtered;
+    }
 
-      if (badge) badge.innerText = filtered.length;
+    function renderCardHTML(m, idx) {
+      const cc = clusterColors[m.cluster] || clusterColors.c1;
+      return `
+        <div class="module-card hover-tilt eco-card-enter" style="animation-delay: ${Math.min(idx * 25, 600)}ms; border-left: 3px solid ${cc.color};">
+          <div class="module-badge" style="background: ${cc.bg}; color: ${cc.color};">№${padId(m.id)}</div>
+          <div>
+            <div style="font-size: 2.8rem; margin-bottom: 10px; filter: drop-shadow(0 2px 8px ${cc.color}40);">${m.icon}</div>
+            <span style="background: ${cc.bg}; color: ${cc.color}; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; border: 1px solid ${cc.border};">${m.tag}</span>
+            <h3 style="color: #fff; font-size: 1.2rem; margin: 10px 0 6px; line-height: 1.3;">${m.name}</h3>
+            <p style="color: #9ca3af; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px;">${m.desc}</p>
+          </div>
+          <a href="${m.url}" class="btn btn-primary" style="width: 100%; padding: 11px; border-radius: 14px; font-weight: 800; text-decoration: none; text-align: center; display: block; font-size: 0.9rem;">⚡ Відкрити модуль</a>
+        </div>`;
+    }
 
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #aaa; font-size: 1.2rem;">😔 За вашим запитом нічого не знайдено. Спробуйте змінити фільтр або пошукове слово!</div>`;
+    function renderModules() {
+      const grid = document.getElementById('modulesGrid');
+      const badge = document.getElementById('modulesCountBadge');
+      filteredCache = getFilteredModules();
+      visibleCount = Math.min(PAGE_SIZE, filteredCache.length);
+      if (badge) badge.innerText = filteredCache.length;
+      if (filteredCache.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #aaa; font-size: 1.15rem;">
+          <div style="font-size: 3rem; margin-bottom: 12px;">😔</div>
+          За вашим запитом нічого не знайдено.<br>Спробуйте змінити фільтр або пошукове слово!
+        </div>`;
+        removeLoadMore();
         return;
       }
+      const cardsHTML = filteredCache.slice(0, visibleCount).map((m, i) => renderCardHTML(m, i)).join('');
+      grid.innerHTML = cardsHTML;
+      updateLoadMoreBtn();
+    }
 
-      grid.innerHTML = filtered.map(m => `
-        <div class="module-card hover-tilt">
-          <div class="module-badge">№${m.id < 10 ? '0' + m.id : m.id}</div>
-          <div>
-            <div style="font-size: 3rem; margin-bottom: 12px;">${m.icon}</div>
-            <span style="background: rgba(255,183,3,0.15); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">${m.tag}</span>
-            <h3 style="color: #fff; font-size: 1.3rem; margin: 12px 0 8px; line-height: 1.3;">${m.name}</h3>
-            <p style="color: #aaa; font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px;">${m.desc}</p>
-          </div>
-          <a href="${m.url}" class="btn btn-primary" style="width: 100%; padding: 12px; border-radius: 14px; font-weight: 800; text-decoration: none; text-align: center; display: block;">⚡ Відкрити модуль</a>
-        </div>
-      `).join('');
+    function loadMore() {
+      const grid = document.getElementById('modulesGrid');
+      const start = visibleCount;
+      const end = Math.min(visibleCount + PAGE_SIZE, filteredCache.length);
+      const fragment = document.createDocumentFragment();
+      const temp = document.createElement('div');
+      for (let i = start; i < end; i++) {
+        temp.innerHTML = renderCardHTML(filteredCache[i], i - start);
+        fragment.appendChild(temp.firstElementChild);
+      }
+      grid.appendChild(fragment);
+      visibleCount = end;
+      updateLoadMoreBtn();
+    }
+
+    function updateLoadMoreBtn() {
+      removeLoadMore();
+      if (visibleCount < filteredCache.length) {
+        const remaining = filteredCache.length - visibleCount;
+        const container = document.getElementById('modulesGrid').parentElement;
+        const btnDiv = document.createElement('div');
+        btnDiv.id = 'loadMoreWrapper';
+        btnDiv.style.cssText = 'text-align: center; margin-top: 36px;';
+        btnDiv.innerHTML = `
+          <button onclick="loadMore()" class="btn btn-primary" style="padding: 16px 48px; border-radius: 30px; font-weight: 800; font-size: 1.1rem; cursor: pointer; background: linear-gradient(135deg, var(--accent-gold), #e08e0b); border: none; color: #000; box-shadow: 0 4px 20px rgba(255,183,3,0.3);">
+            ⬇️ Показати ще ${Math.min(PAGE_SIZE, remaining)} модулів (залишилось ${remaining})
+          </button>
+          <div style="color: #666; margin-top: 10px; font-size: 0.85rem;">Показано ${visibleCount} з ${filteredCache.length} модулів</div>
+        `;
+        container.appendChild(btnDiv);
+      }
+    }
+
+    function removeLoadMore() {
+      const existing = document.getElementById('loadMoreWrapper');
+      if (existing) existing.remove();
     }
 
     function setCluster(cluster, btn) {
@@ -1246,6 +1310,7 @@
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderModules();
+      window.scrollTo({ top: document.getElementById('modulesGrid').offsetTop - 120, behavior: 'smooth' });
     }
 
     function setSort(sortVal) {
@@ -1254,8 +1319,39 @@
     }
 
     function filterModules() {
-      renderModules();
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => renderModules(), 200);
     }
+
+    // --- Scroll-to-top button ---
+    (function() {
+      const btn = document.createElement('button');
+      btn.id = 'scrollTopBtn';
+      btn.innerHTML = '⬆️';
+      btn.setAttribute('aria-label', 'Прокрутити вгору');
+      btn.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;width:56px;height:56px;border-radius:50%;background:rgba(255,183,3,0.9);color:#000;font-size:1.5rem;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.4);display:none;transition:opacity 0.3s,transform 0.3s;backdrop-filter:blur(10px);';
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      document.body.appendChild(btn);
+      window.addEventListener('scroll', () => {
+        btn.style.display = window.scrollY > 600 ? 'block' : 'none';
+      });
+    })();
+
+    // --- Card entrance animation CSS ---
+    (function() {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes ecoCardEnter {
+          from { opacity: 0; transform: translateY(20px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .eco-card-enter {
+          animation: ecoCardEnter 0.4s ease-out forwards;
+          opacity: 0;
+        }
+      `;
+      document.head.appendChild(style);
+    })();
 
     // Initial render
     window.addEventListener('DOMContentLoaded', renderModules);
