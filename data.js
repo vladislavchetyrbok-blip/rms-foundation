@@ -4,7 +4,7 @@
  * Синхронізує публічний сайт та Адмін-панель через localStorage.
  */
 
-const STORAGE_KEY = 'rms_foundation_data_v5';
+const STORAGE_KEY = 'rms_foundation_data_monobank_clean_v3';
 const ONLINE_BIN_ID = '6a4708aef5f4af5e2957274f';
 const ONLINE_API_KEY = '$2a$10$a.w5fqFGgNDtxm.14mCh3us9zVhiSRK7fng26ppAnKWesY1g.noMe';
 const ASSET_FALLBACKS = {
@@ -43,108 +43,33 @@ const INITIAL_DATA = {
   },
   campaigns: [
     {
-      id: 'fuel_camp_1',
+      id: 'fuel_monobank_1',
       title: {
-        uk: 'На паливо для евакуаційних та гуманітарних рейсів',
-        en: 'Fuel for evacuation and humanitarian logistics missions',
-        pl: 'Na paliwo do misji ewakuacyjnych i humanitarnych',
-        ro: 'Combustibil pentru misiuni de evacuare și logistică umanitară',
-        it: 'Carburante per missioni di evacuazione e logistica umanitaria',
-        de: 'Treibstoff für Evakuierungs- und humanitäre Logistikmissionen'
+        uk: '⛽ Офіційний збір на паливо для евакуаційних та гуманітарних місій (Monobank)',
+        en: '⛽ Official Monobank Fundraiser for Fuel: Evacuation & Humanitarian Missions',
+        pl: '⛽ Oficjalna zbiórka Monobank na paliwo do misji ewakuacyjnych i humanitarnych',
+        ro: '⛽ Colectare oficială Monobank pentru combustibil: Misiuni de evacuare și umanitare',
+        it: '⛽ Raccolta ufficiale Monobank per carburante: Missioni di evacuazione e logistica',
+        de: '⛽ Offizielle Monobank-Spendenaktion für Treibstoff: Evakuierungs- und humanitäre Fahrten'
       },
       desc: {
-        uk: 'Терміновий збір на пальне для доставляння ліків, продуктів, реабілітаційного обладнання до шпиталів та евакуації людей з прифронтових зон.',
-        en: 'Urgent fundraiser for fuel to deliver medicine, food, and rehabilitation equipment to hospitals and evacuate civilians.',
-        pl: 'Pilna zbiórka na paliwo do dostarczania leków, żywności i sprzętu do szpitali oraz ewakuacji ludności.',
-        ro: 'Strângere urgentă de fonduri pentru combustibil destinat livrării de medicamente și evacuării civililor.',
-        it: 'Raccolta fondi urgente per il carburante per consegnare medicine e attrezzature agli ospedali.',
-        de: 'Dringende Spendenaktion für Treibstoff zur Lieferung von Medizin und Ausrüstung an Krankenhäuser.'
+        uk: 'Офіційна монобанка фонду для безперебійного забезпечення паливом. Щодня наші волонтерські екіпажі здійснюють виїзди у прифронтові зони: евакуюють поранених та цивільних, доставляють ліки, продуктові набори й засоби життєзабезпечення у шпиталі. Кожна ваша гривня безпосередньо перетворюється на кілометри врятованих життів!',
+        en: 'Official Monobank jar for fuel supply. Every day our volunteer transport crews conduct missions to frontline zones: evacuating civilians and wounded, delivering medicine, food, and vital supplies to hospitals. Every contribution directly fuels lifesaving logistics!',
+        pl: 'Oficjalna skarbonka Monobank na paliwo. Codziennie wolontariusze docierają do stref przyfrontowych, ewakuując rannych i dostarczając leki do szpitali.',
+        ro: 'Cont oficial Monobank pentru combustibil. Zilnic, echipajele noastre voluntare efectuează misiuni în zonele din linia întâi pentru evacuarea răniților și livrarea de medicamente.',
+        it: 'Raccolta ufficiale Monobank per il carburante. Ogni giorno i nostri equipaggi volontari effettuano missioni nelle zone di prima linea per evacuare i feriti e consegnare medicine.',
+        de: 'Offizielle Monobank-Spendenaktion für Treibstoff zur Unterstützung täglicher Evakuierungs- und humanitärer Logistikmissionen an der Front.'
       },
-      target: 100000,
-      collected: 68400,
+      target: null,
+      collected: null,
+      hideProgress: true,
       category: 'auto',
       icon: '⛽',
       jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
+      wayforpayUrl: 'https://secure.wayforpay.com/donate',
       cardNum: '4874 1000 3862 9211',
-      urgent: true
-    },
-    {
-      id: 'drones_camp_2',
-      title: {
-        uk: '5 нічних дронів Mavic 3T та системи окопного РЕБ',
-        en: '5 night-vision Mavic 3T drones and trench EW systems',
-        pl: '5 dronów noktowizyjnych Mavic 3T i systemy WRE',
-        ro: '5 drone cu vedere pe timp de noapte Mavic 3T și sisteme EW',
-        it: '5 droni per visione notturna Mavic 3T e sistemi di guerra elettronica',
-        de: '5 Nachtsichtdrohnen Mavic 3T und Graben-EloKa-Systeme'
-      },
-      desc: {
-        uk: 'Комплексний збір для передових підрозділів на Донеччині: дрони з тепловізорами для нічної розвідки та мобільні куполи РЕБ для захисту від ворожих FPV.',
-        en: 'Comprehensive fundraiser for frontline units in Donetsk region: thermal drones for night recon and portable EW domes against enemy FPVs.',
-        pl: 'Zbiórka dla jednostek na frontie w Donbasie: drony termowizyjne do zwiadu nocnego i mobilne kopuły WRE.',
-        ro: 'Strângere de fonduri pentru unitățile din linia întâi: drone termice și sisteme portabile de protecție împotriva dronelor FPV.',
-        it: 'Raccolta fondi per le unità in prima linea: droni termici per la ricognizione notturna e cupole di protezione EW.',
-        de: 'Spendenaktion für Fronteinheiten: Wärmebilddrohnen für die Nachtaufklärung und mobile EloKa-Schutzkugeln.'
-      },
-      target: 450000,
-      collected: 312000,
-      category: 'drones',
-      icon: '🛸',
-      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
-      cardNum: '4874 1000 3862 9211',
-      urgent: true
-    },
-    {
-      id: 'med_camp_3',
-      title: {
-        uk: 'Тактична медицина: 200 аптечок IFAK та опікові пов\'язки',
-        en: 'Tactical medicine: 200 IFAK kits and burn dressings',
-        pl: 'Medycyna taktyczna: 200 apteczek IFAK i opatrunki na oparzenia',
-        ro: 'Medicină tactică: 200 truse IFAK și pansamente pentru arsuri',
-        it: 'Medicina tattica: 200 kit IFAK e medicazioni per ustioni',
-        de: 'Taktische Medizin: 200 IFAK-Kits und Verbände für Verbrennungen'
-      },
-      desc: {
-        uk: 'Забезпечуємо військових медиків та стабілізаційні пункти якісними турнікетами, гемостатиками та гідroгелевими опіковими пов\'язками.',
-        en: 'Providing military medics and stabilization points with high-quality tourniquets, hemostatics, and hydrogel burn dressings.',
-        pl: 'Zaopatrujemy medyków wojskowych w stazy taktyczne, środki hemostatyczne i opatrunki hydrożelowe.',
-        ro: 'Asigurăm medicilor militari garouri de calitate, hemostatice și pansamente hidrogel pentru arsuri.',
-        it: 'Forniamo ai medici militari lacci emostatici di qualità e medicazioni idrogel per ustioni.',
-        de: 'Wir versorgen Militärärzte mit hochwertigen Tourniquets, Hämostatika und Hydrogel-Brandverbänden.'
-      },
-      target: 250000,
-      collected: 184500,
-      category: 'med',
-      icon: '🏥',
-      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
-      cardNum: '4874 1000 3862 9211',
-      urgent: false
-    },
-    {
-      id: 'auto_camp_4',
-      title: {
-        uk: 'Ремонт та гуманітарна підготовка евакуаційного пікапа',
-        en: 'Repair and preparation of evacuation pickup truck',
-        pl: 'Remont i przygotowanie pikapa ewakuacyjnego',
-        ro: 'Reparația și pregătirea camionetei de evacuare',
-        it: 'Riparazione e preparazione del pick-up di evacuazione',
-        de: 'Reparatur und Vorbereitung des Evakuierungs-Pickups'
-      },
-      desc: {
-        uk: 'Капітальний ремонт ходової частини, заміна гуми на болотяну (Mud-Terrain) та маскувальне фарбування для безпечного вивозу поранених.',
-        en: 'Suspension overhaul, Mud-Terrain tires replacement, and camouflage painting for safe medical evacuation.',
-        pl: 'Remont zawieszenia, wymiana opon na terenowe i malowanie maskujące dla bezpiecznej ewakuacji.',
-        ro: 'Reparația suspensiei, înlocuirea anvelopelor și vopsire de camuflaj pentru evacuarea în siguranță.',
-        it: 'Revisione delle sospensioni, sostituzione pneumatici e verniciatura mimetica per un\'evacuazione sicura.',
-        de: 'Fahrwerksüberholung, Geländereifen und Tarnlackierung für sichere Evakuierungsfahrten.'
-      },
-      target: 180000,
-      collected: 142000,
-      category: 'auto',
-      icon: '🚙',
-      jarUrl: 'https://send.monobank.ua/jar/6iL3oH5Vde',
-      cardNum: '4874 1000 3862 9211',
-      urgent: false
+      urgent: true,
+      image: 'drone.png'
     }
   ],
   news: [
@@ -198,7 +123,6 @@ const INITIAL_DATA = {
       id: 'hb_patron',
       name: 'Володимир Петренко',
       role: 'Почесний президент та меценат',
-      contribution: '2 500 000 ₴',
       category: 'donor',
       badge: 'Стратегічний партнер',
       badgeClass: 'badge-gold',
@@ -210,7 +134,6 @@ const INITIAL_DATA = {
       id: 'hb_driver',
       name: 'Андрій «Скіф» Бондаренко',
       role: 'Волонтер-водій передової логістики',
-      contribution: '64 рейси на нуль',
       category: 'volunteer',
       badge: 'Гордість нації',
       badgeClass: 'badge-purple',
@@ -219,10 +142,31 @@ const INITIAL_DATA = {
       desc: 'Особисто доставляє дрони, системи РЕБ та медицину підрозділам у найгарячіших точках фронту.'
     },
     {
+      id: 'hb_defender',
+      name: 'Володимир «Херсон»',
+      role: 'Командир підрозділу, Захисник України',
+      category: 'volunteer',
+      badge: 'Герой передової',
+      badgeClass: 'badge-gold',
+      icon: '🔱',
+      image: 'honor_defender.jpg',
+      desc: 'Захищає країну на передовій та координує пряме постачання дронів і тактичної медицини бійцям.'
+    },
+    {
+      id: 'hb_coordinator',
+      name: 'Олександр Мельник',
+      role: 'Стратегічний партнер та меценат',
+      category: 'donor',
+      badge: 'Почесний меценат',
+      badgeClass: 'badge-blue',
+      icon: '🤝',
+      image: 'honor_coordinator.jpg',
+      desc: 'Системно підтримує фонд, закриває ключові збори на нічну розвідку та забезпечує міжнародну логістику.'
+    },
+    {
       id: 'hb_media',
       name: 'Олена Коваленко',
       role: 'Керівниця складу та фоторепортерка',
-      contribution: '15 000+ боксів',
       category: 'volunteer',
       badge: 'Серце фонду',
       badgeClass: 'badge-purple',
@@ -234,7 +178,6 @@ const INITIAL_DATA = {
       id: 'hb_cargo',
       name: 'Максим Ковальчук',
       role: 'Координатор вантажних конвоїв',
-      contribution: '180 тонн вантажів',
       category: 'volunteer',
       badge: 'Залізний волонтер',
       badgeClass: 'badge-purple',
@@ -246,79 +189,12 @@ const INITIAL_DATA = {
       id: 'hb_logistics',
       name: 'Дмитро Ткаченко',
       role: 'Куратор продовольчих програм',
-      contribution: '12 000+ наборів',
       category: 'volunteer',
       badge: 'Герой тилу',
       badgeClass: 'badge-blue',
       icon: '🤝',
       image: 'honor_logistics.jpg',
       desc: 'Забезпечує формування та видачу пакунків допомоги вимушеним переселенцям та родинам захисників.'
-    },
-    {
-      id: 'hb_1',
-      name: 'NovaTech Solutions',
-      role: 'IT-корпорація',
-      contribution: '500 000 ₴',
-      category: 'corporate',
-      badge: 'Корпоративний титан',
-      badgeClass: 'badge-gold',
-      icon: '🏢',
-      desc: 'Системний донор нашого фонду, профінансували 5 розвідувальних дронів та 2 позашляховики.'
-    },
-    {
-      id: 'hb_2',
-      name: 'Олександр Кириленко',
-      role: 'Приватний меценат',
-      contribution: '150 000 ₴',
-      category: 'donor',
-      badge: 'Золотий благодійник',
-      badgeClass: 'badge-gold',
-      icon: '🌟',
-      desc: 'Закрив збір на тактичну медицину в критичний момент для батальйону на Донеччині.'
-    },
-    {
-      id: 'hb_3',
-      name: 'Максим Ткаченко та команда',
-      role: 'Координатор логістики',
-      contribution: '1200+ годин роботи',
-      category: 'volunteer',
-      badge: 'Герой волонтерства',
-      badgeClass: 'badge-purple',
-      icon: '🤝',
-      desc: 'Організували безпечну доставку 40+ гуманітарних конвоїв у прифронтові громади Харкова та Сум.'
-    },
-    {
-      id: 'hb_4',
-      name: 'Благодійний забіг «Run for Ukraine»',
-      role: 'Спільнота спортсменів',
-      contribution: '210 000 ₴',
-      category: 'corporate',
-      badge: 'Партнер року',
-      badgeClass: 'badge-blue',
-      icon: '🏃',
-      desc: 'Зібрали кошти під час благодійного марафону на закупівлю мобільних генераторів EcoFlow.'
-    },
-    {
-      id: 'hb_5',
-      name: 'Олена та Марта Бойко',
-      role: 'Благодійниці',
-      contribution: '85 000 ₴',
-      category: 'donor',
-      badge: 'Ангели-охоронці',
-      badgeClass: 'badge-gold',
-      icon: '🕊️',
-      desc: 'Постійна щомісячна підтримка програми медичної реабілітації поранених бійців.'
-    },
-    {
-      id: 'hb_6',
-      name: 'Дмитро «Волонтер» Коваль',
-      role: 'Автомеханік-волонтер',
-      contribution: 'Відремонтовано 28 авто',
-      category: 'volunteer',
-      badge: 'Золоті руки',
-      badgeClass: 'badge-purple',
-      icon: '🔧',
-      desc: 'Безкоштовно ремонтує, бронює та готує пікапи та швидкі допомоги для відправки на нуль.'
     }
   ],
   gallery: [
@@ -801,6 +677,9 @@ window.FoundationStore = {
     app.id = 'app_' + Date.now();
     app.date = new Date().toLocaleString('uk-UA');
     app.status = 'new';
+    app.role = app.role || app.type || 'Волонтер/Партнер';
+    app.notes = app.notes || app.message || '';
+    app.message = app.notes;
     if (!data.applications) data.applications = [];
     data.applications.unshift(app);
     this.saveData(data);
@@ -1585,164 +1464,4 @@ if (typeof window !== 'undefined') {
 }
 
 
-// === УНІВЕРСАЛЬНИЙ ВІДЖЕТ AI-КОНСУЛЬТАНТА ТА LIVE-ЧАТУ (Бот Титан 🇺🇦) ===
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('script[src*="ai_widget.js"]')) return;
-    if (window.location.pathname.endsWith('/admin.html') || window.location.pathname.endsWith('admin.html')) return;
-    // Do not inject on admin login screen if desired, but good everywhere
-    if (document.getElementById('aiTitanWidgetContainer')) return;
 
-    const widgetDiv = document.createElement('div');
-    widgetDiv.id = 'aiTitanWidgetContainer';
-    widgetDiv.innerHTML = `
-      <!-- AI Widget Responsive Styles -->
-      <style id="aiWidgetStyles">
-        #aiChatBtn {
-          position: fixed;
-          bottom: 28px;
-          right: 28px;
-          z-index: 9999;
-          transition: bottom 0.3s ease, transform 0.2s, box-shadow 0.2s;
-        }
-        #aiChatBox {
-          position: fixed;
-          bottom: 90px;
-          right: 28px;
-          z-index: 10000;
-          transition: bottom 0.3s ease;
-        }
-        /* On mobile: rise above sticky bar (~70px) */
-        @media (max-width: 768px) {
-          #aiChatBtn {
-            bottom: 84px;
-            right: 14px;
-            padding: 10px 16px !important;
-          }
-          #aiChatBtn .ai-label { display: none; }
-          #aiChatBox {
-            bottom: 150px;
-            right: 10px;
-            width: calc(100vw - 20px) !important;
-            max-height: 60vh;
-            height: 60vh !important;
-          }
-        }
-      </style>
-
-      <!-- Floating Button -->
-      <div id="aiChatBtn" onclick="toggleAiChat()" style="background: linear-gradient(135deg, #0f1c3f, #1e3a8a); border: 2px solid var(--accent-gold); color: #fff; padding: 14px 24px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255,183,3,0.4); display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulseGreen 1.5s infinite; flex-shrink:0;"></div>
-        <span style="font-size: 1.5rem;">🤖</span>
-        <div class="ai-label" style="text-align: left; line-height: 1.2;">
-          <strong style="font-size: 0.95rem; display: block; color: var(--accent-gold);">AI-Консультант</strong>
-          <span style="font-size: 0.75rem; color: #ccc;">Підтримка 24/7</span>
-        </div>
-      </div>
-
-      <!-- Popup Chat Box -->
-      <div id="aiChatBox" style="width: 380px; max-width: calc(100vw - 40px); height: 540px; background: #0f1c3f; border: 2px solid var(--accent-gold); border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.85); display: none; flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif;">
-        <!-- Chat Header -->
-        <div style="background: linear-gradient(90deg, #1e3a8a, #0f1c3f); padding: 16px 20px; border-bottom: 1px solid rgba(255,183,3,0.3); display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: rgba(255,183,3,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid var(--accent-gold);">🤖</div>
-            <div>
-              <strong style="color: #fff; font-size: 1rem; display: block;">Титан 🇺🇦 AI-Помічник</strong>
-              <span style="color: #10b981; font-size: 0.75rem; font-weight: 700;">● Онлайн • Відповідає миттєво</span>
-            </div>
-          </div>
-          <button onclick="toggleAiChat()" style="background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; padding: 4px;">✕</button>
-        </div>
-
-        <!-- Messages Area -->
-        <div id="aiChatMessages" style="flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.25);">
-          <div style="align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;">
-            👋 Вітаю! Я <strong>Титан</strong> — штучний інтелект та гід БФ «Разом ми — сила». Чим можу допомогти вам сьогодні?
-          </div>
-          <div style="align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;">
-            💡 Оберіть популярне питання нижче або напишіть своє повідомлення:
-          </div>
-        </div>
-
-        <!-- Quick Chips -->
-        <div id="aiQuickChips" style="padding: 10px 14px; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 6px; overflow-x: auto; white-space: nowrap;">
-          <button onclick="aiClickChip('🎯 Як задонатити з-за кордону?')" style="background: rgba(255,183,3,0.15); color: #ffb703; border: 1px solid var(--accent-gold); padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🎯 Як задонатити?</button>
-          <button onclick="aiClickChip('⚔️ Як подати запит від ЗСУ?')" style="background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid #3b82f6; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">⚔️ Запит ЗСУ</button>
-          <button onclick="aiClickChip('🤝 Корпоративне B2B партнерство')" style="background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🤝 B2B партнерство</button>
-          <button onclick="aiClickChip('🧑‍💻 Зв\'язатися з живим оператором')" style="background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">🧑‍💻 Живий волонтер</button>
-        </div>
-
-        <!-- Input Area -->
-        <form onsubmit="sendAiMessage(event)" style="padding: 12px; background: #0b1530; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px;">
-          <input type="text" id="aiInputText" placeholder="Напишіть ваше питання..." style="flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.9rem; outline: none;">
-          <button type="submit" style="background: var(--accent-gold); color: #000; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">➤</button>
-        </form>
-      </div>
-    `;
-    document.body.appendChild(widgetDiv);
-
-    // Add pulse animation style if not present
-    if (!document.getElementById('aiPulseStyle')) {
-      const st = document.createElement('style');
-      st.id = 'aiPulseStyle';
-      st.innerHTML = `@keyframes pulseGreen { 0% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.6; transform: scale(0.9); } }`;
-      document.head.appendChild(st);
-    }
-  });
-}
-
-window.toggleAiChat = function() {
-  const box = document.getElementById('aiChatBox');
-  if (!box) return;
-  box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
-};
-
-window.aiClickChip = function(text) {
-  const input = document.getElementById('aiInputText');
-  if (input) {
-    input.value = text;
-    sendAiMessage({ preventDefault: () => {} });
-  }
-};
-
-window.sendAiMessage = function(event) {
-  event.preventDefault();
-  const input = document.getElementById('aiInputText');
-  const msgs = document.getElementById('aiChatMessages');
-  if (!input || !msgs) return;
-  const text = input.value.trim();
-  if (!text) return;
-
-  // Add User Message
-  const uDiv = document.createElement('div');
-  uDiv.style.cssText = 'align-self: flex-end; background: var(--accent-gold); color: #000; font-weight: 600; padding: 10px 16px; border-radius: 18px 18px 4px 18px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;';
-  uDiv.textContent = text;
-  msgs.appendChild(uDiv);
-  input.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
-
-  // Simulate AI thinking & reply
-  setTimeout(() => {
-    const aiDiv = document.createElement('div');
-    aiDiv.style.cssText = 'align-self: flex-start; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 0.9rem; max-width: 85%; line-height: 1.4;';
-    
-    let reply = "Дякую за питання! Щоб отримати вичерпну відповідь, перейдіть до нашого «💬 Центру Підтримки» або залиште запит для живого оператора.";
-    const lower = text.toLowerCase();
-
-    if (lower.includes('донат') || lower.includes('задонати') || lower.includes('реквізит') || lower.includes('кордон')) {
-      reply = "💰 Всі реквізити (IBAN у гривні, USD, EUR, PayPal, Stripe, Apple Pay та Крипто-гаманці) доступні на сторінці «🤝 Долучитися / Донат». Кожна гривня йде безпосередньо на забезпечення бригад ЗСУ!";
-    } else if (lower.includes('запит') || lower.includes('зсу') || lower.includes('військ') || lower.includes('дрон')) {
-      reply = "⚔️ Офіційний запит від військової частини можна подати у розділі «⚔️ Запити ЗСУ». Потрібно вказати контакти командира та завантажити скан-копію листа-запиту.";
-    } else if (lower.includes('b2b') || lower.includes('партнер') || lower.includes('ксв') || lower.includes('бізнес')) {
-      reply = "🤝 Для корпоративних клієнтів ми пропонуємо пакети від Бронзового до Золотого Титана з брендуванням дронів та податковими пільгами! Деталі на сторінці «🤝 B2B-Партнери».";
-    } else if (lower.includes('звіт') || lower.includes('прозор') || lower.includes('чеки') || lower.includes('акт')) {
-      reply = "🛡️ Ми пишаємося 100% прозорістю! Усі фінансові звіти, акти приймання-передачі та квитанції знаходяться у розділі «🛡️ Прозорість та Звіти».";
-    } else if (lower.includes('оператор') || lower.includes('волонтер') || lower.includes('живий') || lower.includes("зв'яз")) {
-      reply = "🧑‍💻 Щоб зв'язатися з черговим координатором фонду, перейдіть на сторінку «💬 Центр Підтримки» або напишіть ваші контакти просто тут, і я передам їх у CRM!";
-    }
-
-    aiDiv.innerHTML = reply;
-    msgs.appendChild(aiDiv);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 600);
-};

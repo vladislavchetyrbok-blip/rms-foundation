@@ -94,14 +94,9 @@ function setMobileLang(lang) {
 
 function renderAll() {
   renderStats();
-  renderMegaGoal();
   renderCampaigns();
-  renderFrontlineRadar();
-  renderImpactMap();
   renderGallery();
   renderHonorBoard();
-  renderPatronClub();
-  drawCertificate();
 }
 
 // === Render Stats ===
@@ -229,6 +224,7 @@ function renderCampaigns() {
         </div>
 
         <div>
+          ${(camp.target && camp.collected && !camp.hideProgress) ? `
           <div class="progress-wrap">
             <div class="progress-stats">
               <span>${collLbl} <strong style="color: var(--accent-gold);">${Number(camp.collected).toLocaleString()} ₴</strong></span>
@@ -238,10 +234,16 @@ function renderCampaigns() {
               <div class="progress-bar-fill" style="width: ${percent}%;"></div>
             </div>
           </div>
+          ` : ''}
 
-          <button class="btn btn-primary" style="width: 100%;" onclick="openModalForCamp('${camp.id}')">
-            <span>⚡ ${btnLbl} (Monobank)</span>
-          </button>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: ${(!camp.target || camp.hideProgress) ? '14px' : '0'};">
+            <button class="btn btn-primary" style="flex: 1; min-width: 200px; padding: 14px 18px; font-size: 0.95rem;" onclick="openModalForCamp('${camp.id}')">
+              <span>⚡ ${btnLbl} (Monobank)</span>
+            </button>
+            <button class="btn" style="flex: 1; min-width: 200px; padding: 14px 18px; font-size: 0.95rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border-radius: 35px; font-weight: 800; box-shadow: 0 6px 20px rgba(37,99,235,0.4);" onclick="simulateDonate('WayForPay')">
+              <span>🌐 WayForPay (Картка/Apple Pay)</span>
+            </button>
+          </div>
         </div>
       </div>
     `;
@@ -272,11 +274,7 @@ function renderHonorBoard() {
       </div>
       <h3 class="honor-name">${item.name}</h3>
       <div class="honor-role">${item.role}</div>
-      <p class="honor-desc">${item.desc || ''}</p>
-      <div class="honor-contrib">
-        <span>${contribLbl}</span>
-        <span class="honor-contrib-val">${item.contribution}</span>
-      </div>
+      <p class="honor-desc" style="margin-top: 8px;">${item.desc || ''}</p>
     </div>
   `).join('');
 }
@@ -513,18 +511,31 @@ function showModalTab(tabId) {
 }
 
 function simulateDonate(method) {
+  const camps = window.FoundationStore ? window.FoundationStore.getCampaigns() : [];
   if (method === 'Monobank') {
-    window.open('https://send.monobank.ua/jar/6iL3oH5Vde', '_blank');
+    const mUrl = (camps.length > 0 && camps[0].jarUrl) ? camps[0].jarUrl : 'https://send.monobank.ua/jar/6iL3oH5Vde';
+    window.open(mUrl, '_blank');
     closeModal();
-    showToast('⏳ Перехід на офіційну Банку Monobank...');
+    showToast('🐱 Відкриваємо офіційну Банку Monobank...');
+    return;
+  }
+  if (method === 'WayForPay') {
+    const wUrl = (camps.length > 0 && camps[0].wayforpayUrl) ? camps[0].wayforpayUrl : window.WAYFORPAY_URL || 'https://secure.wayforpay.com/donate';
+    window.open(wUrl, '_blank');
+    closeModal();
+    showToast('🌐 Відкриваємо захищений шлюз WayForPay (Картка/Apple Pay/Google Pay)...');
+    return;
+  }
+  if (method === 'Privat24' || method === 'LiqPay') {
+    window.open('https://www.privat24.ua', '_blank');
+    closeModal();
+    showToast('🟢 Переходимо на офіційний портал Приват24...');
     return;
   }
   showToast(`⏳ Перехід до захищеного шлюзу ${method}...`);
   setTimeout(() => {
-    // Символічно поповнюємо перший активний збір на 500 грн для наочної демонстрації роботи даних
-    const camps = FoundationStore.getCampaigns();
-    if (camps.length > 0) {
-      FoundationStore.updateCampaignAmount(camps[0].id, 500);
+    if (camps.length > 0 && camps[0].target && !camps[0].hideProgress) {
+      window.FoundationStore.updateCampaignAmount(camps[0].id, 500);
     }
     closeModal();
     showToast('❤️ Дякуємо за ваш внесок! Дані збору оновлено.');
@@ -854,22 +865,30 @@ function handleFormSubmit(e) {
   const type = document.getElementById('appType').value;
   const message = document.getElementById('appMsg').value;
 
-  FoundationStore.addApplication({ name, phone, email, type, message });
+  const app = window.FoundationStore.addApplication({ name, phone, email, type, message });
 
   e.target.reset();
-  showToast('🚀 Вашу заявку успішно надіслано! Перевірте в Адмінці.');
+  showToast(`🎉 Дякуємо, ${name}! Ваша заявка № ${app.id.slice(-6)} прийнята до обробки.`);
+  
+  // Додаємо подію в живу стрічку
+  TICKER_EVENTS.unshift({
+    name: name,
+    amount: type === 'volunteer' ? 'Волонтер' : 'Партнер',
+    camp: 'Приєднався до команди!',
+    icon: '🤝'
+  });
 }
 
 // === Live Support Ticker (Social Proof) ===
 const TICKER_EVENTS = [
-  { name: 'Олександр М.', amount: '500 ₴', camp: 'на Дрони Mavic 3T', icon: '🛸' },
-  { name: 'Марія К.', amount: '1 000 ₴', camp: 'на Тактичну медицину', icon: '🏥' },
-  { name: 'Володимир П.', amount: '200 ₴', camp: 'на Паливо для евакуацій', icon: '🚗' },
-  { name: 'Ірина В.', amount: '50 €', camp: 'на Аптечки IFAK', icon: '🩸' },
-  { name: 'Денис С.', amount: '1 500 ₴', camp: 'на Ремонт пікапа', icon: '🔧' },
-  { name: 'Анонімний благодійник', amount: '5 000 ₴', camp: 'на Нічні дрони', icon: '🌙' },
-  { name: 'Олена Т.', amount: '300 ₴', camp: 'на Хімічні грілки', icon: '⚡' },
-  { name: 'Компанія "Техно-Вектор"', amount: '10 000 ₴', camp: 'на Окопний РЕБ', icon: '🛡️' }
+  { name: 'Олександр М.', amount: '500 ₴', camp: 'на Паливо для евакуації', icon: '⛽' },
+  { name: 'Компанія "Логістик-Транс"', amount: '10 000 ₴', camp: 'Офіційний збір на пальне', icon: '🚙' },
+  { name: 'Володимир П.', amount: '200 ₴', camp: 'на Паливо для гуманітарних місій', icon: '🚗' },
+  { name: 'Ірина В.', amount: '50 €', camp: 'на Пальне для шпитального рейсу', icon: '🚑' },
+  { name: 'Денис С.', amount: '1 500 ₴', camp: 'на Ремонт евакуаційного авто', icon: '🔧' },
+  { name: 'Анонімний благодійник', amount: '5 000 ₴', camp: 'на Паливо для фронту', icon: '⛽' },
+  { name: 'Олена Т.', amount: '300 ₴', camp: 'на Бензин для волонтерів', icon: '⚡' },
+  { name: 'Марія К.', amount: '2 500 ₴', camp: 'на Гуманітарний конвой', icon: '🤝' }
 ];
 
 function initLiveTicker() {
@@ -905,180 +924,10 @@ function initLiveTicker() {
 
 
 
-// ==========================================
-// LIVE AI SUPPORT CHATBOT WIDGET
-// ==========================================
-function initSupportChatbot() {
-  if (document.getElementById('rmsChatbotWidget')) return;
-  const lang = (window.I18nStore && I18nStore.currentLang) ? I18nStore.currentLang : 'uk';
-  
-  const strings = {
-    uk: {
-      btn: '💬 Помічник Волонтер',
-      title: 'AI-Асистент фонду',
-      status: '🟢 Онлайн • Відповідає миттєво',
-      welcome: 'Вітаю! Я розумний помічник БФ «Разом ми — сила». Оберіть питання або дізнайтеся більше про нашу роботу та звіти:',
-      q1: '🔍 Як перевірити фінансову звітність?',
-      a1: 'Всі наші виписки, аудиторські висновки та податкові декларації доступні на офіційній сторінці <a href="transparency.html" style="color:#ffb703;font-weight:bold;">«Прозорість та Звітність»</a>. Ми оновлюємо дані щоквартально!',
-      q2: '🇪🇺 SWIFT-реквізити в EUR або USD?',
-      a2: 'Для міжнародних переказів (SWIFT / SEPA) у EUR або USD перейдіть у модальне вікно донату та оберіть вкладку <strong style="color:#00d4ff;">«🏦 IBAN (Реквізити)»</strong>. Там вказані офіційні рахунки в Monobank та ПриватБанк.',
-      q3: '🚗 Як передати авто або дрони для ЗСУ?',
-      a3: 'Якщо ви хочете передати пікап, бус, дрони або гуманітарний вантаж, будь ласка, заповніть анкету на сторінці <a href="join.html" style="color:#ffb703;font-weight:bold;">«Волонтерство та Партнерство»</a> або зателефонуйте на склад: <strong style="color:#fff;">+38 (044) 222-33-44</strong>.',
-      q4: '📜 Як отримати податкову знижку в ЄС?',
-      a4: 'Наш фонд має офіційний неприбутковий статус (ЄДРПОУ 44859201). Для отримання документа для податкової (Finanzamt в Німеччині, Польщі чи Італії), напишіть нам на <strong style="color:#fff;">support@razom-sila.org</strong> після здійснення донату!',
-      q5: '🏆 Як вступити до Клубу меценатів?',
-      a5: 'Оберіть один із пакетів підтримки (Срібний, Золотий або Платиновий Щит) у розділі <a href="index.html#patron-club" style="color:#ffb703;font-weight:bold;">«Клуб постійних меценатів»</a>. Регулярні донори отримують бедж та потрапляють на VIP Дошку пошани!'
-    },
-    en: {
-      btn: '💬 AI Volunteer Helper',
-      title: 'Foundation AI Assistant',
-      status: '🟢 Online • Instant reply',
-      welcome: 'Hello! I am the smart assistant of Together We Are Power. Choose a question or learn more about our missions and reports:',
-      q1: '🔍 How to verify financial reports?',
-      a1: 'All our bank statements, audit reports, and tax filings are available on the official <a href="transparency.html" style="color:#ffb703;font-weight:bold;">Transparency & Accountability</a> page. Updated quarterly!',
-      q2: '🇪🇺 SWIFT details in EUR or USD?',
-      a2: 'For international bank transfers (SWIFT / SEPA) in EUR or USD, open the donation modal and click the <strong style="color:#00d4ff;">«🏦 IBAN (Details)»</strong> tab. Official accounts in Monobank & PrivatBank are listed there.',
-      q3: '🚗 How to donate vehicles or drones?',
-      a3: 'If you want to transfer a pickup truck, van, drones, or humanitarian cargo, please fill out the form on the <a href="join.html" style="color:#ffb703;font-weight:bold;">Volunteer & Partnership</a> page or call our warehouse: <strong style="color:#fff;">+38 (044) 222-33-44</strong>.',
-      q4: '📜 How to get tax deductions in EU?',
-      a4: 'Our foundation holds official non-profit status (EDRPOU 44859201). To get a verification letter for tax authorities (Finanzamt in Germany, Poland, Italy), email us at <strong style="color:#fff;">support@razom-sila.org</strong> with your receipt!',
-      q5: '🏆 How to join the Patron Club?',
-      a5: 'Select a subscription tier (Silver, Gold, or Platinum Shield) in the <a href="index.html#patron-club" style="color:#ffb703;font-weight:bold;">Monthly Patron Club</a> section. Regular donors get a unique badge and VIP Honor Board placement!'
-    }
-  };
-
-  const t = strings[lang] || strings.uk;
-
-  const wrap = document.createElement('div');
-  wrap.id = 'rmsChatbotWidget';
-  wrap.className = 'chatbot-widget-wrap';
-  wrap.innerHTML = `
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header">
-        <div>
-          <div style="font-weight: 800; color: #fff; font-size: 1.05rem;">${t.title}</div>
-          <div style="font-size: 0.75rem; color: #34d399;">${t.status}</div>
-        </div>
-        <button onclick="toggleChatbotWindow()" style="background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;">✕</button>
-      </div>
-      <div class="chatbot-body" id="chatbotBody">
-        <div class="chat-msg bot">${t.welcome}</div>
-        <div class="chat-chips">
-          <button class="chat-chip-btn" onclick="handleChatbotQ(1, '${t.q1}', '${t.a1}')">${t.q1}</button>
-          <button class="chat-chip-btn" onclick="handleChatbotQ(2, '${t.q2}', '${t.a2}')">${t.q2}</button>
-          <button class="chat-chip-btn" onclick="handleChatbotQ(3, '${t.q3}', '${t.a3}')">${t.q3}</button>
-          <button class="chat-chip-btn" onclick="handleChatbotQ(4, '${t.q4}', '${t.a4}')">${t.q4}</button>
-          <button class="chat-chip-btn" onclick="handleChatbotQ(5, '${t.q5}', '${t.a5}')">${t.q5}</button>
-        </div>
-      </div>
-    </div>
-    <button class="chatbot-trigger-btn" onclick="toggleChatbotWindow()">
-      <span class="chatbot-pulse-dot"></span>
-      <span>${t.btn}</span>
-    </button>
-  `;
-
-  document.body.appendChild(wrap);
-}
-
-function toggleChatbotWindow() {
-  const win = document.getElementById('chatbotWindow');
-  if (win) {
-    win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
-  }
-}
-
-function handleChatbotQ(id, qText, aText) {
-  const body = document.getElementById('chatbotBody');
-  if (!body) return;
-  
-  const uDiv = document.createElement('div');
-  uDiv.className = 'chat-msg user';
-  uDiv.innerHTML = qText;
-  body.appendChild(uDiv);
-  body.scrollTop = body.scrollHeight;
-
-  setTimeout(() => {
-    const bDiv = document.createElement('div');
-    bDiv.className = 'chat-msg bot';
-    bDiv.innerHTML = aText;
-    body.appendChild(bDiv);
-    body.scrollTop = body.scrollHeight;
-  }, 400);
-}
-
-if (typeof window !== 'undefined') {
-  window.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('script[src*="ai_widget.js"]')) return;
-    setTimeout(initSupportChatbot, 600);
-  });
-}
-
-// ==========================================================================
-// 🌟 STAGE 10: INTERACTIVE IMPACT CALCULATOR & LIVE TICKER ENGINE
-// ==========================================================================
-
-const IMPACT_LEVELS = [
-  { max: 40, icon: '🩹', title: 'Опікові гелі та грілки', desc: 'Комплект хімічних грілок та гідрогелевих протиопікових серветок для надання першої домедичної допомоги в окопі у холодну пору року.', btnTxt: '$20 (800 ₴)' },
-  { max: 90, icon: '🩸', title: 'Турнікет CAT 7-ї генерації', desc: 'Сертифікований кровоспинний джгут NATO для негайної зупинки критичних артеріальних кровотеч на полі бою та порятунку кінцівок.', btnTxt: '$50 (2 000 ₴)' },
-  { max: 240, icon: '🎒', title: 'Комплект NATO IFAK + Турнікет', desc: 'Забезпечує бійця на передовій повноцінною індивідуальною тактичною аптечкою для зупинки критичних кровотеч у перші хвилини поранення.', btnTxt: '$100 (4 000 ₴)' },
-  { max: 490, icon: '🥾', title: 'Топ-тактичне взуття та бронезахист', desc: 'Комплект зимового тактичного взуття з мембраною Gore-Tex, балістичних окулярів та кевларового протиосколкового коміра для штурмовика.', btnTxt: '$350 (14 000 ₴)' },
-  { max: 990, icon: '🦉', title: 'Тепловізійна камера / ПНБ-окуляри', desc: 'Високочутливий тепловізійний сенсор або прилад нічного бачення для водія евакуаційного багі чи пілота нічного FPV-дрона «Сова».', btnTxt: '$500 (20 000 ₴)' },
-  { max: 2490, icon: '⚡', title: 'Зарядна станція EcoFlow + Starlink', desc: 'Забезпечує безперебійне супутникове інтернет-з\'єднання та автономне живлення для командного підземного штабу чи операційного пункту БПЛА.', btnTxt: '$1,500 (60 000 ₴)' },
-  { max: 5000, icon: '🚀', title: 'Мобільний хірургічний модуль', desc: 'Комплексне фінансування автономного стабілізаційного пункту на колесах з реанімаційним обладнанням для порятунку важкопоранених!', btnTxt: '$5,000 (200 000 ₴)' }
-];
-
-function updateImpactCalc(val) {
-  const num = parseInt(val, 10);
-  const displayEl = document.getElementById('calcValDisplay');
-  const iconEl = document.getElementById('impactResIcon');
-  const titleEl = document.getElementById('impactResTitle');
-  const descEl = document.getElementById('impactResDesc');
-  const btnTxtEl = document.getElementById('calcBtnValTxt');
-
-  if (!displayEl || !iconEl || !titleEl || !descEl || !btnTxtEl) return;
-
-  const uah = (num * 40).toLocaleString();
-  displayEl.innerText = `$${num.toLocaleString()} (${uah} ₴)`;
-  btnTxtEl.innerText = `$${num.toLocaleString()} (${uah} ₴)`;
-
-  let level = IMPACT_LEVELS[0];
-  for (let i = 0; i < IMPACT_LEVELS.length; i++) {
-    if (num <= IMPACT_LEVELS[i].max) {
-      level = IMPACT_LEVELS[i];
-      break;
-    }
-    level = IMPACT_LEVELS[IMPACT_LEVELS.length - 1];
-  }
-
-  iconEl.innerText = level.icon;
-  titleEl.innerText = level.title;
-  descEl.innerText = level.desc;
-
-  // Add subtle bounce animation
-  const card = document.getElementById('impactResultCard');
-  if (card) {
-    card.style.transform = 'scale(0.98)';
-    setTimeout(() => { card.style.transform = 'scale(1)'; }, 150);
-  }
-}
-
-function donateFromImpactCalc() {
-  const slider = document.getElementById('impactSlider');
-  const val = slider ? parseInt(slider.value, 10) * 40 : 2000;
-  if (typeof openModal === 'function') {
-    openModal();
-    setTimeout(() => {
-      const input = document.getElementById('donCustomAmount');
-      if (input) input.value = val;
-    }, 200);
-  }
-}
-
 // Live Ticker Simulator
-const TICKER_NAMES = ['🇺🇸 Michael D.', '🇩🇪 Hans M.', '🇯🇵 Kenji S.', '🇬🇧 Sarah W.', '🇨🇦 David L.', '🇵🇱 Piotr K.', '🇺🇦 Олена В.', '🇫🇷 Antoine R.', '🇦🇺 Marcus T.', '🇳🇱 Jan B.', '🇮🇹 Marco P.', '🇪🇸 Elena G.', '🇨🇭 Stefan W.', '🇸🇪 Erik N.', '🇳🇴 Astrid K.', '🇺🇸 Jessica M.', '🇬🇧 James P.', '🇩🇪 Klaus B.', '🇨🇦 Robert H.', '🇺🇦 Тарас М.'];
-const TICKER_AMOUNTS = ['$50', '$100', '$250', '$500', '€200', '€1,000', '£150', '0.5 ETH', '1.2 ETH', '$1,500', '2,000 ₴', '5,000 ₴', '10,000 ₴', '$300', '€450', '$2,500', '0.8 ETH', '$750', '€600', '$1,200'];
-const TICKER_TARGETS = ['Нічна FPV-розвідка', 'Підземні школи', 'Квантовий зв\'язок', 'Екзоскелети', 'Окопний РЕБ', 'Аптечки IFAK', 'Снайперська оптика', 'Морські дрони', 'Ветеранські СТО', 'Роботи-міношукачі', 'Сонячні дахи', 'Біонічні протези', 'Очищення річок', 'Мобільні лазні', 'IT-стипендії сиріт', 'Куполи РЕБ', 'Мобільна стоматологія', 'Зенітні турелі', 'ШІ-аналіз знімків', 'Агро-дрони'];
+const TICKER_NAMES = ['🇺🇸 Michael D.', '🇩🇪 Hans M.', '🇵🇱 Piotr K.', '🇺🇦 Олена В.', '🇫🇷 Antoine R.', '🇳🇱 Jan B.', '🇮🇹 Marco P.', '🇪🇸 Elena G.', '🇨🇭 Stefan W.', '🇸🇪 Erik N.', '🇺🇸 Jessica M.', '🇬🇧 James P.', '🇩🇪 Klaus B.', '🇨🇦 Robert H.', '🇺🇦 Тарас М.', '🇺🇦 Максим Л.', '🇵🇱 Katarzyna Z.'];
+const TICKER_AMOUNTS = ['$50', '$100', '$250', '$500', '€200', '€1,000', '£150', '$1,500', '2,000 ₴', '5,000 ₴', '10,000 ₴', '$300', '€450', '$2,500', '$750', '€600', '$1,200'];
+const TICKER_TARGETS = ['Паливо для евакуації', 'Пальне для гуманітарних місій', 'Шпитальний транспорт', 'Бензин для волонтерських авто', 'Офіційний збір на пальне', 'Ремонт евакуаційних пікапів', 'Гуманітарний конвой на Схід', 'Пальне для медиків', 'Логістика вантажів', 'Дизель для генераторів'];
 
 function initLiveTickerSimulator() {
   const stream = document.getElementById('liveTickerStream');
